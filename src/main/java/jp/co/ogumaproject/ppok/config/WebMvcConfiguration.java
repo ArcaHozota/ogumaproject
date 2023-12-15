@@ -29,7 +29,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 	 */
 	@Override
 	protected void addResourceHandlers(final ResourceHandlerRegistry registry) {
-		WebMvcConfiguration.log.info(OgumaConstants.MSG002);
+		log.info(OgumaConstants.MESSAGE_SPRING_MAPPER);
 		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
 	}
 
@@ -51,12 +51,12 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 	 */
 	@Override
 	protected void extendMessageConverters(final List<HttpMessageConverter<?>> converters) {
-		WebMvcConfiguration.log.info(OgumaConstants.MSG001);
-		// メッセージコンバータオブジェクトを作成する
+		log.info(OgumaConstants.MESSAGE_SPRING_MVCCONVERTOR);
+		// メッセージコンバータオブジェクトを作成する。
 		final MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
-		// オブジェクトコンバータを設定し、Jacksonを使用してJavaオブジェクトをJSONに変換する
+		// オブジェクトコンバータを設定し、Jacksonを使用してJavaオブジェクトをJSONに変換する。
 		messageConverter.setObjectMapper(new JacksonObjectMapper());
-		// SpringMVCのIOCコンテナに設定する
+		// 上記のメッセージコンバータをSpringMVCフレームワークのコンバータコンテナに追加する。
 		converters.add(0, messageConverter);
 	}
 }

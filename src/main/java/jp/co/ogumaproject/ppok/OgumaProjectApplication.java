@@ -19,6 +19,6 @@ import lombok.extern.log4j.Log4j2;
 public class OgumaProjectApplication {
 	public static void main(final String[] args) {
 		SpringApplication.run(OgumaProjectApplication.class, args);
-		log.info(OgumaConstants.MSG003);
+		log.info(OgumaConstants.MESSAGE_SPRING_APPLICATION);
 	}
 }
