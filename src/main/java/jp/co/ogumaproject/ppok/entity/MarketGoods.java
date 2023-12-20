@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class MarketGoodsBean extends BaseBean {
+public class MarketGoods extends BaseBean {
 
 	private String goodsId;
 

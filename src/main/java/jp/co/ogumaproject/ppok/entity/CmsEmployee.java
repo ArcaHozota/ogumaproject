@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public final class CmsEmployeeBean extends BaseBean {
+public final class CmsEmployee extends BaseBean {
 
 	private String employeeId;
 

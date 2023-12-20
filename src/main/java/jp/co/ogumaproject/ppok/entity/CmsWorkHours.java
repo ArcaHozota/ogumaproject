@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class CmsWorkHourBean extends BaseBean {
+public class CmsWorkHours extends BaseBean {
 
 	/**
 	 * 社員ID

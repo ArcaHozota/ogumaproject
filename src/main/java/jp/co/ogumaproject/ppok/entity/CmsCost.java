@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class CmsCostBean extends BaseBean {
+public final class CmsCost extends BaseBean {
 
 	/**
 	 * 費用ID

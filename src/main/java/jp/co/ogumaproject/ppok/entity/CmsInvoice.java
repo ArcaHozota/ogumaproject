@@ -6,13 +6,9 @@ import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * 請求書Bean
- */
-
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class CmsInvoiceBean extends BaseBean {
+public class CmsInvoice extends BaseBean {
 
 	private String employeeId;
 

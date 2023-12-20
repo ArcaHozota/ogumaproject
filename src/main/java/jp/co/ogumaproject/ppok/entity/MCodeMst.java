@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class MCodeMstBean extends BaseBean {
+public class MCodeMst extends BaseBean {
 
 	/**
 	 * コードキー

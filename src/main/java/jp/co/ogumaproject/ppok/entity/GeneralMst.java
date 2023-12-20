@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class GeneralMstBean extends BaseBean {
+public class GeneralMst extends BaseBean {
 
 	/**
 	 * 汎用Key

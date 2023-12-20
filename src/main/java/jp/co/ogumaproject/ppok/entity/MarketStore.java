@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class MarketStoreBean {
+public class MarketStore {
 
 	private String storeId;
 
