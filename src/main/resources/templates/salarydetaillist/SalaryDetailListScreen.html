@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="common/common_header.html"></div>
+<body>
+	<form th:action="@{/salarydetaillist/SalaryDetailListScreen}" method="POST"
+		th:object="${form}">
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian ">
+
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<span><strong>給料一覧画面</strong> </span>
+				</div>
+				<div class="providerDetail">
+					<div class="div_edit_row">
+					    <!-- エラーメッセージの一覧表示 -->
+					    <span th:if="${form.errorMessage}"  th:text="${form.errorMessage}" style="color: red;">Error</span>
+				    </div>
+					<div class="div_edit_row">
+						<label>社員ID：</label> <input name="employeeId" type="text"
+							th:value="${form.employeeId}" th:field="*{employeeId}" />
+					</div>
+					<div class="div_edit_row">
+						<label>給料年月：</label> <input name="salaryMonth" type="month"
+							th:value="${form.salaryMonth}" th:field="*{salaryMonth}" />
+					</div>
+					<div class="providerDetailBtn"
+						style="margin-left: 45px; margin-top: 0px;">
+						<input type="submit" id="readDataBase" name="readDataBase"
+							value="検索" style="margin-left: 5px; margin-top: 5px;" />
+					</div>
+					<div class="div_edit_row detail_has_scroll_y" th:if="${!#lists.isEmpty(form.results)}">
+
+						<table class="providerTable">
+				
+							<tr class="firstTr">
+								<th width="10%">社員ID</th>
+								<th width="20%">名前</th>
+								<th width="20%">給料年月</th>
+								<th width="10%">給料</th>
+								<th width="10%">勤務時間</th>
+								<th width="10%">残業控除</th>
+								<th width="10%">費用</th>
+								<th width="10%">実給(税込)</th>
+							</tr>
+							<tr th:if="${!#lists.isEmpty(form.results)}"
+								th:each="data,stat : ${form.results}">
+
+								<td width="10%" th:text="${data.employeeId}"></td>
+								<td width="20%" th:text="${data.employeeNm}"></td>
+								<td width="20%" th:text="${data.salaryMonth}"></td>
+								<td width="10%" th:text="${data.salary}"></td>
+								<td width="10%" th:text="${data.workhours}"></td>
+								<td width="10%" th:text="${data.disabledGeneration}"></td>
+								<td width="10%" th:text="${data.cost}"></td>
+								<td width="10%" th:text="${data.actualSalary}"></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer class="footer"> </footer>
+	</form>
+
+	<!-- 共通Js -->
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+
+</body>
+</html>

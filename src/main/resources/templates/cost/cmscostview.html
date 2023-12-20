@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="common/common_header.html"></div>
+
+<body>
+	<form th:action="@{/cost/cmscostview/}" method="POST"
+		th:object="${form}">
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span> <a href="#">メッセージ</a>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian">
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<strong>画面情報：</strong> <span>費用参照</span>
+				</div>
+				<div class="providerDetail">
+					
+                    <div class="div_edit_row" >
+						<label>費用ID：</label>
+						<input name="costId" type="text" th:value="${form.costId}" th:field="*{costId}" disabled="disabled" class="disable-tag" />
+					</div>
+					<div class="div_edit_row">
+						<label>費用発生日：</label>
+						<input name="name" type="date" th:value="${form.costDay}" th:field="*{costDay}"  disabled="disabled" class="disable-tag" />
+					</div>
+
+					<div class="div_edit_row">
+						<label>費用コメント：</label>
+						<textarea name="costNote" th:value="${form.costNote}" th:field="*{costNote}"  disabled="disabled" class="disable-tag" >
+						</textarea>
+					</div>
+					<div class="div_edit_row">
+						<label>費用種別：</label>
+                               <select id="color" name="selectedCostType"  disabled="disabled" class="disable-tag" >
+								<option th:each="item : *{costTypeList}" th:value="${item.key}"
+									th:text="${item.value}"
+									th:selected="${item.key} == ${form.selectedCostType}">
+								</option>
+						    </select>
+					</div>
+					<div class="div_edit_row">
+						<label>費用金額：</label>
+						<input name="costAmount" type="number" th:value="${form.costAmount}" th:field="*{costAmount}"  disabled="disabled" class="disable-tag" />
+					</div>
+					<div class="div_edit_row">
+						<label>税金有無：</label> 
+						<div style="display:inline-flex">				
+						    <div th:each="item : ${form.hasTaxList}" style="vertical-align:middle;" class="disable-tag" >
+								<input type="radio" th:text="${item.value}" th:value="${item.key}" th:field="*{hasTax}"  disabled="disabled"  style="vertical-align:middle;margin-top:0px;margin-bottom:0px;">
+						    </div>
+					    </div>
+					</div>
+					<div class="div_edit_row">
+						<label>税金備考：</label>
+						<textarea name="taxNote" th:value="${form.taxNote}" th:field="*{taxNote}"  disabled="disabled" class="disable-tag" ></textarea>
+					</div>
+					<div class="div_edit_row">
+						<label>社員ID：</label>
+						<input name="employeeNameShow" type="text" th:value="${form.employeeName}" disabled="disabled" />
+<!-- 						<input name="employeeId" type="text" th:value="${form.employeeId}" th:field="*{employeeId}" style="display: none;"/> -->
+<!-- 						<input name="employeeName" type="hidden" th:value="${form.employeeName}" th:field="*{employeeName}"  /> -->
+					</div>
+					
+					<div class="providerDetailBtn">
+						<input type="submit" value="返回" id="gotoList"
+							name="gotoList" />
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer class="footer"> </footer>
+	</form>
+	<!-- 共通Js -->
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<!-- 画面Js -->
+	<script type="text/javascript" th:src="@{/js/employee/employeeview.js}"></script>
+
+</body>
+</html>

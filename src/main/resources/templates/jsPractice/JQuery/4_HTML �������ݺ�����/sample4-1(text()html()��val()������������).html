@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+$(document).ready(function(){
+  $("#btn1").click(function(){
+    $("#test1").text("Hello world!");
+  });
+  $("#btn2").click(function(){
+    $("#test2").html("<b>Hello world!</b>");
+  });
+  $("#btn3").click(function(){
+    $("#test3").val("RUNOOB");
+  });
+});
+
+//◆练习  追加3个类似的项目，·id分别叫 div1 div2 input3，并通过上述3中方式赋值
+</script>
+</head>
+
+<body>
+<div id="test1">这是一个段落。<p>aaa</p></div>
+<div id="test2">这是另外一个段落。<p>bbb</p></div>
+<p>输入框: <input type="text" id="test3" value="input test"></p>
+<button id="btn1">设置文本</button>
+<button id="btn2">设置 HTML</button>
+<button id="btn3">设置值</button>
+</body>
+</html>

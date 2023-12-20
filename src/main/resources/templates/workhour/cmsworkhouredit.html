@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="common/common_header.html"></div>
+
+<body>
+	<form th:action="@{/workhour/cmsworkhouredit/}" method="POST"
+		th:object="${employeeForm}">
+		<header class="publicHeader"> </header>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span> <a href="#">メッセージ</a>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian ">
+
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<strong>画面情報：</strong> <span>社員管理 >> 編集画面</span>
+				</div>
+				<div class="providerDetail">
+					<div>
+						<label>社員ID：</label> <input name="employeeId" type="text"
+							th:value="${employeeForm.employeeId}" th:field="*{employeeId}"
+							disabled="disabled" style="background-color: gainsboro;" /> <span
+							th:if="${#fields.hasErrors('employeeId')}"
+							th:errors="*{employeeId}" style="color: red"></span>
+					</div>
+					<div>
+						<label>社員名：</label> <input name="name" type="text"
+							th:value="${employeeForm.name}" th:field="*{name}" /> <span
+							th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+							style="color: red"></span>
+					</div>
+					<div>
+						<label>性別：</label> <select id="color" name="selectedSexy">
+							<option th:each="item : *{sexyList}" th:value="${item.key}"
+								th:text="${item.value}"
+								th:selected="${item.key} == ${employeeForm.selectedSexy}">
+							</option>
+						</select>
+						<!--  						<span class="fieldError" th:if="${#fields.hasErrors(*{type})}" th:errors="*{type}"></span> -->
+					</div>
+					<div>
+						<label>住所：</label> <input name="address" type="text"
+							th:value="${employeeForm.address}" th:field="*{address}" /> <span
+							th:if="${#fields.hasErrors('address')}" th:errors="*{address}"
+							style="color: red"></span>
+					</div>
+					<div>
+						<label>社員区分：</label> <input name="type" type="text" /> <span
+							th:if="${#fields.hasErrors('type')}" th:errors="*{type}"
+							style="color: red"></span>
+					</div>
+					<div>
+						<label>生年月日：</label> <input name="birthday" type="date"
+							th:value="${employeeForm.birthday}" th:field="*{birthday}" /> <span
+							th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"
+							style="color: red"></span>
+					</div>
+					<div>
+						<label>入社年月日：</label> <input name="joiningDate" type="date"
+							th:value="${employeeForm.joiningDate}" th:field="*{joiningDate}" />
+						<span th:if="${#fields.hasErrors('joiningDate')}"
+							th:errors="*{joiningDate}" style="color: red"></span>
+					</div>
+					<div>
+						<label>メール：</label> <input name="mail" type="email" /> <span
+							th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"
+							style="color: red"></span>
+					</div>
+					<div>
+						<label>電話：</label> <input name="phone" type="tel" /> <span
+							th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"
+							style="color: red"></span>
+					</div>
+					<div>
+						<label>職種：</label> <select id="color" name="selectedJobType">
+							<option th:each="item : *{jobTypeList}" th:value="${item.key}"
+								th:text="${item.value}"
+								th:selected="${item.key} == ${employeeForm.selectedJobType}">
+							</option>
+						</select> <span th:if="${#fields.hasErrors('selectedJobType')}"
+							th:errors="*{selectedJobType}" style="color: red"></span>
+					</div>
+					<div>
+						<label>職種権限：</label> <input name="jobLevel" type="text" /> <span
+							th:if="${#fields.hasErrors('jobLevel')}" th:errors="*{jobLevel}"
+							style="color: red"></span>
+					</div>
+					<div class="providerDetailBtn">
+						<input type="submit" id="update" name="update" value="更新" /> <input
+							type="submit" value="返回" id="gotoEmployeeList"
+							name="gotoEmployeeList" />
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer class="footer"> </footer>
+	</form>
+	<!-- 共通Js -->
+
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<!-- 画面Js -->
+	<script type="text/javascript" th:src="@{/js/employee/employeelist.js}"></script>
+</body>
+</html>

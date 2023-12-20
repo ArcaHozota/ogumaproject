@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="common/common_header.html"></div>
+
+<body>
+<form th:action="@{/employee/cmsemployeeadd}" method="POST" th:object="${form}">
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span> <a href="#">メッセージ</a>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian ">
+
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<strong>画面情報：</strong> <span>社員登録</span>
+                 </div>
+				<div class="providerDetail">
+
+					<div class="div_edit_row">
+						<label>社員名：</label>
+                        <input name="name" type="text" th:value="${form.name}" th:field="*{name}" />
+                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red"></span>
+						<input name="employeeId" type="text" th:value="${form.employeeId}" th:field="*{employeeId}" style="display: none;"/> 
+					</div>
+	                <div class="div_edit_row">
+						<label>社員区分：</label>			
+					    <div th:each="item : ${form.employeeKbnMap}" style="display:inline-flex;vertical-align:middle;">
+					        <input type="radio" th:text="${item.value}" th:value="${item.key}" th:field="*{selectedEmployeeKbn}" style="vertical-align:middle;">
+				        </div>
+					</div>
+					<div class="div_edit_row">
+						<label>性別：</label> 
+						<div style="display:inline-flex">				
+						    <div th:each="item : *{sexyList}" style="vertical-align:middle;">
+								<input type="radio" th:text="${item.value}" th:value="${item.key}" th:field="*{selectedSexy}"  style="vertical-align:middle;margin-top:0px;margin-bottom:0px;">
+						    </div>
+					    </div>
+						<!--  						<span class="fieldError" th:if="${#fields.hasErrors(*{type})}" th:errors="*{type}"></span> -->
+					</div>
+					<div class="div_edit_row">
+						<label>住所：</label>
+						<input name="address" type="text" th:value="${form.address}" th:field="*{address}" />
+                        <span th:if="${#fields.hasErrors('address')}" th:errors="${form.address}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>生年月日：</label>
+						<input name="birthday" type="date" th:value="${form.birthday}" th:field="*{birthday}" />
+						<span th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>入社年月日：</label>
+						    <input name="joiningDate" type="date" th:value="${form.joiningDate}" th:field="*{joiningDate}" />
+						    <span th:if="${#fields.hasErrors('joiningDate')}" th:errors="*{joiningDate}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>メール：</label>
+                        <input name="mail" type="text" th:value="${form.mail}" th:field="*{mail}"  />
+                        <span th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>電話：</label> <input name="phone" type="tel"  th:value="${form.phone}" 
+							th:field="*{phone}" /> <span th:if="${#fields.hasErrors('phone')}"
+							th:errors="*{phone}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>職種：</label>
+                               <select id="color" name="selectedJobType">
+								<option th:each="item : ${form.jobTypeList}" th:value="${item.key}"
+									th:text="${item.value}"
+									th:selected="${item.key} == ${form.selectedJobType}">
+								</option>
+						    </select>
+							<span th:if="${#fields.hasErrors('selectedJobType')}" th:errors="*{selectedJobType}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>勤務時間上限：</label>
+						    <input name="topWorkHour" type="number" th:value="${form.topWorkHour}" th:field="*{topWorkHour}" /> <span
+							th:if="${#fields.hasErrors('topWorkHour')}" th:errors="*{topWorkHour}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>勤務時間下限：</label>
+						    <input name="downWorkHour" type="number" th:value="${form.downWorkHour}" th:field="*{downWorkHour}" />
+						    <span th:if="${#fields.hasErrors('downWorkHour')}" th:errors="*{downWorkHour}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>給料：</label>
+						    <input name="salary" type="number" th:value="${form.salary}" th:field="*{salary}" />
+						    <span th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}" style="color: red"></span>
+					</div>
+					
+					<div class="div_edit_row">
+						<label>税金有無：</label> 
+						<div style="display:inline-flex">				
+						    <div th:each="item : ${form.hasTaxList}" style="vertical-align:middle;">
+								<input type="radio" th:text="${item.value}" th:value="${item.key}" th:field="*{selectedHasTax}"  style="vertical-align:middle;margin-top:0px;margin-bottom:0px;">
+						    </div>
+					    </div>
+					</div>
+					<div class="div_edit_row">
+						<label>社員種別：</label> 
+						<div style="display:inline-flex">				
+						    <div th:each="item : ${form.employeeTypeList}" style="vertical-align:middle;">
+								<input type="radio" th:text="${item.value}" th:value="${item.key}" th:field="*{selectedEmployeeType}"  style="vertical-align:middle;margin-top:0px;margin-bottom:0px;">
+						    </div>
+					    </div>
+					</div>
+
+
+					<div class="providerDetailBtn">
+						<input type="submit" id="insert" name="insert" value="登録" /> <input
+							type="submit" value="返回" id="gotoEmployeeList" name="gotoEmployeeList" />
+					</div>
+				</div>
+			
+		    </div>
+		</section>
+		<footer class="footer"> </footer>
+
+	</form>
+
+	<!-- 共通Js -->	<!-- 共通Js -->
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<!-- 画面Js -->
+	<script type="text/javascript" th:src="@{/js/employee/employeelist.js}"></script>
+
+</body>
+</html>

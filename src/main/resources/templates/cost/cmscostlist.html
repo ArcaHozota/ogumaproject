@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="common/common_header.html"></div>
+
+<body>
+	<form th:action="@{/cost/cmscostlist}" method="POST" th:object="${form}" role="form">
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span> <a href="#">メッセージ</a>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian">
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<strong>画面情報：</strong> <span>費用一覧</span> <br />
+					<span th:if="${form.errorMessage!=null}" th:text="${form.errorMessage}" style="color: red;"></span>
+				</div>
+				<!-- ■検索条件 -->
+				<div class="search row">
+					<div class="class_td_50">
+						<label>社員名：</label>
+						<input id="employeeName" type="text" name="name" th:value="${form.name}" placeholder="社員名前" />
+					<!-- ----------PopUp画面 start---------- -->
+					<button type="button" class="btn btn-primary" data-toggle="modal" 
+					data-target="#exampleModal" style="padding:0;background-color:white;border-color:white;" id="openSelectEmployeeScreen">
+					 🔎
+					</button>
+					<input id="employeeId" type="text" name="employeeId" disabled="disabled" style="border: 0px;background-color: white;"/>
+					<!-- ----------PopUp画面 end  ---------- -->
+						<!-- 非表示ボタン（検索、更新、削除） -->
+						<input type="submit" name="read" id="read" style="display: none;" />
+						<input type="submit" name="update" id="update" style="display: none;" />
+						<input type="submit" name="delete" id="delete" style="display: none;" />
+					</div>
+
+					<div class="class_td_50">
+						<label>費用発生年月：</label> <input type="month" name="month"
+							th:id="${form.month}" th:value="${form.month}" />
+					</div>
+
+					<div class="class_td_50">
+						<input type="submit" id="select" name="select" value="検索" width="30px;" />
+						<input type="submit" id="add" name="add" value="新規" width="30px;" />
+						<input type="submit" id="deleteAll" name="deleteAll" value="削除" width="30px;" />
+						<input type="hidden" id="delItemIds" name="delItemIds"/>
+					</div>
+					<div class="class_td_50"></div>
+				</div>
+
+				<!-- ■検索結果 -->
+				<div style="padding-top: 10px;">
+					<!--用户-->
+					<table class="providerTable" th:if="${form != null}">
+						<tr class="firstTr">
+							<th width="5%"><input type="checkbox" id="all"></th>
+							<th width="10%" style="text-align: center;">社員ID</th>
+							<th width="10%" style="text-align: center;">社員名</th>
+							<th width="10%" style="text-align: center;">費用ID</th>
+							<th width="10%" style="text-align: center;">費用発生日</th>
+							<th width="10%" style="text-align: center;">費用種別</th>
+							<th width="10%" style="text-align: center;">費用金額</th>
+							<th width="10%" style="text-align: center;">税金有無</th>
+							<th width="10%" style="text-align: center;">費用コメント</th>
+							<th width="15%" style="text-align: center;">アクション</th>
+						</tr>
+						<tr th:if="${!#lists.isEmpty(form.results)}"
+							th:each="data,stat : ${form.results}">
+							<td style="text-align: center;">
+							    <input type="checkbox" th:id="checkBoxId" th:name="checkBoxId" th:value="${data.costId}" />
+							</td>
+							<td th:text="${data.employeeId}"></td>
+							<td th:text="${data.employeeNm}"></td>
+							<td th:text="${data.costId}"></td>
+							<td th:text="${data.costDay}"></td>
+							<td th:text="${data.costTypeName}"></td>
+							<td th:text="${data.costAmount}"></td>
+							<td th:text="${data.hasTaxName}"></td>
+							<td th:text="${data.costNote}"></td>
+							<td><img th:src="@{/img/read.png}" alt="参照" title="参照"
+								onclick="clickRead(this);" th:value="${data.costId}" /> <img
+								th:src="@{/img/update.png}" alt="更新" title="更新"
+								onclick="clickUpdate(this)" th:value="${data.costId}" /> <img
+								th:src="@{/img/delete.png}" alt="削除" title="削除"
+								onclick="clickDelete(this)" th:value="${data.costId}" /></td>
+						</tr>
+					</table>
+				</div>
+
+			</div>
+		</section>
+
+
+	</form>
+	<!-- ----------PopUp画面 start---------- -->
+	<div th:replace="model/selectemployee"></div>
+	<script type="text/javascript" th:src="@{/js/model/selectemployee.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<!-- ----------PopUp画面 end  ---------- -->
+
+	<div class="footer" th:insert="~{fragments/footer :: footer}">...</div>
+
+	<!-- 共通Js -->
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	
+	<!-- 画面Js -->
+	<script type="text/javascript" th:src="@{/js/cost/cost.js}"></script>
+
+</body>
+</html>

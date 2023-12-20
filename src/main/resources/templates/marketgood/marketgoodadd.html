@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="common/common_header.html"></div>
+
+<body>
+	<form th:action="@{/marketgood/marketgoodadd}" method="POST"
+		th:object="${form}">
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span> <a href="#">メッセージ</a>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian ">
+
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<strong>画面情報：</strong> <span>商品登録</span>
+				</div>
+				<div class="providerDetail">
+					<div class="div_edit_row">
+						<label>商品ID：</label> 
+						<input name="goodId" type="text" th:value="${form.goodId}" th:field="*{goodId}" /> 
+						<span th:if="${#fields.hasErrors('goodId')}" th:errors="*{goodId}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>商品名：</label> 
+						<input name="goodName" type="text" th:value="${form.goodName}" th:field="*{goodName}" /> 
+						<span th:if="${#fields.hasErrors('goodName')}" th:errors="*{goodName}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>商品種別：</label> 
+						<input name="type" type="text" th:value="${form.type}" th:field="*{type}" /> 
+						<span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>メーカー：</label> 
+						<input name="maker" type="text" th:value="${form.maker}" th:field="*{maker}" /> 
+						<span th:if="${#fields.hasErrors('maker')}" th:errors="*{maker}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>仕入単価：</label> 
+						<input name="purchasePrice" type="text" th:value="${form.purchasePrice}" th:field="*{purchasePrice}" /> 
+						<span th:if="${#fields.hasErrors('purchasePrice')}" th:errors="*{purchasePrice}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>販売単価：</label> 
+						<input name="salesPrice" type="text" th:value="${form.salesPrice}" th:field="*{salesPrice}" /> 
+						<span th:if="${#fields.hasErrors('salesPrice')}" th:errors="*{salesPrice}" style="color: red"></span>
+					</div>
+
+					<div class="providerDetailBtn">
+						<input type="submit" id="insert" name="insert" value="登録" /> <input
+							type="submit" value="返回" id="gotoEmployeeList"
+							name="gotoEmployeeList" />
+					</div>
+				</div>
+
+			</div>
+		</section>
+		<footer class="footer"> </footer>
+
+	</form>
+
+	<!-- 共通Js -->
+	<!-- 共通Js -->
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<!-- 画面Js -->
+	<script type="text/javascript" th:src="@{/js/employee/employeelist.js}"></script>
+
+</body>
+</html>

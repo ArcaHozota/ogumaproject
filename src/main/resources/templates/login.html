@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<meta charset="UTF-8">
+<title>オージエーム管理システム</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="login_bg">
+	<section class="loginBox">
+		<header class="loginHeader">
+			<h1>社内管理システム</h1>
+		</header>
+		<section class="loginCont">
+			<form th:action="@{/login}" id="userForm" name="userForm"
+				method="post">
+				<div class="inputbox">
+					<label for="user">ユーザー名：</label> <input id="loginId" type="text"
+						name="loginId" placeholder="ユーザー名をご入力ください。" required />
+				</div>
+				<div class="inputbox">
+					<label for="mima">パスワード：</label> <input id="password" type="password"
+						name="password" placeholder="ユーザー名をご入力ください。" required />
+				</div>
+				<div class="subBtn">
+					<input type="submit" value="ログイン" name="gotoMenu" />
+					<input type="submit" value="リセット" name="gotoMenu" />
+				</div>
+
+			</form>
+		</section>
+	</section>
+
+</body>
+</html>

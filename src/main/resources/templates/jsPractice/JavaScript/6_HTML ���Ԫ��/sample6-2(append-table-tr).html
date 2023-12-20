@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>动态创建表格</title>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+  function CreateTable(rowCount,cellCount){ 
+	  var showIndex = 0;
+	  //table 追加
+     var table=$("<table border='1'>");
+	  
+	  //tableをDivに追加する
+     table.appendTo($("#createtable"));
+	  
+     for(var i=0;i<rowCount;i++){
+    	 //追加行
+        var tr=$("<tr></tr>");
+    	 
+    	//把行追加到table里
+        tr.appendTo(table);
+    	
+        for(var j=0;j<cellCount;j++) {
+        	//追加列
+           var td=$("<td width='100px'>"+(showIndex++)+"</td>");
+           td.appendTo(tr);
+        }
+     }
+     //做好的table后面追加一个table结束标签
+     $("#createtable").append("</table>");
+  }
+  
+ //◆参照上面的写法，完成一个独立的Table自动做成
+</script>
+</head>
+ 
+<body>
+<input type="button" value="添加表格" onClick="CreateTable(2,3)" >
+<div id="createtable"></div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+$(document).ready(function(){
+  $("button").click(function(){
+    $("#runoob").attr("href","http://www.runoob.com/jquery");
+  
+    //◆练习，用类似的方法修改此标签的name属性
+  });
+});
+
+
+</script>
+</head>
+
+<body>
+<p><a href="http://www.runoob.com" id="runoob">hello</a></p>
+<button>修改 href 值 和 name</button>
+<p>点击按钮修改后，可以点击链接查看链接地址是否变化。</p>
+</body>
+</html>

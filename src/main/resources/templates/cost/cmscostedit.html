@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="common/common_header.html"></div>
+
+<body>
+	<form th:action="@{/cost/cmscostedit/}" method="POST"
+		th:object="${form}">
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span> <a href="#">メッセージ</a>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian ">
+
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<strong>画面情報：</strong> <span>費用編集</span>
+				</div>
+				<div class="providerDetail">
+				<div class="div_edit_row" th:style="'display:' + @{(${form.newFlg} ? 'none' : 'inline-block')} + ''" >
+						<label>費用ID：</label>
+						<input name="costIdShow" type="text" th:value="${form.costId}" th:field="*{costId}" disabled="disabled" />
+						<input name="costId" type="hidden" th:value="${form.costId}" th:field="*{costId}" />
+						<span th:if="${#fields.hasErrors('costId')}" th:errors="*{costId}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>費用発生日：</label>
+						<input name="name" type="date" th:value="${form.costDay}" th:field="*{costDay}" />
+						<span th:if="${#fields.hasErrors('costDay')}" th:errors="*{costDay}" style="color: red"></span>
+					</div>
+
+					<div class="div_edit_row">
+						<label>費用コメント：</label>
+						<textarea name="costNote" th:value="${form.costNote}" th:field="*{costNote}" >
+						</textarea>
+<!-- 					<input name="costNote" type="text" th:value="${form.costNote}" th:field="*{costNote}" /> -->
+						<span th:if="${#fields.hasErrors('costNote')}" th:errors="*{costNote}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>費用種別：</label>
+                               <select id="color" name="selectedCostType">
+								<option th:each="item : *{costTypeList}" th:value="${item.key}"
+									th:text="${item.value}"
+									th:selected="${item.key} == ${form.selectedCostType}">
+								</option>
+						    </select>
+							<span th:if="${#fields.hasErrors('selectedCostType')}" th:errors="*{selectedCostType}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>費用金額：</label>
+						<input name="costAmount" type="number" th:value="${form.costAmount}" th:field="*{costAmount}" />
+						<span th:if="${#fields.hasErrors('costAmount')}" th:errors="*{costAmount}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>税金有無：</label> 
+						<div style="display:inline-flex">				
+						    <div th:each="item : ${form.hasTaxList}" style="vertical-align:middle;">
+								<input type="radio" th:text="${item.value}" th:value="${item.key}" th:field="*{hasTax}"  style="vertical-align:middle;margin-top:0px;margin-bottom:0px;">
+						    </div>
+					    </div>
+					</div>
+					<div class="div_edit_row">
+						<label>税金備考：</label>
+						
+						<textarea name="taxNote" th:value="${form.taxNote}" th:field="*{taxNote}" ></textarea>
+						<span th:if="${#fields.hasErrors('taxNote')}" th:errors="*{taxNote}" style="color: red"></span>
+					</div>
+					<div class="div_edit_row">
+						<label>社員ID：</label>
+						<input name="employeeNameShow" type="text" th:value="${form.employeeName}" disabled="disabled" />
+<!-- 						<input name="employeeId" type="text" th:value="${form.employeeId}" th:field="*{employeeId}" style="display: none;"/> -->
+<!-- 						<input name="employeeName" type="hidden" th:value="${form.employeeName}" th:field="*{employeeName}"  /> -->
+					</div>
+					<div class="providerDetailBtn">
+						<input type="submit" id="update" name="update" value="更新" /> <input
+							type="submit" value="返回" id="gotoList"
+							name="gotoList" />
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer class="footer"> </footer>
+	</form>
+	<!-- 共通Js -->
+
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<!-- 画面Js -->
+	<script type="text/javascript" th:src="@{/js/employee/employeelist.js}"></script>
+</body>
+</html>

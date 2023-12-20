@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="common/common_header.html"></div>
+<body>
+	<form th:action="@{/practice1/readdatabase}" method="POST"
+		th:object="${form}">
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian ">
+
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<span><strong>社員一覧画面</strong> </span>
+				</div>
+				<div class="providerDetail">
+					<div class="div_edit_row">
+					    <!-- エラーメッセージの一覧表示 -->
+					    <span th:if="${form.errorMessage}"  th:text="${form.errorMessage}" style="color: red;">Error</span>
+				    </div>
+					<div class="div_edit_row">
+						<label>社員ID：</label> <input name="employeeId" type="text" tabindex="10"
+							th:value="${form.employeeId}" th:field="*{employeeId}" />
+					</div>
+					<div class="div_edit_row">
+						<label>社員名：</label> <input name="employeeName" type="text" tabindex="20"
+							th:value="${form.employeeName}" th:field="*{employeeName}" />
+					</div>
+					<div class="providerDetailBtn"
+						style="margin-left: 45px; margin-top: 0px;">
+						<input type="submit" id="readDataBase" name="readDataBase"  tabindex="30"
+							value="検索" style="margin-left: 5px; margin-top: 5px;" />
+					</div>
+					<div class="div_edit_row detail_has_scroll_y" th:if="${!#lists.isEmpty(form.results)}">
+
+						<table class="providerTable">
+				
+							<tr class="firstTr">
+								<th width="20%">社員ID</th>
+								<th width="20%">名前</th>
+								<th width="20%">入社年月日</th>
+								<th width="20%">性別</th>
+								<th width="20%">生年月日</th>
+							</tr>
+							<tr th:if="${!#lists.isEmpty(form.results)}"
+								th:each="data,stat : ${form.results}">
+
+								<td width="20%" th:text="${data.employeeId}"></td>
+								<td width="20%" th:text="${data.name}"></td>
+								<td width="20%" th:text="${data.joiningDate}"></td>
+								<td width="20%" th:text="${data.sexForList}"></td>
+								<td width="20%" th:text="${data.birthday}"></td>
+
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer class="footer"> </footer>
+	</form>
+
+	<!-- 共通Js -->
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+
+</body>
+</html>

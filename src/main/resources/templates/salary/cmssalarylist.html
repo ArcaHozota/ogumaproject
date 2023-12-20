@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="common/common_header.html"></div>
+
+<body>
+	<form th:action="@{/salary/cmssalarylist}" method="POST"
+		th:object="${form}">
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span> <a href="#">メッセージ</a>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian">
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<strong>画面情報：</strong> <span>給料一覧</span> <br />
+					<span th:if="${form.errorMessage}"  th:text="${form.errorMessage}" style="color: red;">Error</span>
+				</div>
+<!-- ■検索条件 -->
+				<div class="search row">
+					<div class="class_td_50">
+						<label>社員名：</label>
+						<input id="employeeName" type="text" name="name" th:value="${form.name}" placeholder="社員名前" />
+					<!-- ----------PopUp画面 start---------- -->
+					<button type="button" class="btn btn-primary" data-toggle="modal" 
+					data-target="#exampleModal" style="padding:0;background-color:white;border-color:white;" id="openSelectEmployeeScreen">
+					 🔎
+					</button>
+					<input id="employeeId" type="text" name="employeeId" disabled="disabled" style="border: 0px;background-color: white;"/>
+					<!-- ----------PopUp画面 end  ---------- -->
+						<!-- 非表示ボタン（削除、請求書） -->
+						<input type="submit" name="delete" id="delete" style="display: none;" />
+						<input type="submit" name="createPdf" id="createPdf" style="display: none;" />
+					</div>
+
+					<div class="class_td_50">
+						<label>給料年月：</label>
+						<input type="month" name="month" th:id="${form.month}" th:value="${form.month}" />
+					</div>
+
+					<div class="class_td_50">
+						<input type="submit" id="select" name="select" value="検索"/>
+						<input type="submit" id="createSalary" name="createSalary" value="給料作成"  style="background:  #87c212;"/>
+						<!-- 一括処理対象 -->
+						<input type="hidden" id="itemIds" name="itemIds"/>
+					</div>
+					<div class="class_td_50" style="text-align:right;padding-right:20px;">
+						<input type="submit" id="deleteSalary" name="deleteSalary" value="一括削除"  style="background:  #87c212;"/>
+					</div>
+				</div>
+				<div style="padding-top: 10px;">
+					<!--用户-->
+					<table class="providerTable" th:if="${form != null}">
+						<tr class="firstTr">
+							<th width="10%"><input type="checkbox" id="all"></th>
+							<th width="10%">社員ID</th>
+							<th width="10%">社員名</th>
+							<th width="10%">給料年月</th>
+							<th width="10%">基本給料</th>
+							<th width="10%">勤務時間</th>
+							<th width="10%">残業控除</th>
+							<th width="10%">費用</th>
+							<th width="10%">実給(税込)</th>
+							<th width="10%">アクション</th>
+						</tr>
+						<tr th:if="${!#lists.isEmpty(form.results)}"
+							th:each="data,stat : ${form.results}">
+						    <td style="text-align: center;">
+							    <input type="checkbox" th:id="checkBoxId" th:name="checkBoxId" th:value="${data.employeeId}+'_'+${data.salaryMonth}" />
+							</td>
+							<td th:text="${data.employeeId}"></td>
+							<td th:text="${data.employeeNm}"></td>
+							<td th:text="${data.salaryMonth}"></td>
+							<td th:text="${data.salary}"></td>
+							<td th:text="${data.workhours}"></td>
+							<td th:text="${data.disabledGeneration}"></td>
+							<td th:text="${data.cost}"></td>
+							<td th:text="${data.actualSalary}"></td>
+							<td>
+							    <img th:src="@{/img/pdf.png}" alt="請求書" title="請求書" onclick="clickCreatePdf(this)" th:value="${data.employeeId}+'_'+${data.salaryMonth}" />
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</section>
+
+		<!--削除ボタンを押下後、ポップアップDIV画面が表示される-->
+		<div class="zhezhao"></div>
+		<div class="remove" id="removeUse">
+			<div class="removerChid">
+				<h2>提示</h2>
+				<div class="removeMain">
+					<p>削除したらよろしいでしょうか</p>
+					<a href="#" id="yes">削除</a> <a href="#" id="no">キャンセル</a>
+				</div>
+			</div>
+		</div>
+
+	</form>
+	<!-- ----------PopUp画面 start---------- -->
+	<div th:replace="model/selectemployee"></div>
+	<script type="text/javascript" th:src="@{/js/model/selectemployee.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<!-- ----------PopUp画面 end  ---------- -->
+	
+	<div class="footer" th:insert="~{fragments/footer :: footer}">...</div>
+
+	<!-- 共通Js -->
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<!-- 画面Js -->
+	<script type="text/javascript" th:src="@{/js/salary/salarylist.js}"></script>
+</body>
+</html>

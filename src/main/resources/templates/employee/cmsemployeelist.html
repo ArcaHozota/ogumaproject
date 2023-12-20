@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="common/common_header.html"></div>
+
+<body>
+	<form th:action="@{/employee/cmsemployeelist}" method="POST"
+		th:object="${form}">
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span> <a href="#">メッセージ</a>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian">
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<strong>画面情報：</strong> <span>社員一覧</span> <br />
+					<span th:if="${form.errorMessage!=null}" th:text="${form.errorMessage}" style="color: red;"></span>
+				</div>
+				
+                <!-- ■検索条件 -->
+				<div class="search row">
+	                <div class="class_td_50">
+						<label>名 前：</label>
+						<input type="text" name="name" th:id="${form.name}" th:value="${form.name}" placeholder="社員名前" /> <!-- 非表示の明細ボタン -->
+							<input type="submit" name="read" id="read" style="display: none;" />
+							<input type="submit" name="update" id="update" style="display: none;" />
+							<input type="submit" name="delete" id="delete" style="display: none;" />
+							<input type="hidden" id="selectedItemIds" name="selectedItemIds"/>
+					</div>
+	        
+	                <div class="class_td_50">
+						<label>社員区分：</label>			
+					    <div th:each="item : ${form.employeeKbnMap}" style="display:inline-flex;vertical-align:middle;">
+					        <input type="radio" th:text="${item.value}" th:value="${item.key}" th:field="*{selectedEmployeeKbn}" style="vertical-align:middle;">
+				        </div>
+					</div>
+	                <div class="class_td_50">
+						<label>性別：</label>			
+					    <div th:each="item : ${form.sexyList}" style="display:inline-flex;vertical-align:middle;">
+					        <input type="radio" th:text="${item.value}" th:value="${item.key}" th:field="*{selectedSexy}" style="vertical-align:middle;">
+				        </div>
+					</div>
+	                <div class="class_td_50">
+						<label>生年月：</label>
+						<input type="month" name="month" th:id="${form.month}" th:value="${form.month}"/>
+					</div>
+	                <div class="class_td_50">
+						<input type="submit" id="select" name="select" value="検索" width="30px;"/>
+						<input type="submit" id="add" name="add" value="新規"  width="30px;" th:style="${form.disabledFlg}"/>
+						<input type="submit" id="deleteAll"name="deleteAll" value="削除"  width="30px;" th:style="${form.disabledFlg}"/>
+					</div>
+	                <div class="class_td_50"></div>
+				</div>
+				
+                <!-- ■検索結果 -->
+				<div style="padding-top: 10px;">
+					<!--用户-->
+					<table class="providerTable" th:if="${form != null}">
+						<tr class="firstTr">
+							<th width="5%"><input type="checkbox" id="all"></th>
+							<th width="10%">社員ID</th>
+							<th width="10%">名前</th>
+							<th width="10%">入社年月日</th>
+							<th width="5%">性別</th>
+							<th width="10%">社員区分</th>
+							<th width="10%">生年月日</th>
+							<th width="10%">電話</th>
+							<th width="20%">住所</th>
+							<th width="10%">アクション</th>
+						</tr>
+						<tr th:if="${!#lists.isEmpty(form.results)}"
+							th:each="data,stat : ${form.results}">
+							<td style="text-align: center;">
+							    <input type="checkbox" th:id="checkBoxId" th:name="checkBoxId" th:value="${data.employeeId}" />
+							</td>
+							<td th:text="${data.employeeId}"></td>
+							<td th:text="${data.name}"></td>
+							<td th:text="${data.joiningDate}"></td>
+							<td th:text="${data.sexForList}"></td>
+							<td th:text="${data.employeeKbnForList}"></td>
+							<td th:text="${data.birthday}"></td>
+							<td th:text="${data.phone}"></td>
+							<td th:text="${data.address}"></td>
+							<td>
+							    <img th:src="@{/img/read.png}" alt="参照" title="参照" onclick="clickRead(this);" th:value="${data.employeeId+'_'+data.updateDay}" />
+							    <img th:src="@{/img/update.png}" alt="更新" title="更新" onclick="clickUpdate(this)" th:value="${data.employeeId+'_'+data.updateDay}" />
+								<img th:src="@{/img/delete.png}" alt="削除" title="削除" onclick="clickDelete(this)" th:value="${data.employeeId+'_'+data.updateDay}" th:style="${form.disabledFlg}" />
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</section>
+
+		<!--削除ボタンを押下後、ポップアップDIV画面が表示される-->
+		<div class="zhezhao"></div>
+		<div class="remove" id="removeUse">
+			<div class="removerChid">
+				<h2>提示</h2>
+				<div class="removeMain">
+					<p>削除したらよろしいでしょうか</p>
+					<a href="#" id="yes">削除</a> <a href="#" id="no">キャンセル</a>
+				</div>
+			</div>
+		</div>
+
+	</form>
+	<div class="footer" th:insert="~{fragments/footer :: footer}">...</div>
+
+	<!-- 共通Js -->
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- 画面Js -->
+	<script type="text/javascript" th:src="@{/js/employee/employeelist.js}"></script>
+
+	
+</body>
+</html>

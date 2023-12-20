@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="common/common_header.html"></div>
+
+<body>
+	<form th:action="@{/menu}" method="POST" th:object="${form}">
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span> <a href="#">メッセージ</a>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian">
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<img class="wColck" src="img/clock.jpg" alt="" />
+				<div class="wFont">
+					<h2>Admin</h2>
+					<p>子画面を表示する</p>
+					<span id="hours"></span>
+				</div>
+			</div>
+		</section>
+	</form>
+	<!-- 	<footer class="footer"> </footer> -->
+	<div class="footer" th:insert="~{fragments/footer :: footer}">...</div>
+
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<!-- 画面Js -->
+	<script type="text/javascript" th:src="@{/js/menu.js}"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="common/common_header.html"></div>
+
+<body>
+	<form th:action="@{/pdf/createpdf}" method="POST"
+		th:object="${form}">
+
+		<div class="publicHeader" th:insert="~{fragments/header :: header}">...</div>
+		<!--时间-->
+		<section class="publicTime">
+			<span id="time">2015年1月1日 11:11 星期一</span>
+		</section>
+		<!--主体内容-->
+		<section class="publicMian ">
+
+			<div class="left" th:insert="~{fragments/left :: left}">...</div>
+			<div class="right">
+				<div class="location">
+					<strong>画面情報：</strong> <span>PDF出力</span>
+				</div>
+				<div class="providerDetail">
+	
+					<div class="providerDetailBtn"
+						style="margin-left: 45px; margin-top: 0px;">
+					<input type="hidden" id="paramItem" name="paramItem" />
+			<input id="downloadReceipt" name=downloadReceipt type="submit"  value="PDF出力" />
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer class="footer"> </footer>
+
+	</form>
+
+	<!-- 共通Js -->
+	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+	<script type="text/javascript" th:src="@{/js/js.js}"></script>
+	<script type="text/javascript" th:src="@{/js/time.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+
+</body>
+</html>

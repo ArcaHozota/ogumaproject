@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+// $(document).ready(function(){
+//   $("button").click(function(){
+//     $(".test").hide();
+//     $("#myid").hide();
+    
+//   });
+// });
+
+function testId() {
+	document.getElementById("myid").style.visibility = "hidden";
+}
+
+function testClass() {
+	var pElements = document.getElementsByClassName("test");
+
+	for (let i = 0; i < pElements.length; i++) {
+		pElements[i].style.visibility = "hidden";
+	}
+}
+
+</script>
+</head>
+<body>
+
+<h2 class="test">class确认用H2标签</h2>
+<p class="test">class确认用P标签</p>
+<p>入力值<input name="myname" id="myid"/></p>
+<button>点我Jquery</button>
+<button onclick="testId();">getElementById</button>
+<button onclick="testClass();">getElementsByClassName</button>
+</body>
+</html>
