@@ -1,8 +1,11 @@
 package jp.co.ogumaproject.ppok.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,15 +34,12 @@ public class LoginController {
 	 */
 	@PostMapping(value = "/login", params = "gotoMenu")
 	public ModelAndView gotoMenu(@ModelAttribute final LoginForm form) {
-		final CmsEmployee requestBean = new CmsEmployee();
-		requestBean.setLoginId(form.getLoginId());
-		requestBean.setPassword(form.getPassword());
-		final LoginForm formChk = this.loginService.selectLoginInfo(form);
-		if ((formChk.getResults() != null) && (!formChk.getResults().isEmpty())) {
+		final List<CmsEmployee> results = this.loginService.selectLoginInfo(form).getResults();
+		if (!CollectionUtils.isEmpty(results)) {
 			final ModelAndView modelAndView = new ModelAndView("menu");
-			modelAndView.addObject("employeeId", formChk.getResults().get(0).getEmployeeId());
-			modelAndView.addObject("employeeName", formChk.getResults().get(0).getName());
-			modelAndView.addObject("jobType", formChk.getResults().get(0).getJobType());
+			modelAndView.addObject("employeeId", results.get(0).getEmployeeId());
+			modelAndView.addObject("employeeName", results.get(0).getName());
+			modelAndView.addObject("jobType", results.get(0).getJobType());
 			return modelAndView;
 		}
 		final ModelAndView modelAndView = new ModelAndView("login");
