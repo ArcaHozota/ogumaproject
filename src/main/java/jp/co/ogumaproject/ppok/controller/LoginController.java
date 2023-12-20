@@ -3,13 +3,11 @@ package jp.co.ogumaproject.ppok.controller;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import jp.co.ogumaproject.ppok.dto.CmsEmployeeForm;
 import jp.co.ogumaproject.ppok.dto.LoginForm;
 import jp.co.ogumaproject.ppok.entity.CmsEmployee;
 import jp.co.ogumaproject.ppok.service.LoginService;
@@ -31,7 +29,7 @@ public class LoginController {
 	 * @param model             Model
 	 * @return ユーザー情報一覧画面
 	 */
-	@PostMapping(value = "/doLogin", params = "gotoMenu")
+	@PostMapping(value = "/login", params = "gotoMenu")
 	public ModelAndView gotoMenu(@ModelAttribute final LoginForm form) {
 		final CmsEmployee requestBean = new CmsEmployee();
 		requestBean.setLoginId(form.getLoginId());
@@ -49,18 +47,18 @@ public class LoginController {
 		modelAndView.addObject("userForm", form);
 		return modelAndView;
 	}
-
-	/**
-	 * ユーザー情報検索画面を表示
-	 *
-	 * @param model Model
-	 * @return ユーザー情報一覧画面
-	 */
-	@GetMapping(value = "/login")
-	public ModelAndView init() {
-		final ModelAndView modelAndView = new ModelAndView("login");
-		modelAndView.addObject("token", "authorized");
-		modelAndView.addObject("userForm", new CmsEmployeeForm());
-		return modelAndView;
-	}
+//
+//	/**
+//	 * ユーザー情報検索画面を表示
+//	 *
+//	 * @param model Model
+//	 * @return ユーザー情報一覧画面
+//	 */
+//	@GetMapping(value = "/login")
+//	public ModelAndView init() {
+//		final ModelAndView modelAndView = new ModelAndView("login");
+//		modelAndView.addObject("token", "authorized");
+//		modelAndView.addObject("userForm", new CmsEmployeeForm());
+//		return modelAndView;
+//	}
 }

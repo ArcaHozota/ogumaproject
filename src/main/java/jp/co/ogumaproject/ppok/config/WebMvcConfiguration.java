@@ -40,7 +40,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 	 */
 	@Override
 	public void addViewControllers(final ViewControllerRegistry registry) {
-		registry.addViewController("/oguma/tsujo/login").setViewName("login");
+		registry.addViewController("/oguma/to/login").setViewName("login");
 		registry.addViewController("/oguma/to/mainmenu").setViewName("mainmenu");
 	}
 
