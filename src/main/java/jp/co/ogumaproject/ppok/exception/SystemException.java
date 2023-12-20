@@ -4,6 +4,7 @@ package jp.co.ogumaproject.ppok.exception;
  * システムエラー
  *
  * @author Administrator
+ * @since 1.03
  */
 public class SystemException extends RuntimeException {
 
