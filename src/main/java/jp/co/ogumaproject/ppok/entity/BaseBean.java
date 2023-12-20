@@ -1,6 +1,6 @@
 package jp.co.ogumaproject.ppok.entity;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -16,12 +16,12 @@ public class BaseBean {
 	/**
 	 * 登録される時間
 	 */
-	private Timestamp registrationTime;
+	private LocalDateTime registeredTime;
 
 	/**
 	 * 更新時間
 	 */
-	private Timestamp updatedTime;
+	private LocalDateTime updatedTime;
 
 	/**
 	 * 論理削除フラグ

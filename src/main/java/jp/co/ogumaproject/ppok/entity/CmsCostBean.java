@@ -33,7 +33,7 @@ public class CmsCostBean extends BaseBean {
 	 */
 	private String costType;
 
-	private int costAmount;
+	private Integer costAmount;
 
 	private String hasTax;
 
