@@ -110,7 +110,7 @@ public class WebSecurityConfiguration {
 								.logout(logout -> logout.logoutUrl(CrowdProjectURLConstants.URL_LOG_OUT.getPattern())
 										.logoutSuccessUrl(CrowdProjectURLConstants.URL_TO_LOGIN.getPattern()));
 					} catch (final Exception e) {
-						throw new CrowdProjectException(CrowdProjectConstants.MESSAGE_STRING_FATAL_ERROR);
+						throw new OgumaProjectException(CrowdProjectConstants.MESSAGE_STRING_FATAL_ERROR);
 					}
 				}).rememberMe().key(UUID.randomUUID().toString())
 				.tokenValiditySeconds(CrowdProjectConstants.DEFAULT_TOKEN_EXPIRED);
