@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
-import jp.co.ogumaproject.ppok.commons.OgumaConstants;
+import jp.co.ogumaproject.ppok.commons.OgumaProjectConstants;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -19,6 +19,6 @@ import lombok.extern.log4j.Log4j2;
 public class OgumaProjectApplication {
 	public static void main(final String[] args) {
 		SpringApplication.run(OgumaProjectApplication.class, args);
-		log.info(OgumaConstants.MESSAGE_SPRING_APPLICATION);
+		log.info(OgumaProjectConstants.MESSAGE_SPRING_APPLICATION);
 	}
 }

@@ -9,7 +9,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
-import jp.co.ogumaproject.ppok.commons.OgumaConstants;
+import jp.co.ogumaproject.ppok.commons.OgumaProjectConstants;
+import jp.co.ogumaproject.ppok.commons.OgumaProjectURLConstants;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -29,8 +30,9 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 	 */
 	@Override
 	protected void addResourceHandlers(final ResourceHandlerRegistry registry) {
-		log.info(OgumaConstants.MESSAGE_SPRING_MAPPER);
-		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		log.info(OgumaProjectConstants.MESSAGE_SPRING_MAPPER);
+		registry.addResourceHandler(OgumaProjectURLConstants.URL_STATIC_RESOURCE.getPattern())
+				.addResourceLocations("classpath:/static/");
 	}
 
 	/**
@@ -40,8 +42,20 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 	 */
 	@Override
 	public void addViewControllers(final ViewControllerRegistry registry) {
-		registry.addViewController("/oguma/to/login").setViewName("login");
-		registry.addViewController("/oguma/to/mainmenu").setViewName("mainmenu");
+		registry.addViewController(OgumaProjectURLConstants.URL_TO_SIGN_UP.getPattern()).setViewName("admin-toroku");
+		registry.addViewController(OgumaProjectURLConstants.URL_TO_LOGIN.getPattern()).setViewName("admin-login");
+		registry.addViewController(OgumaProjectURLConstants.URL_FORGET_PASSWORD.getPattern())
+				.setViewName("admin-forgot");
+		registry.addViewController(OgumaProjectURLConstants.URL_TO_MAINMENU.getPattern()).setViewName("mainmenu");
+		registry.addViewController(OgumaProjectURLConstants.URL_MENU_INITIAL.getPattern()).setViewName("menukanri");
+		registry.addViewController(OgumaProjectURLConstants.URL_EMPLOYEE_TO_PAGES.getPattern())
+				.setViewName("admin-pages");
+		registry.addViewController(OgumaProjectURLConstants.URL_ROLE_TO_PAGES.getPattern()).setViewName("role-pages");
+		registry.addViewController(OgumaProjectURLConstants.URL_CATEGORY_INITIAL.getPattern())
+				.setViewName("categorykanri");
+		registry.addViewController(OgumaProjectURLConstants.URL_TO_DISTRICT_PAGES.getPattern())
+				.setViewName("district-pages");
+		registry.addViewController(OgumaProjectURLConstants.URL_TO_CITY_PAGES.getPattern()).setViewName("city-pages");
 	}
 
 	/**
@@ -51,7 +65,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 	 */
 	@Override
 	protected void extendMessageConverters(final List<HttpMessageConverter<?>> converters) {
-		log.info(OgumaConstants.MESSAGE_SPRING_MVCCONVERTOR);
+		log.info(OgumaProjectConstants.MESSAGE_SPRING_MVCCONVERTOR);
 		// メッセージコンバータオブジェクトを作成する。
 		final MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
 		// オブジェクトコンバータを設定し、Jacksonを使用してJavaオブジェクトをJSONに変換する。

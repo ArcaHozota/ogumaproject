@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.sony.ppog.mapper.EmployeeMapper">
+	<resultMap id="BasicResultMap"
+		type="jp.co.sony.ppog.entity.Employee" autoMapping="true">
+		<id property="id" jdbcType="NUMERIC" column="ID" />
+		<result property="loginAccount" jdbcType="NVARCHAR"
+			column="LOGIN_ACCT"></result>
+	</resultMap>
+	<insert id="insertById"
+		parameterType="jp.co.sony.ppog.entity.Employee">
+		INSERT 
+		INTO PPOG_EMPLOYEE PE( 
+		    PE.ID
+		    , PE.LOGIN_ACCT
+		    , PE.PASSWORD
+		    , PE.USERNAME
+		    , PE.EMAIL
+		    , PE.CREATED_TIME
+		    , PE.DATE_OF_BIRTH
+		    , PE.DEL_FLG
+		) 
+		VALUES ( 
+		    #{id,jdbcType=NUMERIC}
+		    , #{loginAccount,jdbcType=NVARCHAR}
+		    , #{password,jdbcType=NVARCHAR}
+		    , #{username,jdbcType=NVARCHAR}
+		    , #{email,jdbcType=NVARCHAR}
+		    , #{createdTime,jdbcType=TIMESTAMP}
+		    , #{dateOfBirth,jdbcType=TIMESTAMP}
+		    , #{delFlg,jdbcType=NVARCHAR}
+		)
+	</insert>
+	<update id="removeById" 
+		parameterType="jp.co.sony.ppog.entity.Employee">
+		UPDATE PPOG_EMPLOYEE PE 
+		SET
+		    PE.DEL_FLG = #{delFlg,jdbcType=NVARCHAR}
+		WHERE
+		    PE.ID = #{id,jdbcType=NUMERIC}
+	</update>
+	<update id="updateById"
+		parameterType="jp.co.sony.ppog.entity.Employee">
+		UPDATE PPOG_EMPLOYEE PE 
+		<set>
+			<if test="loginAccount != null">
+				PE.LOGIN_ACCT = #{loginAccount,jdbcType=NVARCHAR},
+			</if>
+			<if test="password != null">
+				PE.PASSWORD = #{password,jdbcType=NVARCHAR},
+			</if>
+			<if test="username != null">
+				PE.USERNAME = #{username,jdbcType=NVARCHAR},
+			</if>
+			<if test="email != null">
+				PE.EMAIL = #{email,jdbcType=NVARCHAR},
+			</if>
+			<if test="dateOfBirth != null">
+				PE.DATE_OF_BIRTH = #{dateOfBirth,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		WHERE
+		    PE.DEL_FLG = #{delFlg,jdbcType=NVARCHAR}
+		    AND PE.ID = #{id,jdbcType=NUMERIC}
+	</update>
+	<select id="selectById" resultMap="BasicResultMap">
+		SELECT
+		    PEV.* 
+		FROM
+		    PPOG_EMPLOYEE_VIEW PEV 
+		WHERE
+		    PEV.ID = #{id,jdbcType=NUMERIC}
+	</select>
+	<select id="selectByLoginAcct" resultMap="BasicResultMap">
+		SELECT
+		    PEV.* 
+		FROM
+		    PPOG_EMPLOYEE_VIEW PEV 
+		WHERE
+		    PEV.LOGIN_ACCT = #{loginAccout,jdbcType=NVARCHAR}
+		    OR PEV.EMAIL = #{loginAccout,jdbcType=NVARCHAR}
+	</select>
+	<select id="paginationByKeyword" resultMap="BasicResultMap">
+		SELECT
+		    PEV.* 
+		FROM
+		    PPOG_EMPLOYEE_VIEW PEV 
+		WHERE
+		    PEV.USERNAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OR PEV.LOGIN_ACCT LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OR PEV.EMAIL LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OFFSET #{offset,jdbcType=INTEGER} ROWS FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
+	</select>
+	<select id="selectByAccountAndEmail" resultMap="BasicResultMap">
+		SELECT
+		    PEV.* 
+		FROM
+		    PPOG_EMPLOYEE_VIEW PEV 
+		WHERE
+		    PEV.LOGIN_ACCT = #{loginAccount,jdbcType=NVARCHAR} 
+		    AND PEV.EMAIL = #{email,jdbcType=NVARCHAR} 
+		    AND PEV.DATE_OF_BIRTH = #{dateOfBirth,jdbcType=TIMESTAMP}
+	</select>
+	<select id="countByKeyword" resultType="java.lang.Long">
+		SELECT
+		    COUNT(1) 
+		FROM
+		    PPOG_EMPLOYEE_VIEW PEV 
+		WHERE
+		    PEV.USERNAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OR PEV.LOGIN_ACCT LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OR PEV.EMAIL LIKE #{keyword,jdbcType=NVARCHAR}
+	</select>
+	<select id="checkDuplicated"
+		parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT
+		    COUNT(1) 
+		FROM
+		    PPOG_EMPLOYEE_VIEW PEV 
+		WHERE
+		    PEV.LOGIN_ACCT = #{loginAccount,jdbcType=NVARCHAR}
+	</select>
+</mapper>

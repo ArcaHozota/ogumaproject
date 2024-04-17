@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.sony.ppog.mapper.CityMapper">
+	<resultMap id="BasicResultMap"
+		type="jp.co.sony.ppog.entity.City" autoMapping="true">
+		<id property="id" jdbcType="NUMERIC" column="ID" />
+		<association property="district" javaType="jp.co.sony.ppog.entity.District">
+			<id property="id" jdbcType="NUMERIC" column="ID" />
+			<result property="name" jdbcType="NVARCHAR" column="DISTRICT_NAME" />
+		</association>
+	</resultMap>
+	<insert id="insertById"
+		parameterType="jp.co.sony.ppog.entity.City">
+		INSERT 
+		INTO PPOG_CITIES PC( 
+		    PC.ID
+		    , PC.NAME
+		    , PC.PRONUNCIATION
+		    , PC.DISTRICT_ID
+		    , PC.POPULATION
+		    , PC.CITY_FLAG
+		    , PC.DEL_FLG
+		) 
+		VALUES ( 
+		    #{id,jdbcType=NUMERIC}
+		    , #{name,jdbcType=NVARCHAR}
+		    , #{pronunciation,jdbcType=NVARCHAR}
+		    , #{districtId,jdbcType=NUMERIC}
+		    , #{population,jdbcType=NUMERIC}
+		    , #{cityFlag,jdbcType=NVARCHAR}
+		    , #{delFlg,jdbcType=NVARCHAR}
+		)
+	</insert>
+	<update id="updateById"
+		parameterType="jp.co.sony.ppog.entity.City">
+		UPDATE PPOG_CITIES PC 
+		<set>
+			<if test="name != null">
+				PC.NAME = #{name,jdbcType=NVARCHAR},
+			</if>
+			<if test="pronunciation != null">
+				PC.PRONUNCIATION = #{pronunciation,jdbcType=NVARCHAR},
+			</if>
+			<if test="districtId != null">
+				PC.DISTRICT_ID = #{districtId,jdbcType=NUMERIC},
+			</if>
+			<if test="population != null">
+				PC.POPULATION = #{population,jdbcType=NUMERIC},
+			</if>
+			<if test="cityFlag != null">
+				PC.CITY_FLAG = #{cityFlag,jdbcType=NVARCHAR},
+			</if>
+		</set>
+		WHERE
+		    PC.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND PC.ID = #{id,jdbcType=NUMERIC}
+	</update>
+	<update id="removeById"
+		parameterType="jp.co.sony.ppog.entity.City">
+		UPDATE PPOG_CITIES PC 
+		SET
+		    PC.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		WHERE
+		    PC.ID = #{id,jdbcType=NUMERIC}
+	</update>
+	<select id="selectById" resultMap="BasicResultMap">
+		SELECT
+		    PCV.* 
+		FROM
+		    PPOG_CITIES_VIEW PCV 
+		WHERE
+		    PCV.ID LIKE #{id,jdbcType=NUMERIC}
+	</select>
+	<select id="paginationByKeyword" resultMap="BasicResultMap">
+		SELECT
+		    PCV.*
+		    , PDV.NAME AS DISTRICT_NAME 
+		FROM
+		    PPOG_CITIES_VIEW PCV 
+		    INNER JOIN PPOG_DISTRICTS_VIEW PDV 
+		        ON PDV.ID = PCV.DISTRICT_ID 
+		WHERE
+		    PCV.PRONUNCIATION LIKE #{keyword,jdbcType=NUMERIC} 
+		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OR PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OFFSET #{offset,jdbcType=INTEGER} ROWS FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
+	</select>
+	<select id="countByKeyword" resultType="java.lang.Long">
+		SELECT
+		    COUNT(1) 
+		FROM
+		    PPOG_CITIES_VIEW PCV 
+		    INNER JOIN PPOG_DISTRICTS_VIEW PDV 
+		        ON PDV.ID = PCV.DISTRICT_ID 
+		WHERE
+		    PCV.ID LIKE #{keyword,jdbcType=NUMERIC} 
+		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OR PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
+	</select>
+	<select id="countPopulationById" resultType="java.lang.Long">
+		SELECT
+		    SUM(PCV.POPULATION) 
+		FROM
+		    PPOG_CITIES_VIEW PCV 
+		WHERE
+		    PCV.DISTRICT_ID = #{districtId,jdbcType=NUMERIC}
+	</select>
+	<select id="checkDuplicated"
+		parameterType="jp.co.sony.ppog.entity.City" resultType="java.lang.Integer">
+		SELECT
+		    COUNT(1) 
+		FROM
+		    PPOG_CITIES_VIEW PCV 
+		WHERE
+		    PCV.NAME = #{name,jdbcType=NVARCHAR} 
+		    AND PCV.DISTRICT_ID = #{districtId,jdbcType=NUMERIC}
+	</select>
+</mapper>
