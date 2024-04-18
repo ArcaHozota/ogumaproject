@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  * パスワードエンコーダ
  *
  * @author ArkamaHozota
- * @since 1.90
+ * @since 1.00beta
  */
 @NoArgsConstructor
 public final class OgumaProjectPasswordEncoder implements PasswordEncoder {

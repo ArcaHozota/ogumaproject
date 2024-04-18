@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
  * 地域コントローラ
  *
  * @author ArkamaHozota
- * @since 2.25
+ * @since 1.00beta
  */
 @RestController
 @RequestMapping("/pgcrowd/district")

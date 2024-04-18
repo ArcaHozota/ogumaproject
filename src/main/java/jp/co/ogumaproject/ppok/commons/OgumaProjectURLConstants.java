@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  * プロジェクトURLコンスタント
  *
  * @author ArkamaHozota
- * @since 6.51
+ * @since 1.00beta
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OgumaProjectURLConstants {

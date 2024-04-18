@@ -9,7 +9,7 @@ import lombok.Setter;
  * リスポンスエンティティ
  *
  * @author ArkamaHozota
- * @since 1.50
+ * @since 1.00beta
  */
 @Getter
 @Setter

@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
  * 役割コントローラ
  *
  * @author ArkamaHozota
- * @since 1.16
+ * @since 1.00beta
  */
 @RestController
 @RequestMapping("/pgcrowd/role")

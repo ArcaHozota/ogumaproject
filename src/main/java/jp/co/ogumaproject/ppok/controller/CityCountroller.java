@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
  * 都市コントローラ
  *
  * @author ArkamaHozota
- * @since 2.33
+ * @since 1.00beta
  */
 @RestController
 @RequestMapping("/pgcrowd/city")
