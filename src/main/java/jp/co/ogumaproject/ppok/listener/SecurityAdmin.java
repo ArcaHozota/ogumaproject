@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import jp.co.ogumaproject.ppok.entity.Employee;
+import jp.co.ogumaproject.ppok.utils.OgumaProjectUtils;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -24,7 +25,7 @@ public final class SecurityAdmin extends User {
 	SecurityAdmin(final Employee admin, final Collection<GrantedAuthority> authorities) {
 		super(admin.getLoginAccount(), admin.getPassword(), true, true, true, true, authorities);
 		this.originalAdmin = admin;
-		this.originalAdmin.setPassword(StringUtils.EMPTY_STRING);
+		this.originalAdmin.setPassword(OgumaProjectUtils.EMPTY_STRING);
 	}
 
 	public Employee getOriginalAdmin() {

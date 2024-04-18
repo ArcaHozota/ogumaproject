@@ -14,6 +14,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.co.ogumaproject.ppok.commons.OgumaProjectConstants;
+import jp.co.ogumaproject.ppok.entity.Employee;
+import jp.co.ogumaproject.ppok.entity.EmployeeRole;
+import jp.co.ogumaproject.ppok.entity.Role;
+import jp.co.ogumaproject.ppok.entity.RoleAuth;
+import jp.co.ogumaproject.ppok.mapper.AuthorityMapper;
+import jp.co.ogumaproject.ppok.mapper.EmployeeMapper;
+import jp.co.ogumaproject.ppok.mapper.EmployeeRoleMapper;
+import jp.co.ogumaproject.ppok.mapper.RoleMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import oracle.jdbc.driver.OracleSQLException;
@@ -27,7 +36,7 @@ import oracle.jdbc.driver.OracleSQLException;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Transactional(rollbackFor = OracleSQLException.class)
-public class CrowdProjectUserDetailsService implements UserDetailsService {
+public class OgumaProjectUserDetailsService implements UserDetailsService {
 
 	/**
 	 * 権限マッパー
@@ -53,16 +62,16 @@ public class CrowdProjectUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 		final Employee employee = this.employeeMapper.selectByLoginAcct(username);
 		if (employee == null) {
-			throw new DisabledException(CrowdProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR1);
+			throw new DisabledException(OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR1);
 		}
 		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employee.getId());
 		if (employeeRole == null) {
-			throw new InsufficientAuthenticationException(CrowdProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR2);
+			throw new InsufficientAuthenticationException(OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR2);
 		}
 		final Role role = this.roleMapper.selectByIdWithAuth(employeeRole.getRoleId());
 		if (role.getRoleAuths().isEmpty()) {
 			throw new AuthenticationCredentialsNotFoundException(
-					CrowdProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR3);
+					OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR3);
 		}
 		final List<Long> authIds = role.getRoleAuths().stream().map(RoleAuth::getAuthId).collect(Collectors.toList());
 		final List<GrantedAuthority> authorities = this.authorityMapper.selectByIds(authIds).stream()

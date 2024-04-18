@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import jp.co.sony.ppog.commons.CrowdProjectConstants;
-import jp.co.sony.ppog.dto.EmployeeDto;
-import jp.co.sony.ppog.dto.RoleDto;
-import jp.co.sony.ppog.entity.Role;
-import jp.co.sony.ppog.service.IEmployeeService;
-import jp.co.sony.ppog.service.IRoleService;
-import jp.co.sony.ppog.utils.Pagination;
-import jp.co.sony.ppog.utils.ResultDto;
-import jp.co.sony.ppog.utils.StringUtils;
+import jp.co.ogumaproject.ppok.commons.OgumaProjectConstants;
+import jp.co.ogumaproject.ppok.dto.EmployeeDto;
+import jp.co.ogumaproject.ppok.dto.RoleDto;
+import jp.co.ogumaproject.ppok.entity.Role;
+import jp.co.ogumaproject.ppok.service.IEmployeeService;
+import jp.co.ogumaproject.ppok.service.IRoleService;
+import jp.co.ogumaproject.ppok.utils.OgumaProjectUtils;
+import jp.co.ogumaproject.ppok.utils.Pagination;
+import jp.co.ogumaproject.ppok.utils.ResultDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -94,7 +94,7 @@ public final class EmployeeController {
 	@ResponseBody
 	public ResultDto<Pagination<EmployeeDto>> pagination(
 			@RequestParam(name = "pageNum", defaultValue = "1") final Integer pageNum,
-			@RequestParam(name = "keyword", defaultValue = StringUtils.EMPTY_STRING) final String keyword,
+			@RequestParam(name = "keyword", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String keyword,
 			@RequestParam(name = "userId", required = false) final Long userId,
 			@RequestParam(name = "authChkFlag", defaultValue = "false") final String authChkFlag) {
 		final Pagination<EmployeeDto> employees = this.iEmployeeService.getEmployeesByKeyword(pageNum, keyword, userId,
@@ -120,11 +120,11 @@ public final class EmployeeController {
 		final Boolean resetPassword = this.iEmployeeService.resetPassword(employeeDto);
 		if (Boolean.FALSE.equals(resetPassword)) {
 			final ModelAndView modelAndView = new ModelAndView("admin-forgot");
-			modelAndView.addObject("resetMsg", CrowdProjectConstants.MESSAGE_STRING_PROHIBITED);
+			modelAndView.addObject("resetMsg", OgumaProjectConstants.MESSAGE_STRING_PROHIBITED);
 			return modelAndView;
 		}
 		final ModelAndView modelAndView = new ModelAndView("admin-login");
-		modelAndView.addObject("resetMsg", CrowdProjectConstants.MESSAGE_RESET_PASSWORD);
+		modelAndView.addObject("resetMsg", OgumaProjectConstants.MESSAGE_RESET_PASSWORD);
 		modelAndView.addObject("registeredEmail", email);
 		return modelAndView;
 	}
@@ -165,7 +165,7 @@ public final class EmployeeController {
 	public ModelAndView toAddition() {
 		final List<RoleDto> employeeRolesById = this.iRoleService.getEmployeeRolesByEmployeeId(null);
 		final ModelAndView modelAndView = new ModelAndView("admin-addinfo");
-		modelAndView.addObject(CrowdProjectConstants.ATTRNAME_EMPLOYEEROLES, employeeRolesById);
+		modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EMPLOYEEROLES, employeeRolesById);
 		return modelAndView;
 	}
 
@@ -181,15 +181,15 @@ public final class EmployeeController {
 		final EmployeeDto employee = this.iEmployeeService.getEmployeeById(editId);
 		if (Boolean.FALSE.equals(Boolean.valueOf(authChkFlag))) {
 			final ModelAndView modelAndView = new ModelAndView("admin-editinfo2");
-			modelAndView.addObject(CrowdProjectConstants.ATTRNAME_EDITED_INFO, employee);
+			modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EDITED_INFO, employee);
 			final Role role = this.iRoleService.getRoleById(employee.getRoleId());
-			modelAndView.addObject(CrowdProjectConstants.ATTRNAME_EMPLOYEEROLES, role);
+			modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EMPLOYEEROLES, role);
 			return modelAndView;
 		}
 		final List<RoleDto> employeeRolesById = this.iRoleService.getEmployeeRolesByEmployeeId(editId);
 		final ModelAndView modelAndView = new ModelAndView("admin-editinfo");
-		modelAndView.addObject(CrowdProjectConstants.ATTRNAME_EDITED_INFO, employee);
-		modelAndView.addObject(CrowdProjectConstants.ATTRNAME_EMPLOYEEROLES, employeeRolesById);
+		modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EDITED_INFO, employee);
+		modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EMPLOYEEROLES, employeeRolesById);
 		return modelAndView;
 	}
 
@@ -211,9 +211,9 @@ public final class EmployeeController {
 		final Boolean toroku = this.iEmployeeService.register(employeeDto);
 		final ModelAndView mAndView = new ModelAndView("admin-login");
 		if (Boolean.FALSE.equals(toroku)) {
-			mAndView.addObject("torokuMsg", CrowdProjectConstants.MESSAGE_TOROKU_FAILURE);
+			mAndView.addObject("torokuMsg", OgumaProjectConstants.MESSAGE_TOROKU_FAILURE);
 		} else {
-			mAndView.addObject("torokuMsg", CrowdProjectConstants.MESSAGE_TOROKU_SUCCESS);
+			mAndView.addObject("torokuMsg", OgumaProjectConstants.MESSAGE_TOROKU_SUCCESS);
 		}
 		mAndView.addObject("registeredEmail", email);
 		return mAndView;

@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import jp.co.sony.ppog.dto.RoleDto;
-import jp.co.sony.ppog.entity.Authority;
-import jp.co.sony.ppog.service.IRoleService;
-import jp.co.sony.ppog.utils.Pagination;
-import jp.co.sony.ppog.utils.ResultDto;
-import jp.co.sony.ppog.utils.StringUtils;
+import jp.co.ogumaproject.ppok.dto.RoleDto;
+import jp.co.ogumaproject.ppok.entity.Authority;
+import jp.co.ogumaproject.ppok.service.IRoleService;
+import jp.co.ogumaproject.ppok.utils.OgumaProjectUtils;
+import jp.co.ogumaproject.ppok.utils.Pagination;
+import jp.co.ogumaproject.ppok.utils.ResultDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -67,7 +67,7 @@ public final class RoleController {
 	 */
 	@GetMapping("/check")
 	public ResultDto<String> checkDuplicated(
-			@RequestParam(name = "name", defaultValue = StringUtils.EMPTY_STRING) final String name) {
+			@RequestParam(name = "name", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String name) {
 		return this.iRoleService.checkDuplicated(name);
 	}
 
@@ -124,7 +124,7 @@ public final class RoleController {
 	@GetMapping("/pagination")
 	public ResultDto<Pagination<RoleDto>> pagination(
 			@RequestParam(name = "pageNum", defaultValue = "1") final Integer pageNum,
-			@RequestParam(name = "keyword", defaultValue = StringUtils.EMPTY_STRING) final String keyword) {
+			@RequestParam(name = "keyword", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String keyword) {
 		final Pagination<RoleDto> roles = this.iRoleService.getRolesByKeyword(pageNum, keyword);
 		return ResultDto.successWithData(roles);
 	}

@@ -12,7 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jp.co.ogumaproject.ppok.dto.CityDto;
+import jp.co.ogumaproject.ppok.dto.DistrictDto;
+import jp.co.ogumaproject.ppok.service.ICityService;
+import jp.co.ogumaproject.ppok.service.IDistrictService;
+import jp.co.ogumaproject.ppok.utils.OgumaProjectUtils;
 import jp.co.ogumaproject.ppok.utils.Pagination;
+import jp.co.ogumaproject.ppok.utils.ResultDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -45,7 +51,7 @@ public final class CityCountroller {
 	 */
 	@GetMapping("/check")
 	public ResultDto<String> checkDuplicated(
-			@RequestParam(value = "name", defaultValue = StringUtils.EMPTY_STRING) final String name,
+			@RequestParam(value = "name", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String name,
 			@RequestParam("districtId") final Long districtId) {
 		return this.iCityService.checkDuplicated(name, districtId);
 	}
@@ -93,7 +99,7 @@ public final class CityCountroller {
 	@GetMapping("/pagination")
 	public ResultDto<Pagination<CityDto>> pagination(
 			@RequestParam(name = "pageNum", defaultValue = "1") final Integer pageNum,
-			@RequestParam(name = "keyword", defaultValue = StringUtils.EMPTY_STRING) final String keyword) {
+			@RequestParam(name = "keyword", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String keyword) {
 		final Pagination<CityDto> cities = this.iCityService.getCitiesByKeyword(pageNum, keyword);
 		return ResultDto.successWithData(cities);
 	}
