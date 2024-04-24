@@ -1,4 +1,5 @@
 server:
+  port: 8687
   jetty:
     threads:
       acceptors: 2 # 接收连接的线程数
@@ -6,11 +7,6 @@ server:
       max: 20 # 最大的线程数
       min: 4 # 最小的线程数
     max-http-form-post-size: 1000000B # 最大的 HTTP POST 大小，0 表示无限制
-    accesslog: # 访问日志的相关配置
-      enabled: true # 是否启用访问日志
-      filename: jetty-access.log # 访问日志的文件名
-      file-date-format: yyyy_MM_dd # 访问日志的日期格式
-  port: 8687
 spring:
   application:
     name: ogumaproject

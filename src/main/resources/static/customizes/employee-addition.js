@@ -72,7 +72,7 @@ $("#emailEdit").change(function() {
 });
 $("#roleEdit").change(function() {
 	let ajaxResult = $.ajax({
-		url: '/pgcrowd/employee/infoDelete/0L',
+		url: '/pgcrowd/employee/checkDelete',
 		type: 'GET',
 		async: false
 	});
