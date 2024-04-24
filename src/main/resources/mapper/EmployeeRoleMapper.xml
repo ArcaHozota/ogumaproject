@@ -6,7 +6,7 @@
 		<id property="employeeId" jdbcType="NUMERIC" column="EMPLOYEE_ID" />
 	</resultMap>
 	<insert id="insertById"
-		parameterType="jp.co.sony.ppog.entity.EmployeeRole">
+		parameterType="jp.co.ogumaproject.ppok.entity.EmployeeRole">
 		INSERT 
 		INTO PPOG_EMPLOYEE_ROLE PPER(PPER.EMPLOYEE_ID, PPER.ROLE_ID) 
 		VALUES ( 
@@ -15,7 +15,7 @@
 		)
 	</insert>
 	<update id="updateById"
-		parameterType="jp.co.sony.ppog.entity.EmployeeRole">
+		parameterType="jp.co.ogumaproject.ppok.entity.EmployeeRole">
 		UPDATE PPOG_EMPLOYEE_ROLE PPER 
 		SET
 		    PPER.ROLE_ID = #{roleId,jdbcType=NUMERIC} 

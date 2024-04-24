@@ -8,7 +8,7 @@
 			column="LOGIN_ACCT"></result>
 	</resultMap>
 	<insert id="insertById"
-		parameterType="jp.co.sony.ppog.entity.Employee">
+		parameterType="jp.co.ogumaproject.ppok.entity.Employee">
 		INSERT 
 		INTO PPOG_EMPLOYEE PE( 
 		    PE.ID
@@ -32,7 +32,7 @@
 		)
 	</insert>
 	<update id="removeById" 
-		parameterType="jp.co.sony.ppog.entity.Employee">
+		parameterType="jp.co.ogumaproject.ppok.entity.Employee">
 		UPDATE PPOG_EMPLOYEE PE 
 		SET
 		    PE.DEL_FLG = #{delFlg,jdbcType=NVARCHAR}
@@ -40,7 +40,7 @@
 		    PE.ID = #{id,jdbcType=NUMERIC}
 	</update>
 	<update id="updateById"
-		parameterType="jp.co.sony.ppog.entity.Employee">
+		parameterType="jp.co.ogumaproject.ppok.entity.Employee">
 		UPDATE PPOG_EMPLOYEE PE 
 		<set>
 			<if test="loginAccount != null">

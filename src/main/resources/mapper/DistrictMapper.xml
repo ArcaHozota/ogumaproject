@@ -6,7 +6,7 @@
 		<id property="id" jdbcType="NUMERIC" column="ID" />
 	</resultMap>
 	<update id="updateById"
-		parameterType="jp.co.sony.ppog.entity.District">
+		parameterType="jp.co.ogumaproject.ppok.entity.District">
 		UPDATE PPOG_DISTRICTS PD 
 		<set>
 			<if test="name != null">

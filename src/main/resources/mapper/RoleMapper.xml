@@ -6,12 +6,12 @@
 		<id property="id" jdbcType="NUMERIC" column="ID" />
 		<collection property="roleAuths" resultMap="authMap"/>
 	</resultMap>
-	<resultMap id="authMap" type="jp.co.sony.ppog.entity.RoleAuth">
+	<resultMap id="authMap" type="jp.co.ogumaproject.ppok.entity.RoleAuth">
 		<id property="roleId" jdbcType="NUMERIC" column="ROLE_ID" />
 		<id property="authId" jdbcType="NUMERIC" column="AUTH_ID" />
 	</resultMap>
 	<insert id="insertById"
-		parameterType="jp.co.sony.ppog.entity.Role">
+		parameterType="jp.co.ogumaproject.ppok.entity.Role">
 		INSERT 
 		INTO PPOG_ROLE PR(PR.ID, PR.NAME, PR.DEL_FLG) 
 		VALUES ( 
@@ -33,7 +33,7 @@
 		</foreach>
 	</insert>
 	<update id="removeById"
-		parameterType="jp.co.sony.ppog.entity.Role">
+		parameterType="jp.co.ogumaproject.ppok.entity.Role">
 		UPDATE PPOG_ROLE PR 
 		SET
 		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
@@ -41,7 +41,7 @@
 		    PR.ID = #{id,jdbcType=NUMERIC}
 	</update>
 	<update id="updateById"
-		parameterType="jp.co.sony.ppog.entity.Role">
+		parameterType="jp.co.ogumaproject.ppok.entity.Role">
 		UPDATE PPOG_ROLE PR 
 		SET
 		    PR.NAME = #{name,jdbcType=NUMERIC} 
