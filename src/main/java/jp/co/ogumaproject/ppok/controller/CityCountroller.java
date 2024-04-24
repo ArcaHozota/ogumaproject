@@ -83,7 +83,7 @@ public final class CityCountroller {
 	 * @param cityId 都市ID
 	 * @return ResultDto<String>
 	 */
-	@GetMapping("/districtlist")
+	@GetMapping("/getDistricts")
 	public ResultDto<List<DistrictDto>> getDistrictList(@RequestParam(value = "cityId") final String cityId) {
 		final List<DistrictDto> districtDtos = this.iDistrictService.getDistrictsByCityId(cityId);
 		return ResultDto.successWithData(districtDtos);
