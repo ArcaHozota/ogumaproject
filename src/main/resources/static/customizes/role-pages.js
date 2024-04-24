@@ -16,7 +16,6 @@ function toSelectedPg(pageNum, keyword) {
 			'keyword': keyword
 		},
 		type: 'GET',
-		dataType: 'json',
 		success: function(result) {
 			buildTableBody(result);
 			buildPageInfos(result);
@@ -67,7 +66,6 @@ $("#nameInput").on('change', function() {
 		url: '/pgcrowd/role/check',
 		data: 'name=' + this.value,
 		type: 'GET',
-		dataType: 'json',
 		success: function(result) {
 			if (result.status === 'SUCCESS') {
 				showValidationMsg(this, "success", "");
@@ -88,7 +86,7 @@ $("#roleInfoSaveBtn").on('click', function() {
 		let postData = JSON.stringify({
 			'name': $("#nameInput").val().trim()
 		});
-		pgcrowdAjaxModify('pgcrowd/role/infosave', 'POST', postData, normalPostSuccessFunction("#roleAddModal"));
+		pgcrowdAjaxModify('pgcrowd/role/infoSave', 'POST', postData, normalPostSuccessFunction("#roleAddModal"));
 	}
 });
 $("#tableBody").on('click', '.edit-btn', function() {
@@ -124,7 +122,7 @@ $("#roleInfoChangeBtn").on('click', function() {
 			'id': this.value,
 			'name': $("#nameEdit").val().trim()
 		});
-		pgcrowdAjaxModify('/pgcrowd/role/infoupd', 'PUT', putData, putSuccessFunction);
+		pgcrowdAjaxModify('/pgcrowd/role/infoUpdate', 'PUT', putData, putSuccessFunction);
 	}
 });
 $("#tableBody").on('click', '.delete-btn', function() {
@@ -148,7 +146,7 @@ $("#tableBody").on('click', '.delete-btn', function() {
 		confirmButtonColor: '#7F0020'
 	}).then((result) => {
 		if (result.isConfirmed) {
-			pgcrowdAjaxModify('/pgcrowd/role/delete/' + roleId, 'DELETE', null, normalDeleteSuccessFunction);
+			pgcrowdAjaxModify('/pgcrowd/role/infoDelete/' + roleId, 'DELETE', null, normalDeleteSuccessFunction);
 		} else {
 			$(this).close();
 		}
@@ -163,9 +161,8 @@ $("#tableBody").on('click', '.fuyo-btn', function() {
 		backdrop: 'static'
 	});
 	let ajaxReturn = $.ajax({
-		url: '/pgcrowd/role/authlists',
+		url: '/pgcrowd/role/getAuthlist',
 		type: 'GET',
-		dataType: 'json',
 		async: false
 	});
 	if (ajaxReturn.status !== 200) {
@@ -202,7 +199,6 @@ $("#tableBody").on('click', '.fuyo-btn', function() {
 		url: '/pgcrowd/role/getAssigned',
 		data: 'fuyoId=' + fuyoId,
 		type: 'GET',
-		dataType: 'json',
 		async: false
 	});
 	let authIdList = ajaxReturn.responseJSON.data;
@@ -226,7 +222,7 @@ $("#authChangeBtn").on('click', function() {
 		'authIdArray': authIdArray,
 		'roleId': [fuyoId]
 	});
-	pgcrowdAjaxModify('/pgcrowd/role/do/assignment', 'PUT', putData, authPutSuccessFunction);
+	pgcrowdAjaxModify('/pgcrowd/role/doAssignment', 'PUT', putData, authPutSuccessFunction);
 });
 function putSuccessFunction(result) {
 	if (result.status === 'SUCCESS') {

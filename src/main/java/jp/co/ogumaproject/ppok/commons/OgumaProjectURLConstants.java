@@ -19,51 +19,51 @@ public final class OgumaProjectURLConstants {
 			RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_TO_PAGES = new AntPathRequestMatcher(
-			"/pgcrowd/employee/to/pages", RequestMethod.GET.toString());
+			"/pgcrowd/employee/toPages", RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_PAGINATION = new AntPathRequestMatcher(
 			"/pgcrowd/employee/pagination", RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_INFOSAVE = new AntPathRequestMatcher(
-			"/pgcrowd/employee/infosave", RequestMethod.POST.toString());
+			"/pgcrowd/employee/infoSave", RequestMethod.POST.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_TO_ADDITION = new AntPathRequestMatcher(
-			"/pgcrowd/employee/to/addition", RequestMethod.GET.toString());
+			"/pgcrowd/employee/toAddition", RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_TO_EDITION = new AntPathRequestMatcher(
-			"/pgcrowd/employee/to/edition", RequestMethod.GET.toString());
+			"/pgcrowd/employee/toEdition", RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_INFOUPD = new AntPathRequestMatcher(
-			"/pgcrowd/employee/infoupd", RequestMethod.PUT.toString());
+			"/pgcrowd/employee/infoUpdate", RequestMethod.PUT.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_DELETE = new AntPathRequestMatcher(
-			"/pgcrowd/employee/delete/**", RequestMethod.DELETE.toString());
+			"/pgcrowd/employee/infoDelete/**", RequestMethod.DELETE.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_CHECK_DELETE = new AntPathRequestMatcher(
 			"/pgcrowd/employee/checkDelete", RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_ROLE_TO_PAGES = new AntPathRequestMatcher("/pgcrowd/role/to/pages",
+	public static final AntPathRequestMatcher URL_ROLE_TO_PAGES = new AntPathRequestMatcher("/pgcrowd/role/toPages",
 			RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_ROLE_PAGINATION = new AntPathRequestMatcher(
 			"/pgcrowd/role/pagination", RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_ROLE_AUTHLIST = new AntPathRequestMatcher("/pgcrowd/role/authlist",
+	public static final AntPathRequestMatcher URL_ROLE_AUTHLIST = new AntPathRequestMatcher("/pgcrowd/role/getAuthlist",
 			RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_ROLE_GET_ASSIGNED = new AntPathRequestMatcher(
 			"/pgcrowd/role/getAssigned", RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_ROLE_INFOSAVE = new AntPathRequestMatcher("/pgcrowd/role/infosave",
+	public static final AntPathRequestMatcher URL_ROLE_INFOSAVE = new AntPathRequestMatcher("/pgcrowd/role/infoSave",
 			RequestMethod.POST.toString());
 
-	public static final AntPathRequestMatcher URL_ROLE_INFOUPD = new AntPathRequestMatcher("/pgcrowd/role/infoupd",
+	public static final AntPathRequestMatcher URL_ROLE_INFOUPD = new AntPathRequestMatcher("/pgcrowd/role/infoUpdate",
 			RequestMethod.PUT.toString());
 
 	public static final AntPathRequestMatcher URL_ROLE_DO_ASSIGNMENT = new AntPathRequestMatcher(
-			"/pgcrowd/role/do/assignment", RequestMethod.PUT.toString());
+			"/pgcrowd/role/doAssignment", RequestMethod.PUT.toString());
 
-	public static final AntPathRequestMatcher URL_ROLE_DELETE = new AntPathRequestMatcher("/pgcrowd/role/delete/**",
+	public static final AntPathRequestMatcher URL_ROLE_DELETE = new AntPathRequestMatcher("/pgcrowd/role/infoDelete/**",
 			RequestMethod.DELETE.toString());
 
 	public static final AntPathRequestMatcher URL_ROLE_CHECK_DELETE = new AntPathRequestMatcher(
@@ -76,7 +76,7 @@ public final class OgumaProjectURLConstants {
 			"/pgcrowd/district/pagination", RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_DISTRICT_INFOUPD = new AntPathRequestMatcher(
-			"/pgcrowd/district/infoupd", RequestMethod.PUT.toString());
+			"/pgcrowd/district/infoUpdate", RequestMethod.PUT.toString());
 
 	public static final AntPathRequestMatcher URL_DISTRICT_CHECK_EDITION = new AntPathRequestMatcher(
 			"/pgcrowd/district/checkEdition", RequestMethod.GET.toString());
@@ -87,16 +87,16 @@ public final class OgumaProjectURLConstants {
 	public static final AntPathRequestMatcher URL_CITY_DISTRICT_LIST = new AntPathRequestMatcher(
 			"/pgcrowd/city/districtlist", RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_CITY_INFOSAVE = new AntPathRequestMatcher("/pgcrowd/city/infosave",
+	public static final AntPathRequestMatcher URL_CITY_INFOSAVE = new AntPathRequestMatcher("/pgcrowd/city/infoSave",
 			RequestMethod.POST.toString());
 
-	public static final AntPathRequestMatcher URL_CITY_INFOUPD = new AntPathRequestMatcher("/pgcrowd/city/infoupd",
+	public static final AntPathRequestMatcher URL_CITY_INFOUPD = new AntPathRequestMatcher("/pgcrowd/city/infoUpdate",
 			RequestMethod.PUT.toString());
 
 	public static final AntPathRequestMatcher URL_CITY_CHECK_EDITION = new AntPathRequestMatcher(
 			"/pgcrowd/city/checkEdition", RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_TO_SIGN_UP = new AntPathRequestMatcher("/pgcrowd/employee/to/signup",
+	public static final AntPathRequestMatcher URL_TO_SIGN_UP = new AntPathRequestMatcher("/pgcrowd/employee/toSignUp",
 			RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_DO_SIGN_UP = new AntPathRequestMatcher("/pgcrowd/employee/toroku",
@@ -111,7 +111,7 @@ public final class OgumaProjectURLConstants {
 	public static final AntPathRequestMatcher URL_TO_LOGIN = new AntPathRequestMatcher("/pgcrowd/employee/login",
 			RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_DO_LOGIN = new AntPathRequestMatcher("/pgcrowd/employee/do/login",
+	public static final AntPathRequestMatcher URL_DO_LOGIN = new AntPathRequestMatcher("/pgcrowd/employee/doLogin",
 			RequestMethod.POST.toString());
 
 	public static final AntPathRequestMatcher URL_LOG_OUT = new AntPathRequestMatcher("/pgcrowd/employee/logout",
@@ -127,8 +127,8 @@ public final class OgumaProjectURLConstants {
 			"/pgcrowd/category/initial", RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_TO_DISTRICT_PAGES = new AntPathRequestMatcher(
-			"/pgcrowd/category/to/districtPages", RequestMethod.GET.toString());
+			"/pgcrowd/category/toDistrictPages", RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_TO_CITY_PAGES = new AntPathRequestMatcher(
-			"/pgcrowd/category/to/cityPages", RequestMethod.GET.toString());
+			"/pgcrowd/category/toCityPages", RequestMethod.GET.toString());
 }

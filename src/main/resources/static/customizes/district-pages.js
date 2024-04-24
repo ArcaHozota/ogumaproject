@@ -16,7 +16,6 @@ function toSelectedPg(pageNum, keyword) {
 			'keyword': keyword
 		},
 		type: 'GET',
-		dataType: 'json',
 		success: function(result) {
 			buildTableBody(result);
 			buildPageInfos(result);
@@ -85,7 +84,7 @@ $("#districtInfoChangeBtn").on('click', function() {
 			'name': $("#nameEdit").val().trim(),
 			'chiho': $("#chihoEdit").val().trim()
 		});
-		pgcrowdAjaxModify('/pgcrowd/district/infoupd', 'PUT', putData, putSuccessFunction);
+		pgcrowdAjaxModify('/pgcrowd/district/infoUpdate', 'PUT', putData, putSuccessFunction);
 	}
 });
 $("#tableBody").on('click', '.district-flg-td', function() {

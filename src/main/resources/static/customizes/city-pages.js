@@ -16,7 +16,6 @@ function toSelectedPg(pageNum, keyword) {
 			'keyword': keyword
 		},
 		type: 'GET',
-		dataType: 'json',
 		success: function(result) {
 			buildTableBody(result);
 			buildPageInfos(result);
@@ -98,7 +97,7 @@ $("#cityInfoSaveBtn").on('click', function() {
 			'population': Number($("#populationInput").val().trim().replace(/,/g, '')),
 			'cityFlag': $("#cityFlagInput").val().trim()
 		});
-		pgcrowdAjaxModify('/pgcrowd/city/infosave', 'POST', postData, normalPostSuccessFunction("#cityAddModal"));
+		pgcrowdAjaxModify('/pgcrowd/city/infoSave', 'POST', postData, normalPostSuccessFunction("#cityAddModal"));
 	}
 });
 $("#tableBody").on('click', '.edit-btn', function() {
@@ -156,7 +155,7 @@ $("#cityInfoChangeBtn").on('click', function() {
 			'districtId': $("#districtEdit").val(),
 			'population': Number($("#populationEdit").val().trim().replace(/,/g, ''))
 		});
-		pgcrowdAjaxModify('/pgcrowd/city/infoupd', 'PUT', putData, putSuccessFunction);
+		pgcrowdAjaxModify('/pgcrowd/city/infoUpdate', 'PUT', putData, putSuccessFunction);
 	}
 });
 $("#tableBody").on('click', '.delete-btn', function() {
@@ -180,7 +179,7 @@ $("#tableBody").on('click', '.delete-btn', function() {
 		confirmButtonColor: '#7F0020'
 	}).then((result) => {
 		if (result.isConfirmed) {
-			pgcrowdAjaxModify('/pgcrowd/city/delete/' + cityId, 'DELETE', null, normalDeleteSuccessFunction);
+			pgcrowdAjaxModify('/pgcrowd/city/infoDelete/' + cityId, 'DELETE', null, normalDeleteSuccessFunction);
 		} else {
 			$(this).close();
 		}
@@ -203,7 +202,6 @@ function checkCityName(cityName, district) {
 				'districtId': districtVal
 			},
 			type: 'GET',
-			dataType: 'json',
 			success: function(result) {
 				if (result.status === 'SUCCESS') {
 					showValidationMsg(cityName, "success", "√");
@@ -217,10 +215,9 @@ function checkCityName(cityName, district) {
 function getDistricts(element, cityId) {
 	$(element).empty();
 	$.ajax({
-		url: '/pgcrowd/city/districtlist',
+		url: '/pgcrowd/city/getDistricts',
 		data: 'cityId=' + cityId,
 		type: 'GET',
-		dataType: 'json',
 		success: function(result) {
 			$.each(result.data, (index, item) => {
 				let optionElement = $("<option></option>").attr('value', item.id)

@@ -76,7 +76,7 @@ public final class EmployeeController {
 	 * @param userId 社員ID
 	 * @return ResultDto<String>
 	 */
-	@DeleteMapping("/delete/{userId}")
+	@DeleteMapping("/infoDelete/{userId}")
 	@ResponseBody
 	public ResultDto<String> deleteInfo(@PathVariable("userId") final Long userId) {
 		this.iEmployeeService.remove(userId);
@@ -135,7 +135,7 @@ public final class EmployeeController {
 	 * @param editId 編集されるユーザID
 	 * @return ResultDto<String>
 	 */
-	@GetMapping("/inforestore")
+	@GetMapping("/infoRestore")
 	@ResponseBody
 	public ResultDto<EmployeeDto> restoreInfo(@RequestParam("editId") final Long editId) {
 		final EmployeeDto employee = this.iEmployeeService.getEmployeeById(editId);
@@ -148,7 +148,7 @@ public final class EmployeeController {
 	 * @param employeeDto 社員情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PostMapping("/infosave")
+	@PostMapping("/infoSave")
 	@ResponseBody
 	public ResultDto<String> saveInfo(@RequestBody final EmployeeDto employeeDto) {
 		this.iEmployeeService.save(employeeDto);
@@ -161,7 +161,7 @@ public final class EmployeeController {
 	 * @param userId ユーザID
 	 * @return ModelAndView
 	 */
-	@GetMapping("/to/addition")
+	@GetMapping("/toAddition")
 	public ModelAndView toAddition() {
 		final List<RoleDto> employeeRolesById = this.iRoleService.getEmployeeRolesByEmployeeId(null);
 		final ModelAndView modelAndView = new ModelAndView("admin-addinfo");
@@ -175,7 +175,7 @@ public final class EmployeeController {
 	 * @param id 社員ID
 	 * @return ModelAndView
 	 */
-	@GetMapping("/to/edition")
+	@GetMapping("/toEdition")
 	public ModelAndView toEdition(@RequestParam("editId") final Long editId,
 			@RequestParam(name = "authChkFlag", defaultValue = "false") final String authChkFlag) {
 		final EmployeeDto employee = this.iEmployeeService.getEmployeeById(editId);
@@ -225,7 +225,7 @@ public final class EmployeeController {
 	 * @param employeeDto 社員情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PutMapping("/infoupd")
+	@PutMapping("/infoUpdate")
 	@ResponseBody
 	public ResultDto<String> updateInfo(@RequestBody final EmployeeDto employeeDto) {
 		return this.iEmployeeService.update(employeeDto);

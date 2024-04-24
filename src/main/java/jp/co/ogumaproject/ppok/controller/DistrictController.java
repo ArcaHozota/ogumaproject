@@ -62,7 +62,7 @@ public final class DistrictController {
 	 * @param districtDto 地域情報転送クラス
 	 * @return ResultDto<String>
 	 */
-	@PutMapping("/infoupd")
+	@PutMapping("/infoUpdate")
 	public ResultDto<String> updateInfo(@RequestBody final DistrictDto districtDto) {
 		return this.iDistrictService.update(districtDto);
 	}

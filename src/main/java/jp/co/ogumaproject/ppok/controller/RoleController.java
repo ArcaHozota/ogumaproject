@@ -43,7 +43,7 @@ public final class RoleController {
 	 *
 	 * @return ResultDto<List<Authority>>
 	 */
-	@GetMapping("/authlists")
+	@GetMapping("/getAuthlist")
 	public ResultDto<List<Authority>> authlists() {
 		final List<Authority> list = this.iRoleService.getAuthlist();
 		return ResultDto.successWithData(list);
@@ -87,7 +87,7 @@ public final class RoleController {
 	 * @param roleId 役割ID
 	 * @return ResultDto<String>
 	 */
-	@DeleteMapping("/delete/{roleId}")
+	@DeleteMapping("/infoDelete/{roleId}")
 	public ResultDto<String> deleteInfo(@PathVariable("roleId") final Long roleId) {
 		return this.iRoleService.remove(roleId);
 	}
@@ -98,7 +98,7 @@ public final class RoleController {
 	 * @param paramMap パラメータ
 	 * @return ResultDto<String>
 	 */
-	@PutMapping("/do/assignment")
+	@PutMapping("/doAssignment")
 	public ResultDto<String> doAssignment(@RequestBody final Map<String, List<Long>> paramMap) {
 		return this.iRoleService.doAssignment(paramMap);
 	}
@@ -135,7 +135,7 @@ public final class RoleController {
 	 * @param roleDto 役割情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PostMapping("/infosave")
+	@PostMapping("/infoSave")
 	public ResultDto<String> saveInfo(@RequestBody final RoleDto roleDto) {
 		this.iRoleService.save(roleDto);
 		return ResultDto.successWithoutData();
@@ -147,7 +147,7 @@ public final class RoleController {
 	 * @param roleDto 役割情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PutMapping("/infoupd")
+	@PutMapping("/infoUpdate")
 	public ResultDto<String> updateInfo(@RequestBody final RoleDto roleDto) {
 		return this.iRoleService.update(roleDto);
 	}

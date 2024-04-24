@@ -72,7 +72,7 @@ public final class CityCountroller {
 	 * @param cityId 都市ID
 	 * @return ResultDto<String>
 	 */
-	@DeleteMapping("/delete/{cityId}")
+	@DeleteMapping("/infoDelete/{cityId}")
 	public ResultDto<String> deleteInfo(@PathVariable("cityId") final Long cityId) {
 		return this.iCityService.remove(cityId);
 	}
@@ -110,7 +110,7 @@ public final class CityCountroller {
 	 * @param cityDto 都市情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PostMapping("/infosave")
+	@PostMapping("/infoSave")
 	public ResultDto<String> saveInfo(@RequestBody final CityDto cityDto) {
 		this.iCityService.save(cityDto);
 		return ResultDto.successWithoutData();
@@ -122,7 +122,7 @@ public final class CityCountroller {
 	 * @param cityDto 都市情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PutMapping("/infoupd")
+	@PutMapping("/infoUpdate")
 	public ResultDto<String> updateInfo(@RequestBody final CityDto cityDto) {
 		return this.iCityService.update(cityDto);
 	}
