@@ -37,12 +37,14 @@ dependencyManagement {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter
-	implementation 'org.springframework.boot:spring-boot-starter'
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+ 	implementation('org.springframework.boot:spring-boot-starter-web') {
+       exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jetty
+	implementation 'org.springframework.boot:spring-boot-starter-jetty'
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	// https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5
