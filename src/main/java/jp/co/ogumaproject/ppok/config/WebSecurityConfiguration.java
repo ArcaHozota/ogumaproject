@@ -95,10 +95,12 @@ public class WebSecurityConfiguration {
 							final ResponseLoginDto responseResult = new ResponseLoginDto(
 									HttpStatus.UNAUTHORIZED.value(), authenticationException.getMessage());
 							OgumaProjectUtils.renderString(response, responseResult);
+							log.error(responseResult.getMessage());
 						}).accessDeniedHandler((request, response, accessDeniedException) -> {
 							final ResponseLoginDto responseResult = new ResponseLoginDto(HttpStatus.FORBIDDEN.value(),
 									OgumaProjectConstants.MESSAGE_SPRINGSECURITY_REQUIRED_AUTH);
 							OgumaProjectUtils.renderString(response, responseResult);
+							log.error(responseResult.getMessage());
 						}))
 				.formLogin(formLogin -> {
 					formLogin.loginPage(OgumaProjectURLConstants.URL_TO_LOGIN.getPattern())
