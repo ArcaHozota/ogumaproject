@@ -1,12 +1,5 @@
 server:
   port: 8687
-  jetty:
-    threads:
-      acceptors: 2 # 接收连接的线程数
-      selectors: 4 # 处理连接的线程数
-      max: 20 # 最大的线程数
-      min: 4 # 最小的线程数
-    max-http-form-post-size: 1000000B # 最大的 HTTP POST 大小，0 表示无限制
 spring:
   application:
     name: ogumaproject
