@@ -112,8 +112,8 @@ public class WebSecurityConfiguration {
 					} catch (final Exception e) {
 						throw new OgumaProjectException(OgumaProjectConstants.MESSAGE_STRING_FATAL_ERROR);
 					}
-				}).rememberMe().key(UUID.randomUUID().toString())
-				.tokenValiditySeconds(OgumaProjectConstants.DEFAULT_TOKEN_EXPIRED);
+				}).rememberMe(remember -> remember.key(UUID.randomUUID().toString())
+						.tokenValiditySeconds(OgumaProjectConstants.DEFAULT_TOKEN_EXPIRED));
 		log.info(OgumaProjectConstants.MESSAGE_SPRING_SECURITY);
 		return http.build();
 	}
