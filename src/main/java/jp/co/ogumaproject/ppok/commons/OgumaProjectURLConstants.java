@@ -15,120 +15,180 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OgumaProjectURLConstants {
 
+	public static final String URL_EMPLOYEE_COMMON = "/pgcrowd/employee";
+
+	public static final String URL_ROLE_COMMON = "/pgcrowd/role";
+
+	public static final String URL_DISTRICT_COMMON = "/pgcrowd/district";
+
+	public static final String URL_CITY_COMMON = "/pgcrowd/city";
+
+	public static final String URL_CATEGORY_COMMON = "/pgcrowd/category";
+
+	public static final String URL_PAGINATION = "/pagination";
+
+	public static final String URL_TO_PAGES = "/toPages";
+
+	public static final String URL_INFO_SAVE = "/infoSave";
+
+	public static final String URL_INFO_UPDATE = "/infoUpdate";
+
+	public static final String URL_INFO_DELETE = "/infoDelete/**";
+
+	public static final String URL_TO_ADDITION = "/toAddition";
+
+	public static final String URL_TO_EDITION = "/toEdition";
+
+	public static final String URL_CHECK_DELETE = "/checkDelete";
+
+	public static final String URL_CHECK_EDITION = "/checkEdition";
+
+	public static final String URL_GET_AUTHLIST = "/getAuthlist";
+
+	public static final String URL_GET_ASSIGNED = "/getAssigned";
+
+	public static final String URL_DO_ASSIGNMENT = "/doAssignment";
+
+	public static final String URL_GET_DISTRICTS = "/getDistricts";
+
+	public static final String URL_TO_SIGN_UP = "/toSignUp";
+
+	public static final String URL_DO_SIGN_UP = "/toroku";
+
+	public static final String URL_FORGET_PASSWORD = "/forget/password";
+
+	public static final String URL_RESET_PASSWORD = "/reset/password";
+
+	public static final String URL_TO_LOGIN = "/login";
+
+	public static final String URL_DO_LOGIN = "/doLogin";
+
+	public static final String URL_LOG_OUT = "/logout";
+
+	public static final String URL_INITIAL = "/initial";
+
+	public static final String URL_MENU_INITIAL = "/menuInitial";
+
+	public static final String URL_TO_MAINMENU = "/toMainmenu";
+
+	public static final String URL_TO_CITY_PAGES = "/toCityPages";
+
+	public static final String URL_TO_DISTRICT_PAGES = "/toDistrictPages";
+
 	public static final AntPathRequestMatcher URL_STATIC_RESOURCE = new AntPathRequestMatcher("/static/**",
 			RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_TO_PAGES = new AntPathRequestMatcher(
-			"/pgcrowd/employee/toPages", RequestMethod.GET.toString());
+			URL_EMPLOYEE_COMMON.concat(URL_TO_PAGES), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_PAGINATION = new AntPathRequestMatcher(
-			"/pgcrowd/employee/pagination", RequestMethod.GET.toString());
+			URL_EMPLOYEE_COMMON.concat(URL_PAGINATION), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_INFOSAVE = new AntPathRequestMatcher(
-			"/pgcrowd/employee/infoSave", RequestMethod.POST.toString());
+			URL_EMPLOYEE_COMMON.concat(URL_INFO_SAVE), RequestMethod.POST.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_TO_ADDITION = new AntPathRequestMatcher(
-			"/pgcrowd/employee/toAddition", RequestMethod.GET.toString());
+			URL_EMPLOYEE_COMMON.concat(URL_TO_ADDITION), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_TO_EDITION = new AntPathRequestMatcher(
-			"/pgcrowd/employee/toEdition", RequestMethod.GET.toString());
+			URL_EMPLOYEE_COMMON.concat(URL_TO_EDITION), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_INFOUPD = new AntPathRequestMatcher(
-			"/pgcrowd/employee/infoUpdate", RequestMethod.PUT.toString());
+			URL_EMPLOYEE_COMMON.concat(URL_INFO_UPDATE), RequestMethod.PUT.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_DELETE = new AntPathRequestMatcher(
-			"/pgcrowd/employee/infoDelete/**", RequestMethod.DELETE.toString());
+			URL_EMPLOYEE_COMMON.concat(URL_INFO_DELETE), RequestMethod.DELETE.toString());
 
 	public static final AntPathRequestMatcher URL_EMPLOYEE_CHECK_DELETE = new AntPathRequestMatcher(
-			"/pgcrowd/employee/checkDelete", RequestMethod.GET.toString());
+			URL_EMPLOYEE_COMMON.concat(URL_CHECK_DELETE), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_ROLE_TO_PAGES = new AntPathRequestMatcher("/pgcrowd/role/toPages",
-			RequestMethod.GET.toString());
+	public static final AntPathRequestMatcher URL_ROLE_TO_PAGES = new AntPathRequestMatcher(
+			URL_ROLE_COMMON.concat(URL_TO_PAGES), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_ROLE_PAGINATION = new AntPathRequestMatcher(
-			"/pgcrowd/role/pagination", RequestMethod.GET.toString());
+			URL_ROLE_COMMON.concat(URL_PAGINATION), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_ROLE_AUTHLIST = new AntPathRequestMatcher("/pgcrowd/role/getAuthlist",
-			RequestMethod.GET.toString());
+	public static final AntPathRequestMatcher URL_ROLE_AUTHLIST = new AntPathRequestMatcher(
+			URL_ROLE_COMMON.concat(URL_GET_AUTHLIST), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_ROLE_GET_ASSIGNED = new AntPathRequestMatcher(
-			"/pgcrowd/role/getAssigned", RequestMethod.GET.toString());
+			URL_ROLE_COMMON.concat(URL_GET_ASSIGNED), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_ROLE_INFOSAVE = new AntPathRequestMatcher("/pgcrowd/role/infoSave",
-			RequestMethod.POST.toString());
+	public static final AntPathRequestMatcher URL_ROLE_INFOSAVE = new AntPathRequestMatcher(
+			URL_ROLE_COMMON.concat(URL_INFO_SAVE), RequestMethod.POST.toString());
 
-	public static final AntPathRequestMatcher URL_ROLE_INFOUPD = new AntPathRequestMatcher("/pgcrowd/role/infoUpdate",
-			RequestMethod.PUT.toString());
+	public static final AntPathRequestMatcher URL_ROLE_INFOUPD = new AntPathRequestMatcher(
+			URL_ROLE_COMMON.concat(URL_INFO_UPDATE), RequestMethod.PUT.toString());
 
 	public static final AntPathRequestMatcher URL_ROLE_DO_ASSIGNMENT = new AntPathRequestMatcher(
-			"/pgcrowd/role/doAssignment", RequestMethod.PUT.toString());
+			URL_ROLE_COMMON.concat(URL_DO_ASSIGNMENT), RequestMethod.PUT.toString());
 
-	public static final AntPathRequestMatcher URL_ROLE_DELETE = new AntPathRequestMatcher("/pgcrowd/role/infoDelete/**",
-			RequestMethod.DELETE.toString());
+	public static final AntPathRequestMatcher URL_ROLE_DELETE = new AntPathRequestMatcher(
+			URL_ROLE_COMMON.concat(URL_INFO_DELETE), RequestMethod.DELETE.toString());
 
 	public static final AntPathRequestMatcher URL_ROLE_CHECK_DELETE = new AntPathRequestMatcher(
-			"/pgcrowd/role/checkDelete", RequestMethod.GET.toString());
+			URL_ROLE_COMMON.concat(URL_CHECK_DELETE), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_ROLE_CHECK_EDITION = new AntPathRequestMatcher(
-			"/pgcrowd/role/checkEdition", RequestMethod.GET.toString());
+			URL_ROLE_COMMON.concat(URL_CHECK_EDITION), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_DISTRICT_PAGIANTION = new AntPathRequestMatcher(
-			"/pgcrowd/district/pagination", RequestMethod.GET.toString());
+			URL_DISTRICT_COMMON.concat(URL_PAGINATION), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_DISTRICT_INFOUPD = new AntPathRequestMatcher(
-			"/pgcrowd/district/infoUpdate", RequestMethod.PUT.toString());
+			URL_DISTRICT_COMMON.concat(URL_INFO_UPDATE), RequestMethod.PUT.toString());
 
 	public static final AntPathRequestMatcher URL_DISTRICT_CHECK_EDITION = new AntPathRequestMatcher(
-			"/pgcrowd/district/checkEdition", RequestMethod.GET.toString());
+			URL_DISTRICT_COMMON.concat(URL_CHECK_EDITION), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_CITY_PAGIANTION = new AntPathRequestMatcher(
-			"/pgcrowd/city/pagination", RequestMethod.GET.toString());
+			URL_CITY_COMMON.concat(URL_PAGINATION), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_CITY_DISTRICT_LIST = new AntPathRequestMatcher(
-			"/pgcrowd/city/districtlist", RequestMethod.GET.toString());
+			URL_CITY_COMMON.concat(URL_GET_DISTRICTS), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_CITY_INFOSAVE = new AntPathRequestMatcher("/pgcrowd/city/infoSave",
-			RequestMethod.POST.toString());
+	public static final AntPathRequestMatcher URL_CITY_INFOSAVE = new AntPathRequestMatcher(
+			URL_CITY_COMMON.concat(URL_INFO_SAVE), RequestMethod.POST.toString());
 
-	public static final AntPathRequestMatcher URL_CITY_INFOUPD = new AntPathRequestMatcher("/pgcrowd/city/infoUpdate",
-			RequestMethod.PUT.toString());
+	public static final AntPathRequestMatcher URL_CITY_INFOUPD = new AntPathRequestMatcher(
+			URL_CITY_COMMON.concat(URL_INFO_UPDATE), RequestMethod.PUT.toString());
 
 	public static final AntPathRequestMatcher URL_CITY_CHECK_EDITION = new AntPathRequestMatcher(
-			"/pgcrowd/city/checkEdition", RequestMethod.GET.toString());
+			URL_CITY_COMMON.concat(URL_CHECK_EDITION), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_TO_SIGN_UP = new AntPathRequestMatcher("/pgcrowd/employee/toSignUp",
-			RequestMethod.GET.toString());
+	public static final AntPathRequestMatcher URL_EMPLOYEE_TO_SIGN_UP = new AntPathRequestMatcher(
+			URL_EMPLOYEE_COMMON.concat(URL_TO_SIGN_UP), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_DO_SIGN_UP = new AntPathRequestMatcher("/pgcrowd/employee/toroku",
-			RequestMethod.POST.toString());
+	public static final AntPathRequestMatcher URL_EMPLOYEE_TOROKU = new AntPathRequestMatcher(
+			URL_EMPLOYEE_COMMON.concat(URL_DO_SIGN_UP), RequestMethod.POST.toString());
 
-	public static final AntPathRequestMatcher URL_FORGET_PASSWORD = new AntPathRequestMatcher(
-			"/pgcrowd/forget/password", RequestMethod.GET.toString());
+	public static final AntPathRequestMatcher URL_EMPLOYEE_FORGET_PASSWORD = new AntPathRequestMatcher(
+			URL_EMPLOYEE_COMMON.concat(URL_FORGET_PASSWORD), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_RESET_PASSWORD = new AntPathRequestMatcher(
-			"/pgcrowd/employee/reset/password", RequestMethod.POST.toString());
+	public static final AntPathRequestMatcher URL_EMPLOYEE_RESET_PASSWORD = new AntPathRequestMatcher(
+			URL_EMPLOYEE_COMMON.concat(URL_RESET_PASSWORD), RequestMethod.POST.toString());
 
-	public static final AntPathRequestMatcher URL_TO_LOGIN = new AntPathRequestMatcher("/pgcrowd/employee/login",
-			RequestMethod.GET.toString());
+	public static final AntPathRequestMatcher URL_EMPLOYEE_TO_LOGIN = new AntPathRequestMatcher(
+			URL_EMPLOYEE_COMMON.concat(URL_TO_LOGIN), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_DO_LOGIN = new AntPathRequestMatcher("/pgcrowd/employee/doLogin",
-			RequestMethod.POST.toString());
+	public static final AntPathRequestMatcher URL_EMPLOYEE_DO_LOGIN = new AntPathRequestMatcher(
+			URL_EMPLOYEE_COMMON.concat(URL_DO_LOGIN), RequestMethod.POST.toString());
 
-	public static final AntPathRequestMatcher URL_LOG_OUT = new AntPathRequestMatcher("/pgcrowd/employee/logout",
-			RequestMethod.POST.toString());
+	public static final AntPathRequestMatcher URL_EMPLOYEE_LOG_OUT = new AntPathRequestMatcher(
+			URL_EMPLOYEE_COMMON.concat(URL_LOG_OUT), RequestMethod.POST.toString());
 
-	public static final AntPathRequestMatcher URL_TO_MAINMENU = new AntPathRequestMatcher("/pgcrowd/to/mainmenu",
-			RequestMethod.GET.toString());
+	public static final AntPathRequestMatcher URL_CATEGORY_TO_MAINMENU = new AntPathRequestMatcher(
+			URL_CATEGORY_COMMON.concat(URL_TO_MAINMENU), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_MENU_INITIAL = new AntPathRequestMatcher("/pgcrowd/menu/initial",
-			RequestMethod.GET.toString());
+	public static final AntPathRequestMatcher URL_CATEGORY_MENU_INITIAL = new AntPathRequestMatcher(
+			URL_CATEGORY_COMMON.concat(URL_MENU_INITIAL), RequestMethod.GET.toString());
 
 	public static final AntPathRequestMatcher URL_CATEGORY_INITIAL = new AntPathRequestMatcher(
-			"/pgcrowd/category/initial", RequestMethod.GET.toString());
+			URL_CATEGORY_COMMON.concat(URL_INITIAL), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_TO_DISTRICT_PAGES = new AntPathRequestMatcher(
-			"/pgcrowd/category/toDistrictPages", RequestMethod.GET.toString());
+	public static final AntPathRequestMatcher URL_CATEGORY_TO_DISTRICT_PAGES = new AntPathRequestMatcher(
+			URL_CATEGORY_COMMON.concat(URL_TO_DISTRICT_PAGES), RequestMethod.GET.toString());
 
-	public static final AntPathRequestMatcher URL_TO_CITY_PAGES = new AntPathRequestMatcher(
-			"/pgcrowd/category/toCityPages", RequestMethod.GET.toString());
+	public static final AntPathRequestMatcher URL_CATEGORY_TO_CITY_PAGES = new AntPathRequestMatcher(
+			URL_CATEGORY_COMMON.concat(URL_TO_CITY_PAGES), RequestMethod.GET.toString());
 }
