@@ -93,7 +93,7 @@
 		    INNER JOIN PPOG_DISTRICTS_VIEW PDV 
 		        ON PDV.ID = PCV.DISTRICT_ID 
 		WHERE
-		    PCV.ID LIKE #{keyword,jdbcType=NUMERIC} 
+		    PCV.PRONUNCIATION LIKE #{keyword,jdbcType=NUMERIC} 
 		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
 	</select>
