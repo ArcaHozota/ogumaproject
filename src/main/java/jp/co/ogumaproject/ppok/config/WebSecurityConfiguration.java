@@ -55,9 +55,10 @@ public class WebSecurityConfiguration {
 	@Bean
 	protected SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(OgumaProjectURLConstants.URL_STATIC_RESOURCE, OgumaProjectURLConstants.URL_TO_SIGN_UP,
-						OgumaProjectURLConstants.URL_DO_SIGN_UP, OgumaProjectURLConstants.URL_FORGET_PASSWORD,
-						OgumaProjectURLConstants.URL_RESET_PASSWORD)
+				.requestMatchers(OgumaProjectURLConstants.URL_STATIC_RESOURCE,
+						OgumaProjectURLConstants.URL_EMPLOYEE_TO_SIGN_UP, OgumaProjectURLConstants.URL_EMPLOYEE_TOROKU,
+						OgumaProjectURLConstants.URL_EMPLOYEE_FORGET_PASSWORD,
+						OgumaProjectURLConstants.URL_EMPLOYEE_RESET_PASSWORD)
 				.permitAll()
 				.requestMatchers(OgumaProjectURLConstants.URL_EMPLOYEE_TO_PAGES,
 						OgumaProjectURLConstants.URL_EMPLOYEE_PAGINATION,
@@ -103,14 +104,15 @@ public class WebSecurityConfiguration {
 							log.error(responseResult.getMessage());
 						}))
 				.formLogin(formLogin -> {
-					formLogin.loginPage(OgumaProjectURLConstants.URL_TO_LOGIN.getPattern())
-							.loginProcessingUrl(OgumaProjectURLConstants.URL_DO_LOGIN.getPattern())
-							.defaultSuccessUrl(OgumaProjectURLConstants.URL_TO_MAINMENU.getPattern()).permitAll()
-							.usernameParameter("loginAcct").passwordParameter("userPswd");
+					formLogin.loginPage(OgumaProjectURLConstants.URL_EMPLOYEE_TO_LOGIN.getPattern())
+							.loginProcessingUrl(OgumaProjectURLConstants.URL_EMPLOYEE_DO_LOGIN.getPattern())
+							.defaultSuccessUrl(OgumaProjectURLConstants.URL_CATEGORY_TO_MAINMENU.getPattern())
+							.permitAll().usernameParameter("loginAcct").passwordParameter("userPswd");
 					try {
 						formLogin.and()
-								.logout(logout -> logout.logoutUrl(OgumaProjectURLConstants.URL_LOG_OUT.getPattern())
-										.logoutSuccessUrl(OgumaProjectURLConstants.URL_TO_LOGIN.getPattern()));
+								.logout(logout -> logout
+										.logoutUrl(OgumaProjectURLConstants.URL_EMPLOYEE_LOG_OUT.getPattern())
+										.logoutSuccessUrl(OgumaProjectURLConstants.URL_EMPLOYEE_TO_LOGIN.getPattern()));
 					} catch (final Exception e) {
 						throw new OgumaProjectException(OgumaProjectConstants.MESSAGE_STRING_FATAL_ERROR);
 					}

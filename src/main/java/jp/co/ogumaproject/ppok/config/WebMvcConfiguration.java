@@ -42,20 +42,25 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 	 */
 	@Override
 	public void addViewControllers(final ViewControllerRegistry registry) {
-		registry.addViewController(OgumaProjectURLConstants.URL_TO_SIGN_UP.getPattern()).setViewName("admin-toroku");
-		registry.addViewController(OgumaProjectURLConstants.URL_TO_LOGIN.getPattern()).setViewName("admin-login");
-		registry.addViewController(OgumaProjectURLConstants.URL_FORGET_PASSWORD.getPattern())
+		registry.addViewController(OgumaProjectURLConstants.URL_EMPLOYEE_TO_SIGN_UP.getPattern())
+				.setViewName("admin-toroku");
+		registry.addViewController(OgumaProjectURLConstants.URL_EMPLOYEE_TO_LOGIN.getPattern())
+				.setViewName("admin-login");
+		registry.addViewController(OgumaProjectURLConstants.URL_EMPLOYEE_FORGET_PASSWORD.getPattern())
 				.setViewName("admin-forgot");
-		registry.addViewController(OgumaProjectURLConstants.URL_TO_MAINMENU.getPattern()).setViewName("mainmenu");
-		registry.addViewController(OgumaProjectURLConstants.URL_MENU_INITIAL.getPattern()).setViewName("menukanri");
+		registry.addViewController(OgumaProjectURLConstants.URL_CATEGORY_TO_MAINMENU.getPattern())
+				.setViewName("mainmenu");
+		registry.addViewController(OgumaProjectURLConstants.URL_CATEGORY_MENU_INITIAL.getPattern())
+				.setViewName("menukanri");
 		registry.addViewController(OgumaProjectURLConstants.URL_EMPLOYEE_TO_PAGES.getPattern())
 				.setViewName("admin-pages");
 		registry.addViewController(OgumaProjectURLConstants.URL_ROLE_TO_PAGES.getPattern()).setViewName("role-pages");
 		registry.addViewController(OgumaProjectURLConstants.URL_CATEGORY_INITIAL.getPattern())
 				.setViewName("categorykanri");
-		registry.addViewController(OgumaProjectURLConstants.URL_TO_DISTRICT_PAGES.getPattern())
+		registry.addViewController(OgumaProjectURLConstants.URL_CATEGORY_TO_DISTRICT_PAGES.getPattern())
 				.setViewName("district-pages");
-		registry.addViewController(OgumaProjectURLConstants.URL_TO_CITY_PAGES.getPattern()).setViewName("city-pages");
+		registry.addViewController(OgumaProjectURLConstants.URL_CATEGORY_TO_CITY_PAGES.getPattern())
+				.setViewName("city-pages");
 	}
 
 	/**
