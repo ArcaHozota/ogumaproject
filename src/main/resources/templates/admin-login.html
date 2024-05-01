@@ -2,13 +2,13 @@
 <html lang="ja-JP" xmlns:th="https://www.thymeleaf.org">
 
 <head>
-	<title>PGアプリケーション</title>
+	<title>OgumaProject</title>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="_csrf_header" th:content="${_csrf.headerName}">
 	<meta name="_csrf_token" th:content="${_csrf.token}">
 	<link rel="stylesheet" th:href="@{/static/css/style.css}">
-	<link rel="shortcut icon" type="image/x-icon" th:href="@{/static/favicon.ico}">
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/static/oguma.ico}">
 	<script type="text/javascript" th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
 	<script type="text/javascript" th:src="@{/static/layer/layer.js}"></script>
 </head>
@@ -43,7 +43,7 @@
 		<p th:text="${resetMsg eq null ? '' : resetMsg}" id="resetMsg" hidden />
 		<div class="login-box">
 			<!-- Login Form -->
-			<form th:action="@{/pgcrowd/employee/doLogin}" th:method="post" class="form-signin" role="form"
+			<form th:action="@{/oguma/employee/doLogin}" th:method="post" class="form-signin" role="form"
 				id="loginForm">
 				<h2>ログイン</h2>
 				<div class="input-box">
@@ -58,11 +58,11 @@
 				</div>
 				<div class="remember-forget">
 					<label><input type="checkbox" name="remember-me">私を記憶する</label>
-					<a th:href="@{/pgcrowd/employee/forget/password}">パスワード忘れ？</a>
+					<a th:href="@{/oguma/employee/forget/password}">パスワード忘れ？</a>
 				</div>
 				<button type="button" id="loginBtn">ログイン</button>
 				<div class="register-link">
-					<p>アカウント無し？<a th:href="@{/pgcrowd/employee/toSignUp}">登録しましょう！</a></p>
+					<p>アカウント無し？<a th:href="@{/oguma/employee/toSignUp}">登録しましょう！</a></p>
 				</div>
 			</form>
 		</div>

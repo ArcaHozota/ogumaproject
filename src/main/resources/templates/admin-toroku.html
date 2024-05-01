@@ -2,13 +2,13 @@
 <html lang="ja-JP" xmlns:th="https://www.thymeleaf.org">
 
 <head>
-	<title>PGアプリケーション</title>
+	<title>OgumaProject</title>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="_csrf_header" th:content="${_csrf.headerName}">
 	<meta name="_csrf_token" th:content="${_csrf.token}">
 	<link rel="stylesheet" th:href="@{/static/css/style.css}">
-	<link rel="shortcut icon" type="image/x-icon" th:href="@{/static/favicon.ico}">
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/static/oguma.ico}">
 	<script type="text/javascript" th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
 	<script type="text/javascript" th:src="@{/static/layer/layer.js}"></script>
 </head>
@@ -43,7 +43,7 @@
 	<div class="container">
 		<div class="login-box">
 			<!-- Login Form -->
-			<form th:action="@{/pgcrowd/employee/toroku}" th:method="post" class="form-signin" role="form"
+			<form th:action="@{/oguma/employee/toroku}" th:method="post" class="form-signin" role="form"
 				id="torokuForm">
 				<h2>登録</h2>
 				<div class="input-box">
@@ -65,7 +65,7 @@
 				</div>
 				<button type="button" id="torokuBtn">登録</button>
 				<div class="register-link">
-					<p>すでにアカウント持ち? <a th:href="@{/pgcrowd/employee/login}">ログイン!</a></p>
+					<p>すでにアカウント持ち? <a th:href="@{/oguma/employee/login}">ログイン!</a></p>
 				</div>
 			</form>
 		</div>

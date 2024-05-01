@@ -3,7 +3,7 @@
 <html lang="ja-JP" xmlns:th="https://www.thymeleaf.org">
 
 <head th:fragment="header">
-	<title>PGアプリケーション</title>
+	<title>OgumaProject</title>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,15 +16,18 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/static/css/customize.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-	<link rel="shortcut icon" type="image/x-icon" th:href="@{/static/favicon.ico}">
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/static/oguma.ico}">
 	<style type="text/css">
-		.tree li {
-			list-style-type: none;
-			cursor: pointer;
-		}
-
 		a {
 			text-decoration: none;
+		}
+
+		.navbar-brand {
+			transition: 300ms;
+		}
+
+		.navbar-brand:hover {
+			color: #7F0020;
 		}
 	</style>
 	<script type="text/javascript" th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
@@ -40,8 +43,8 @@
 	<!-- ヘッダーのフラグメント -->
 	<div th:fragment="navibar">
 		<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" data-bs-theme="dark">
-			<div class="container-fluid"> <a class="navbar-brand" style="font-size:24px;"
-					th:href="@{/pgcrowd/category/toMainmenu}">PGアプリケーション</a>
+			<div class="container-fluid"> <a class="navbar-brand" style="font-size: 26px; font-weight: 800;"
+					th:href="@{/oguma/category/toMainmenu}">OgumaProject</a>
 				<div class="collapse navbar-collapse">
 					<div class="input-group d-flex justify-content-end">
 						<input type="text" class="form-control" id="searchInput" placeholder="検索"
@@ -77,7 +80,7 @@
 										<i class="fa-solid fa-right-from-bracket"></i> ログアウト
 									</a>
 								</li>
-								<form id="logoutForm" method="post" th:action="@{/pgcrowd/employee/logout}"
+								<form id="logoutForm" method="post" th:action="@{/oguma/employee/logout}"
 									style="display:none;"></form>
 								<div th:with="authList=${T(jp.co.ogumaproject.ppok.utils.OgumaProjectUtils).getAuthNames(securityPerson.getAuthorities().stream())}"
 									hidden>
