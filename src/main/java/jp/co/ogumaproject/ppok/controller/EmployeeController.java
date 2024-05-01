@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.co.ogumaproject.ppok.commons.OgumaProjectConstants;
+import jp.co.ogumaproject.ppok.commons.OgumaProjectURLConstants;
 import jp.co.ogumaproject.ppok.dto.EmployeeDto;
 import jp.co.ogumaproject.ppok.dto.RoleDto;
 import jp.co.ogumaproject.ppok.entity.Role;
@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
  * @since 1.00beta
  */
 @Controller
-@RequestMapping("/pgcrowd/employee")
+@RequestMapping(OgumaProjectURLConstants.URL_EMPLOYEE_COMMON)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EmployeeController {
 
@@ -52,7 +52,7 @@ public final class EmployeeController {
 	 *
 	 * @return ResultDto<String>
 	 */
-	@GetMapping("/checkDelete")
+	@GetMapping(OgumaProjectURLConstants.URL_CHECK_DELETE)
 	@ResponseBody
 	public ResultDto<String> checkDelete() {
 		return ResultDto.successWithoutData();
@@ -64,7 +64,7 @@ public final class EmployeeController {
 	 * @param loginAccount ログインアカウント
 	 * @return ResultDto<String>
 	 */
-	@GetMapping("/check")
+	@GetMapping(OgumaProjectURLConstants.URL_CHECK_DUPLICATED)
 	@ResponseBody
 	public ResultDto<String> checkDuplicated(@RequestParam("loginAcct") final String loginAccount) {
 		return this.iEmployeeService.checkDuplicated(loginAccount);
@@ -76,9 +76,9 @@ public final class EmployeeController {
 	 * @param userId 社員ID
 	 * @return ResultDto<String>
 	 */
-	@DeleteMapping("/infoDelete/{userId}")
+	@DeleteMapping(OgumaProjectURLConstants.URL_INFO_DELETE)
 	@ResponseBody
-	public ResultDto<String> deleteInfo(@PathVariable("userId") final Long userId) {
+	public ResultDto<String> deleteInfo(@RequestParam("userId") final Long userId) {
 		this.iEmployeeService.remove(userId);
 		return ResultDto.successWithoutData();
 	}
@@ -90,7 +90,7 @@ public final class EmployeeController {
 	 * @param keyword キーワード
 	 * @return ResultDto<Pagination<Employee>>
 	 */
-	@GetMapping("/pagination")
+	@GetMapping(OgumaProjectURLConstants.URL_PAGINATION)
 	@ResponseBody
 	public ResultDto<Pagination<EmployeeDto>> pagination(
 			@RequestParam(name = "pageNum", defaultValue = "1") final Integer pageNum,
@@ -110,7 +110,7 @@ public final class EmployeeController {
 	 * @param dateOfBirth 生年月日
 	 * @return ModelAndView
 	 */
-	@PostMapping("/reset/password")
+	@PostMapping(OgumaProjectURLConstants.URL_RESET_PASSWORD)
 	public ModelAndView resetPassword(@RequestParam("account") final String account,
 			@RequestParam("email") final String email, @RequestParam("dateOfBirth") final String dateOfBirth) {
 		final EmployeeDto employeeDto = new EmployeeDto();
@@ -130,25 +130,12 @@ public final class EmployeeController {
 	}
 
 	/**
-	 * IDによって社員情報を復元する
-	 *
-	 * @param editId 編集されるユーザID
-	 * @return ResultDto<String>
-	 */
-	@GetMapping("/infoRestore")
-	@ResponseBody
-	public ResultDto<EmployeeDto> restoreInfo(@RequestParam("editId") final Long editId) {
-		final EmployeeDto employee = this.iEmployeeService.getEmployeeById(editId);
-		return ResultDto.successWithData(employee);
-	}
-
-	/**
 	 * 情報追加
 	 *
 	 * @param employeeDto 社員情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PostMapping("/infoSave")
+	@PostMapping(OgumaProjectURLConstants.URL_INFO_SAVE)
 	@ResponseBody
 	public ResultDto<String> saveInfo(@RequestBody final EmployeeDto employeeDto) {
 		this.iEmployeeService.save(employeeDto);
@@ -161,7 +148,7 @@ public final class EmployeeController {
 	 * @param userId ユーザID
 	 * @return ModelAndView
 	 */
-	@GetMapping("/toAddition")
+	@GetMapping(OgumaProjectURLConstants.URL_TO_ADDITION)
 	public ModelAndView toAddition() {
 		final List<RoleDto> employeeRolesById = this.iRoleService.getEmployeeRolesByEmployeeId(null);
 		final ModelAndView modelAndView = new ModelAndView("admin-addinfo");
@@ -175,7 +162,7 @@ public final class EmployeeController {
 	 * @param id 社員ID
 	 * @return ModelAndView
 	 */
-	@GetMapping("/toEdition")
+	@GetMapping(OgumaProjectURLConstants.URL_TO_EDITION)
 	public ModelAndView toEdition(@RequestParam("editId") final Long editId,
 			@RequestParam(name = "authChkFlag", defaultValue = "false") final String authChkFlag) {
 		final EmployeeDto employee = this.iEmployeeService.getEmployeeById(editId);
@@ -201,7 +188,7 @@ public final class EmployeeController {
 	 * @param dateOfBirth 生年月日
 	 * @return ModelAndView
 	 */
-	@PostMapping("/toroku")
+	@PostMapping(OgumaProjectURLConstants.URL_DO_SIGN_UP)
 	public ModelAndView toroku(@RequestParam("email") final String email,
 			@RequestParam("password") final String password, @RequestParam("dateOfBirth") final String dateOfBirth) {
 		final EmployeeDto employeeDto = new EmployeeDto();
@@ -225,7 +212,7 @@ public final class EmployeeController {
 	 * @param employeeDto 社員情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PutMapping("/infoUpdate")
+	@PutMapping(OgumaProjectURLConstants.URL_INFO_UPDATE)
 	@ResponseBody
 	public ResultDto<String> updateInfo(@RequestBody final EmployeeDto employeeDto) {
 		return this.iEmployeeService.update(employeeDto);

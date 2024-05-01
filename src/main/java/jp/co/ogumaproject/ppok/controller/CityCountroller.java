@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jp.co.ogumaproject.ppok.commons.OgumaProjectURLConstants;
 import jp.co.ogumaproject.ppok.dto.CityDto;
 import jp.co.ogumaproject.ppok.dto.DistrictDto;
 import jp.co.ogumaproject.ppok.service.ICityService;
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
  * @since 1.00beta
  */
 @RestController
-@RequestMapping("/pgcrowd/city")
+@RequestMapping(OgumaProjectURLConstants.URL_CITY_COMMON)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CityCountroller {
 
@@ -49,7 +49,7 @@ public final class CityCountroller {
 	 * @param cityDto 都市情報転送クラス
 	 * @return ResultDto<String>
 	 */
-	@GetMapping("/check")
+	@GetMapping(OgumaProjectURLConstants.URL_CHECK_DUPLICATED)
 	public ResultDto<String> checkDuplicated(
 			@RequestParam(value = "name", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String name,
 			@RequestParam("districtId") final Long districtId) {
@@ -61,7 +61,7 @@ public final class CityCountroller {
 	 *
 	 * @return ResultDto<String>
 	 */
-	@GetMapping("/checkEdition")
+	@GetMapping(OgumaProjectURLConstants.URL_CHECK_EDITION)
 	public ResultDto<String> checkEdition() {
 		return ResultDto.successWithoutData();
 	}
@@ -72,8 +72,8 @@ public final class CityCountroller {
 	 * @param cityId 都市ID
 	 * @return ResultDto<String>
 	 */
-	@DeleteMapping("/infoDelete/{cityId}")
-	public ResultDto<String> deleteInfo(@PathVariable("cityId") final Long cityId) {
+	@DeleteMapping(OgumaProjectURLConstants.URL_INFO_DELETE)
+	public ResultDto<String> deleteInfo(@RequestParam("cityId") final Long cityId) {
 		return this.iCityService.remove(cityId);
 	}
 
@@ -83,7 +83,7 @@ public final class CityCountroller {
 	 * @param cityId 都市ID
 	 * @return ResultDto<String>
 	 */
-	@GetMapping("/getDistricts")
+	@GetMapping(OgumaProjectURLConstants.URL_GET_DISTRICTS)
 	public ResultDto<List<DistrictDto>> getDistrictList(@RequestParam(value = "cityId") final String cityId) {
 		final List<DistrictDto> districtDtos = this.iDistrictService.getDistrictsByCityId(cityId);
 		return ResultDto.successWithData(districtDtos);
@@ -96,7 +96,7 @@ public final class CityCountroller {
 	 * @param keyword キーワード
 	 * @return ResultDto<Pagination<CityDto>>
 	 */
-	@GetMapping("/pagination")
+	@GetMapping(OgumaProjectURLConstants.URL_PAGINATION)
 	public ResultDto<Pagination<CityDto>> pagination(
 			@RequestParam(name = "pageNum", defaultValue = "1") final Integer pageNum,
 			@RequestParam(name = "keyword", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String keyword) {
@@ -110,7 +110,7 @@ public final class CityCountroller {
 	 * @param cityDto 都市情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PostMapping("/infoSave")
+	@PostMapping(OgumaProjectURLConstants.URL_INFO_SAVE)
 	public ResultDto<String> saveInfo(@RequestBody final CityDto cityDto) {
 		this.iCityService.save(cityDto);
 		return ResultDto.successWithoutData();
@@ -122,7 +122,7 @@ public final class CityCountroller {
 	 * @param cityDto 都市情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PutMapping("/infoUpdate")
+	@PutMapping(OgumaProjectURLConstants.URL_INFO_UPDATE)
 	public ResultDto<String> updateInfo(@RequestBody final CityDto cityDto) {
 		return this.iCityService.update(cityDto);
 	}

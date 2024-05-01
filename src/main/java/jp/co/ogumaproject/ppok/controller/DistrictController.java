@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jp.co.ogumaproject.ppok.commons.OgumaProjectURLConstants;
 import jp.co.ogumaproject.ppok.dto.DistrictDto;
 import jp.co.ogumaproject.ppok.service.IDistrictService;
 import jp.co.ogumaproject.ppok.utils.OgumaProjectUtils;
@@ -22,7 +23,7 @@ import lombok.RequiredArgsConstructor;
  * @since 1.00beta
  */
 @RestController
-@RequestMapping("/pgcrowd/district")
+@RequestMapping(OgumaProjectURLConstants.URL_DISTRICT_COMMON)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DistrictController {
 
@@ -48,7 +49,7 @@ public final class DistrictController {
 	 * @param keyword キーワード
 	 * @return ResultDto<Pagination<DistrictDto>>
 	 */
-	@GetMapping("/pagination")
+	@GetMapping(OgumaProjectURLConstants.URL_PAGINATION)
 	public ResultDto<Pagination<DistrictDto>> pagination(
 			@RequestParam(name = "pageNum", defaultValue = "1") final Integer pageNum,
 			@RequestParam(name = "keyword", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String keyword) {
@@ -62,7 +63,7 @@ public final class DistrictController {
 	 * @param districtDto 地域情報転送クラス
 	 * @return ResultDto<String>
 	 */
-	@PutMapping("/infoUpdate")
+	@PutMapping(OgumaProjectURLConstants.URL_INFO_UPDATE)
 	public ResultDto<String> updateInfo(@RequestBody final DistrictDto districtDto) {
 		return this.iDistrictService.update(districtDto);
 	}

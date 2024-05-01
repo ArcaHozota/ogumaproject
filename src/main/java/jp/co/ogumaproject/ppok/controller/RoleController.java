@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jp.co.ogumaproject.ppok.commons.OgumaProjectURLConstants;
 import jp.co.ogumaproject.ppok.dto.RoleDto;
 import jp.co.ogumaproject.ppok.entity.Authority;
 import jp.co.ogumaproject.ppok.service.IRoleService;
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
  * @since 1.00beta
  */
 @RestController
-@RequestMapping("/pgcrowd/role")
+@RequestMapping(OgumaProjectURLConstants.URL_ROLE_COMMON)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RoleController {
 
@@ -43,7 +43,7 @@ public final class RoleController {
 	 *
 	 * @return ResultDto<List<Authority>>
 	 */
-	@GetMapping("/getAuthlist")
+	@GetMapping(OgumaProjectURLConstants.URL_GET_AUTHLIST)
 	public ResultDto<List<Authority>> authlists() {
 		final List<Authority> list = this.iRoleService.getAuthlist();
 		return ResultDto.successWithData(list);
@@ -54,7 +54,7 @@ public final class RoleController {
 	 *
 	 * @return ResultDto<String>
 	 */
-	@GetMapping("/checkDelete")
+	@GetMapping(OgumaProjectURLConstants.URL_CHECK_DELETE)
 	public ResultDto<String> checkDelete() {
 		return ResultDto.successWithoutData();
 	}
@@ -65,7 +65,7 @@ public final class RoleController {
 	 * @param name 役割名称
 	 * @return ResultDto<String>
 	 */
-	@GetMapping("/check")
+	@GetMapping(OgumaProjectURLConstants.URL_CHECK_DUPLICATED)
 	public ResultDto<String> checkDuplicated(
 			@RequestParam(name = "name", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String name) {
 		return this.iRoleService.checkDuplicated(name);
@@ -76,7 +76,7 @@ public final class RoleController {
 	 *
 	 * @return ResultDto<String>
 	 */
-	@GetMapping("/checkEdition")
+	@GetMapping(OgumaProjectURLConstants.URL_CHECK_EDITION)
 	public ResultDto<String> checkEdition() {
 		return ResultDto.successWithoutData();
 	}
@@ -87,8 +87,8 @@ public final class RoleController {
 	 * @param roleId 役割ID
 	 * @return ResultDto<String>
 	 */
-	@DeleteMapping("/infoDelete/{roleId}")
-	public ResultDto<String> deleteInfo(@PathVariable("roleId") final Long roleId) {
+	@DeleteMapping(OgumaProjectURLConstants.URL_INFO_DELETE)
+	public ResultDto<String> deleteInfo(@RequestParam("roleId") final Long roleId) {
 		return this.iRoleService.remove(roleId);
 	}
 
@@ -98,7 +98,7 @@ public final class RoleController {
 	 * @param paramMap パラメータ
 	 * @return ResultDto<String>
 	 */
-	@PutMapping("/doAssignment")
+	@PutMapping(OgumaProjectURLConstants.URL_DO_ASSIGNMENT)
 	public ResultDto<String> doAssignment(@RequestBody final Map<String, List<Long>> paramMap) {
 		return this.iRoleService.doAssignment(paramMap);
 	}
@@ -108,7 +108,7 @@ public final class RoleController {
 	 *
 	 * @return ResultDto<List<Long>>
 	 */
-	@GetMapping("/getAssigned")
+	@GetMapping(OgumaProjectURLConstants.URL_GET_ASSIGNED)
 	public ResultDto<List<Long>> getAssignedAuth(@RequestParam("fuyoId") final Long roleId) {
 		final List<Long> authIds = this.iRoleService.getAuthIdsById(roleId);
 		return ResultDto.successWithData(authIds);
@@ -121,7 +121,7 @@ public final class RoleController {
 	 * @param keyword キーワード
 	 * @return ResultDto<Pagination<RoleDto>>
 	 */
-	@GetMapping("/pagination")
+	@GetMapping(OgumaProjectURLConstants.URL_PAGINATION)
 	public ResultDto<Pagination<RoleDto>> pagination(
 			@RequestParam(name = "pageNum", defaultValue = "1") final Integer pageNum,
 			@RequestParam(name = "keyword", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String keyword) {
@@ -135,7 +135,7 @@ public final class RoleController {
 	 * @param roleDto 役割情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PostMapping("/infoSave")
+	@PostMapping(OgumaProjectURLConstants.URL_INFO_SAVE)
 	public ResultDto<String> saveInfo(@RequestBody final RoleDto roleDto) {
 		this.iRoleService.save(roleDto);
 		return ResultDto.successWithoutData();
@@ -147,7 +147,7 @@ public final class RoleController {
 	 * @param roleDto 役割情報DTO
 	 * @return ResultDto<String>
 	 */
-	@PutMapping("/infoUpdate")
+	@PutMapping(OgumaProjectURLConstants.URL_INFO_UPDATE)
 	public ResultDto<String> updateInfo(@RequestBody final RoleDto roleDto) {
 		return this.iRoleService.update(roleDto);
 	}
