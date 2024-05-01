@@ -42,6 +42,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 	 */
 	@Override
 	public void addViewControllers(final ViewControllerRegistry registry) {
+		registry.addViewController(OgumaProjectURLConstants.URL_INDEX.getPattern()).setViewName("index");
 		registry.addViewController(OgumaProjectURLConstants.URL_EMPLOYEE_TO_SIGN_UP.getPattern())
 				.setViewName("admin-toroku");
 		registry.addViewController(OgumaProjectURLConstants.URL_EMPLOYEE_TO_LOGIN.getPattern())

@@ -78,6 +78,9 @@ public final class OgumaProjectURLConstants {
 	public static final AntPathRequestMatcher URL_STATIC_RESOURCE = new AntPathRequestMatcher("/static/**",
 			RequestMethod.GET.toString());
 
+	public static final AntPathRequestMatcher URL_INDEX = new AntPathRequestMatcher("/index",
+			RequestMethod.GET.toString());
+
 	public static final AntPathRequestMatcher URL_EMPLOYEE_TO_PAGES = new AntPathRequestMatcher(
 			URL_EMPLOYEE_COMMON.concat(URL_TO_PAGES), RequestMethod.GET.toString());
 

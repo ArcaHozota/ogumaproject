@@ -55,7 +55,7 @@ public class WebSecurityConfiguration {
 	@Bean
 	protected SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(OgumaProjectURLConstants.URL_STATIC_RESOURCE,
+				.requestMatchers(OgumaProjectURLConstants.URL_STATIC_RESOURCE, OgumaProjectURLConstants.URL_INDEX,
 						OgumaProjectURLConstants.URL_EMPLOYEE_TO_SIGN_UP, OgumaProjectURLConstants.URL_EMPLOYEE_TOROKU,
 						OgumaProjectURLConstants.URL_EMPLOYEE_FORGET_PASSWORD,
 						OgumaProjectURLConstants.URL_EMPLOYEE_RESET_PASSWORD)
@@ -112,7 +112,7 @@ public class WebSecurityConfiguration {
 						formLogin.and()
 								.logout(logout -> logout
 										.logoutUrl(OgumaProjectURLConstants.URL_EMPLOYEE_LOG_OUT.getPattern())
-										.logoutSuccessUrl(OgumaProjectURLConstants.URL_EMPLOYEE_TO_LOGIN.getPattern()));
+										.logoutSuccessUrl(OgumaProjectURLConstants.URL_INDEX.getPattern()));
 					} catch (final Exception e) {
 						throw new OgumaProjectException(OgumaProjectConstants.MESSAGE_STRING_FATAL_ERROR);
 					}
