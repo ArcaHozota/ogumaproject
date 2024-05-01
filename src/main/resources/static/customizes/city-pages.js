@@ -179,7 +179,7 @@ $("#tableBody").on('click', '.delete-btn', function() {
 		confirmButtonColor: '#7F0020'
 	}).then((result) => {
 		if (result.isConfirmed) {
-			pgcrowdAjaxModify('/oguma/city/infoDelete/' + cityId, 'DELETE', null, normalDeleteSuccessFunction);
+			pgcrowdAjaxModify('/oguma/city/infoDelete?cityId=' + cityId, 'DELETE', null, normalDeleteSuccessFunction);
 		} else {
 			$(this).close();
 		}

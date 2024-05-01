@@ -146,7 +146,7 @@ $("#tableBody").on('click', '.delete-btn', function() {
 		confirmButtonColor: '#7F0020'
 	}).then((result) => {
 		if (result.isConfirmed) {
-			pgcrowdAjaxModify('/oguma/role/infoDelete/' + roleId, 'DELETE', null, normalDeleteSuccessFunction);
+			pgcrowdAjaxModify('/oguma/role/infoDelete?roleId=' + roleId, 'DELETE', null, normalDeleteSuccessFunction);
 		} else {
 			$(this).close();
 		}
