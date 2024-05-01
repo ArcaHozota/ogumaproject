@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OgumaProjectURLConstants {
 
-	public static final String URL_EMPLOYEE_COMMON = "/pgcrowd/employee";
+	public static final String URL_EMPLOYEE_COMMON = "/oguma/employee";
 
-	public static final String URL_ROLE_COMMON = "/pgcrowd/role";
+	public static final String URL_ROLE_COMMON = "/oguma/role";
 
-	public static final String URL_DISTRICT_COMMON = "/pgcrowd/district";
+	public static final String URL_DISTRICT_COMMON = "/oguma/district";
 
-	public static final String URL_CITY_COMMON = "/pgcrowd/city";
+	public static final String URL_CITY_COMMON = "/oguma/city";
 
-	public static final String URL_CATEGORY_COMMON = "/pgcrowd/category";
+	public static final String URL_CATEGORY_COMMON = "/oguma/category";
 
 	public static final String URL_PAGINATION = "/pagination";
 
