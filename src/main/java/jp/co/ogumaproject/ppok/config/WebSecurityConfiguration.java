@@ -46,9 +46,9 @@ public class WebSecurityConfiguration {
 
 	@Bean
 	protected DaoAuthenticationProvider daoAuthenticationProvider() {
-		final OgumaProjectDaoAuthenticationProvider provider = new OgumaProjectDaoAuthenticationProvider();
+		final OgumaDaoAuthenticationProvider provider = new OgumaDaoAuthenticationProvider();
 		provider.setUserDetailsService(this.ogumaProjectUserDetailsService);
-		provider.setPasswordEncoder(new OgumaProjectPasswordEncoder());
+		provider.setPasswordEncoder(new OgumaPasswordEncoder());
 		return provider;
 	}
 

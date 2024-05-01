@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
  * @since 1.00beta
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public final class OgumaProjectDaoAuthenticationProvider extends DaoAuthenticationProvider {
+public final class OgumaDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Override
 	protected void additionalAuthenticationChecks(final UserDetails userDetails,

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
  * @since 1.00beta
  */
 @NoArgsConstructor
-public final class OgumaProjectPasswordEncoder implements PasswordEncoder {
+public final class OgumaPasswordEncoder implements PasswordEncoder {
 
 	private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(BCryptVersion.$2Y, 7);
 

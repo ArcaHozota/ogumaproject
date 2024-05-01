@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.ogumaproject.ppok.commons.OgumaProjectConstants;
-import jp.co.ogumaproject.ppok.config.OgumaProjectPasswordEncoder;
+import jp.co.ogumaproject.ppok.config.OgumaPasswordEncoder;
 import jp.co.ogumaproject.ppok.dto.EmployeeDto;
 import jp.co.ogumaproject.ppok.entity.Employee;
 import jp.co.ogumaproject.ppok.entity.EmployeeRole;
@@ -63,7 +63,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	/**
 	 * パスワードエンコーダ
 	 */
-	private final OgumaProjectPasswordEncoder passwordEncoder = new OgumaProjectPasswordEncoder();
+	private final OgumaPasswordEncoder passwordEncoder = new OgumaPasswordEncoder();
 
 	@Override
 	public ResultDto<String> checkDuplicated(final String loginAccount) {
