@@ -164,6 +164,7 @@ public final class EmployeeController {
 	 */
 	@GetMapping(OgumaProjectURLConstants.URL_TO_EDITION)
 	public ModelAndView toEdition(@RequestParam("editId") final Long editId,
+			@RequestParam(name = "pageNum", defaultValue = "1") final Integer pageNum,
 			@RequestParam(name = "authChkFlag", defaultValue = "false") final String authChkFlag) {
 		final EmployeeDto employee = this.iEmployeeService.getEmployeeById(editId);
 		if (Boolean.FALSE.equals(Boolean.valueOf(authChkFlag))) {
@@ -171,12 +172,14 @@ public final class EmployeeController {
 			modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EDITED_INFO, employee);
 			final Role role = this.iRoleService.getRoleById(employee.getRoleId());
 			modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EMPLOYEEROLES, role);
+			modelAndView.addObject(OgumaProjectConstants.ATTRNAME_PAGE_NUMBER, pageNum);
 			return modelAndView;
 		}
 		final List<RoleDto> employeeRolesById = this.iRoleService.getEmployeeRolesByEmployeeId(editId);
 		final ModelAndView modelAndView = new ModelAndView("admin-editinfo");
 		modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EDITED_INFO, employee);
 		modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EMPLOYEEROLES, employeeRolesById);
+		modelAndView.addObject(OgumaProjectConstants.ATTRNAME_PAGE_NUMBER, pageNum);
 		return modelAndView;
 	}
 
