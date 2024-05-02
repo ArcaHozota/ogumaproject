@@ -6,12 +6,12 @@ spring:
   datasource:
     druid:
       db-type: oracle
-      # JDBC请换成自己本地的属性↓↓↓
+      # ↓↓↓JDBC请换成自己本地的属性↓↓↓
       driver-class-name: oracle.jdbc.OracleDriver
       url: jdbc:oracle:thin:@//52.199.163.241:1521/FREEPDB1
       username: JPTCRSDBA1
       password: JPTCRSDBA1
-      # JDBC请换成自己本地的属性↑↑↑
+      # ↑↑↑JDBC请换成自己本地的属性↑↑↑
       max-active: 30
       max-wait: 1500000
   output:
