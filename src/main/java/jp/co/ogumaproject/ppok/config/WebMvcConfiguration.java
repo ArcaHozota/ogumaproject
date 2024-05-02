@@ -53,8 +53,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 				.setViewName("mainmenu");
 		registry.addViewController(OgumaProjectURLConstants.URL_CATEGORY_MENU_INITIAL.getPattern())
 				.setViewName("menukanri");
-		registry.addViewController(OgumaProjectURLConstants.URL_EMPLOYEE_TO_PAGES.getPattern())
-				.setViewName("admin-pages");
 		registry.addViewController(OgumaProjectURLConstants.URL_ROLE_TO_PAGES.getPattern()).setViewName("role-pages");
 		registry.addViewController(OgumaProjectURLConstants.URL_CATEGORY_INITIAL.getPattern())
 				.setViewName("categorykanri");

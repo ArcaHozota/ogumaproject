@@ -184,6 +184,19 @@ public final class EmployeeController {
 	}
 
 	/**
+	 * 一覧画面へ遷移する
+	 *
+	 * @param pageNum ページ数
+	 * @return ModelAndView
+	 */
+	@GetMapping(OgumaProjectURLConstants.URL_TO_PAGES)
+	public ModelAndView toPages(@RequestParam(name = "pageNum", defaultValue = "1") final Integer pageNum) {
+		final ModelAndView modelAndView = new ModelAndView("admin-pages");
+		modelAndView.addObject(OgumaProjectConstants.ATTRNAME_PAGE_NUMBER, pageNum);
+		return modelAndView;
+	}
+
+	/**
 	 * 社員登録
 	 *
 	 * @param email       メール
