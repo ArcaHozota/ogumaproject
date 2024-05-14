@@ -78,13 +78,15 @@ public class WebSecurityConfiguration {
 				.hasAuthority("role%edition")
 				.requestMatchers(OgumaProjectURLConstants.URL_ROLE_DO_ASSIGNMENT,
 						OgumaProjectURLConstants.URL_ROLE_DELETE, OgumaProjectURLConstants.URL_ROLE_CHECK_DELETE)
-				.hasAuthority("role%delete").requestMatchers(OgumaProjectURLConstants.URL_DISTRICT_PAGIANTION)
+				.hasAuthority("role%delete")
+				.requestMatchers(OgumaProjectURLConstants.URL_DISTRICT_PAGIANTION,
+						OgumaProjectURLConstants.URL_CATEGORY_TO_DISTRICT_PAGES)
 				.hasAuthority("district%retrieve")
 				.requestMatchers(OgumaProjectURLConstants.URL_DISTRICT_INFOUPD,
 						OgumaProjectURLConstants.URL_DISTRICT_CHECK_EDITION)
 				.hasAuthority("district%edition")
-				.requestMatchers(OgumaProjectURLConstants.URL_CITY_DISTRICT_LIST,
-						OgumaProjectURLConstants.URL_CITY_PAGIANTION)
+				.requestMatchers(OgumaProjectURLConstants.URL_CITY_PAGIANTION,
+						OgumaProjectURLConstants.URL_CATEGORY_TO_CITY_PAGES)
 				.hasAuthority("city%retrieve")
 				.requestMatchers(OgumaProjectURLConstants.URL_CITY_INFOSAVE, OgumaProjectURLConstants.URL_CITY_INFOUPD,
 						OgumaProjectURLConstants.URL_CITY_CHECK_EDITION)
