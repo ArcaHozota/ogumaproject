@@ -13,7 +13,7 @@ plugins {
 group = 'jp.co.ogumaproject.ppok'
 version = '1.0-SNAPSHOT'
 description = 'ogumaproject'
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -32,7 +32,7 @@ tasks.withType(Javadoc).configureEach {
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.boot:spring-boot-starter-parent:2.7.18'
+        mavenBom 'org.springframework.boot:spring-boot-starter-parent:3.1.11'
     }
 }
 
@@ -44,13 +44,13 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	// https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	// https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter
-	implementation 'com.alibaba:druid-spring-boot-starter:1.2.14'
+	implementation 'com.alibaba:druid-spring-boot-starter:1.2.22'
 	// https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	// https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8
 	implementation 'com.oracle.database.jdbc:ojdbc11'
 	// https://mvnrepository.com/artifact/org.apache.commons/commons-collections4

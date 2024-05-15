@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.springframework.http.MediaType;
@@ -19,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.alibaba.fastjson2.JSON;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jp.co.ogumaproject.ppok.config.ResponseLoginDto;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
