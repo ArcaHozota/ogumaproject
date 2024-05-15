@@ -5,7 +5,6 @@ import java.util.Map;
 
 import jp.co.ogumaproject.ppok.dto.RoleDto;
 import jp.co.ogumaproject.ppok.entity.Authority;
-import jp.co.ogumaproject.ppok.entity.Role;
 import jp.co.ogumaproject.ppok.utils.Pagination;
 import jp.co.ogumaproject.ppok.utils.ResultDto;
 
@@ -46,15 +45,7 @@ public interface IRoleService {
 	 *
 	 * @return List<PgAuth>
 	 */
-	List<Authority> getAuthlist();
-
-	/**
-	 * 社員役割連携情報を取得する
-	 *
-	 * @param employeeId 社員ID
-	 * @return List<String>
-	 */
-	List<RoleDto> getEmployeeRolesByEmployeeId(Long employeeId);
+	List<Authority> getAuthList();
 
 	/**
 	 * IDによって情報を取得する
@@ -62,7 +53,15 @@ public interface IRoleService {
 	 * @param id 役割ID
 	 * @return Role
 	 */
-	Role getRoleById(Long id);
+	RoleDto getRoleById(Long id);
+
+	/**
+	 * 社員役割連携情報を取得する
+	 *
+	 * @param employeeId 社員ID
+	 * @return List<String>
+	 */
+	List<RoleDto> getRolesByEmployeeId(Long employeeId);
 
 	/**
 	 * キーワードによって役割情報を取得する

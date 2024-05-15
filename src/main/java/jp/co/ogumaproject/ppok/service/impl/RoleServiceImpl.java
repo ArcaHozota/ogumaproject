@@ -102,12 +102,20 @@ public class RoleServiceImpl implements IRoleService {
 	}
 
 	@Override
-	public List<Authority> getAuthlist() {
+	public List<Authority> getAuthList() {
 		return this.authorityMapper.selectAll();
 	}
 
 	@Override
-	public List<RoleDto> getEmployeeRolesByEmployeeId(final Long employeeId) {
+	public RoleDto getRoleById(final Long id) {
+		final Role role = this.roleMapper.selectByIdWithAuth(id);
+		final RoleDto roleDto = new RoleDto();
+		SecondBeanUtils.copyNullableProperties(role, roleDto);
+		return roleDto;
+	}
+
+	@Override
+	public List<RoleDto> getRolesByEmployeeId(final Long employeeId) {
 		final List<RoleDto> secondRoles = new ArrayList<>();
 		final RoleDto secondRole = new RoleDto();
 		secondRole.setId(0L);
@@ -133,11 +141,6 @@ public class RoleServiceImpl implements IRoleService {
 		secondRoles.addAll(selectedRole);
 		secondRoles.addAll(roleDtos);
 		return secondRoles.stream().distinct().collect(Collectors.toList());
-	}
-
-	@Override
-	public Role getRoleById(final Long id) {
-		return this.roleMapper.selectByIdWithAuth(id);
 	}
 
 	@Override
