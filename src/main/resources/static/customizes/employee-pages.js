@@ -71,7 +71,7 @@ $("#tableBody").on('click', '.delete-btn', function() {
 		confirmButtonColor: '#7F0020'
 	}).then((result) => {
 		if (result.isConfirmed) {
-			ogumaAjaxModify('/oguma/employee/infoDelete?userId=' + userId, 'DELETE', null, normalDeleteSuccessFunction);
+			ogumaAjaxModify('/oguma/employee/infoDelete/' + userId, 'DELETE', null, normalDeleteSuccessFunction);
 		} else {
 			$(this).close();
 		}
