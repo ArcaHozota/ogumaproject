@@ -16,7 +16,6 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import jakarta.annotation.Resource;
 import jp.co.ogumaproject.ppok.commons.OgumaProjectConstants;
 import jp.co.ogumaproject.ppok.commons.OgumaProjectURLConstants;
-import jp.co.ogumaproject.ppok.exception.OgumaProjectException;
 import jp.co.ogumaproject.ppok.listener.OgumaProjectUserDetailsService;
 import jp.co.ogumaproject.ppok.utils.OgumaProjectUtils;
 import lombok.extern.log4j.Log4j2;
@@ -36,7 +35,7 @@ public class WebSecurityConfiguration {
 	 * ログインサービス
 	 */
 	@Resource
-	private OgumaProjectUserDetailsService ogumaProjectUserDetailsService;
+	private OgumaProjectUserDetailsService pgCrowdUserDetailsService;
 
 	@Bean
 	protected AuthenticationManager authenticationManager(final AuthenticationManagerBuilder auth) {
@@ -45,81 +44,76 @@ public class WebSecurityConfiguration {
 
 	@Bean
 	protected DaoAuthenticationProvider daoAuthenticationProvider() {
-		final OgumaDaoAuthenticationProvider provider = new OgumaDaoAuthenticationProvider();
-		provider.setUserDetailsService(this.ogumaProjectUserDetailsService);
-		provider.setPasswordEncoder(new OgumaPasswordEncoder());
-		return provider;
+		final OgumaDaoAuthenticationProvider daoAuthenticationProvider = new OgumaDaoAuthenticationProvider();
+		daoAuthenticationProvider.setUserDetailsService(this.pgCrowdUserDetailsService);
+		daoAuthenticationProvider.setPasswordEncoder(new OgumaPasswordEncoder());
+		return daoAuthenticationProvider;
 	}
 
 	@Bean
-	protected SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(authorize -> authorize
+	protected SecurityFilterChain filterChain(final HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(OgumaProjectURLConstants.URL_STATIC_RESOURCE, OgumaProjectURLConstants.URL_INDEX,
-						OgumaProjectURLConstants.URL_EMPLOYEE_TO_SIGN_UP, OgumaProjectURLConstants.URL_EMPLOYEE_TOROKU,
-						OgumaProjectURLConstants.URL_EMPLOYEE_FORGET_PASSWORD,
-						OgumaProjectURLConstants.URL_EMPLOYEE_RESET_PASSWORD)
+						OgumaProjectURLConstants.URL_TO_SIGN_UP, OgumaProjectURLConstants.URL_DO_SIGN_UP,
+						OgumaProjectURLConstants.URL_FORGET_PASSWORD, OgumaProjectURLConstants.URL_RESET_PASSWORD)
 				.permitAll()
 				.requestMatchers(OgumaProjectURLConstants.URL_EMPLOYEE_TO_PAGES,
 						OgumaProjectURLConstants.URL_EMPLOYEE_PAGINATION,
-						OgumaProjectURLConstants.URL_EMPLOYEE_TO_EDITION, OgumaProjectURLConstants.URL_EMPLOYEE_INFOUPD)
+						OgumaProjectURLConstants.URL_EMPLOYEE_TO_EDITION, OgumaProjectURLConstants.URL_EMPLOYEE_UPDATE)
 				.hasAuthority("employee%retrieve")
-				.requestMatchers(OgumaProjectURLConstants.URL_EMPLOYEE_INFOSAVE,
-						OgumaProjectURLConstants.URL_EMPLOYEE_TO_ADDITION)
+				.requestMatchers(OgumaProjectURLConstants.URL_EMPLOYEE_TO_ADDITION,
+						OgumaProjectURLConstants.URL_EMPLOYEE_INSERT)
 				.hasAuthority("employee%edition")
 				.requestMatchers(OgumaProjectURLConstants.URL_EMPLOYEE_DELETE,
 						OgumaProjectURLConstants.URL_EMPLOYEE_CHECK_DELETE)
 				.hasAuthority("employee%delete")
 				.requestMatchers(OgumaProjectURLConstants.URL_ROLE_TO_PAGES,
-						OgumaProjectURLConstants.URL_ROLE_PAGINATION)
+						OgumaProjectURLConstants.URL_ROLE_PAGINATION, OgumaProjectURLConstants.URL_ROLE_GET_ASSIGNED)
 				.hasAuthority("role%retrieve")
-				.requestMatchers(OgumaProjectURLConstants.URL_ROLE_INFOSAVE, OgumaProjectURLConstants.URL_ROLE_INFOUPD,
-						OgumaProjectURLConstants.URL_ROLE_CHECK_EDITION, OgumaProjectURLConstants.URL_ROLE_AUTHLIST)
+				.requestMatchers(OgumaProjectURLConstants.URL_ROLE_INSERT, OgumaProjectURLConstants.URL_ROLE_UPDATE,
+						OgumaProjectURLConstants.URL_ROLE_AUTHLIST, OgumaProjectURLConstants.URL_ROLE_CHECK_EDITION)
 				.hasAuthority("role%edition")
-				.requestMatchers(OgumaProjectURLConstants.URL_ROLE_DO_ASSIGNMENT,
-						OgumaProjectURLConstants.URL_ROLE_DELETE, OgumaProjectURLConstants.URL_ROLE_CHECK_DELETE)
+				.requestMatchers(OgumaProjectURLConstants.URL_ROLE_ASSIGNMENT, OgumaProjectURLConstants.URL_ROLE_DELETE,
+						OgumaProjectURLConstants.URL_ROLE_CHECK_DELETE)
 				.hasAuthority("role%delete")
-				.requestMatchers(OgumaProjectURLConstants.URL_DISTRICT_PAGIANTION,
-						OgumaProjectURLConstants.URL_CATEGORY_TO_DISTRICT_PAGES)
+				.requestMatchers(OgumaProjectURLConstants.URL_DISTRICT_PAGINATION,
+						OgumaProjectURLConstants.URL_TO_DISTRICT_PAGES)
 				.hasAuthority("district%retrieve")
-				.requestMatchers(OgumaProjectURLConstants.URL_DISTRICT_INFOUPD,
+				.requestMatchers(OgumaProjectURLConstants.URL_DISTRICT_UPDATE,
 						OgumaProjectURLConstants.URL_DISTRICT_CHECK_EDITION)
 				.hasAuthority("district%edition")
-				.requestMatchers(OgumaProjectURLConstants.URL_CITY_PAGIANTION,
-						OgumaProjectURLConstants.URL_CATEGORY_TO_CITY_PAGES)
+				.requestMatchers(OgumaProjectURLConstants.URL_CITY_PAGINATION,
+						OgumaProjectURLConstants.URL_TO_CITY_PAGES)
 				.hasAuthority("city%retrieve")
-				.requestMatchers(OgumaProjectURLConstants.URL_CITY_INFOSAVE, OgumaProjectURLConstants.URL_CITY_INFOUPD,
-						OgumaProjectURLConstants.URL_CITY_CHECK_EDITION)
+				.requestMatchers(OgumaProjectURLConstants.URL_CITY_CHECK_EDITION,
+						OgumaProjectURLConstants.URL_CITY_INSERT, OgumaProjectURLConstants.URL_CITY_UPDATE,
+						OgumaProjectURLConstants.URL_CITY_UPDATE)
 				.hasAuthority("city%edition").anyRequest().authenticated())
 				.csrf(csrf -> csrf.ignoringRequestMatchers(OgumaProjectURLConstants.URL_STATIC_RESOURCE)
 						.csrfTokenRepository(new CookieCsrfTokenRepository()))
-				.exceptionHandling(
-						handling -> handling.authenticationEntryPoint((request, response, authenticationException) -> {
-							final ResponseLoginDto responseResult = new ResponseLoginDto(
-									HttpStatus.UNAUTHORIZED.value(), authenticationException.getMessage());
-							OgumaProjectUtils.renderString(response, responseResult);
-							log.error(responseResult.getMessage());
-						}).accessDeniedHandler((request, response, accessDeniedException) -> {
-							final ResponseLoginDto responseResult = new ResponseLoginDto(HttpStatus.FORBIDDEN.value(),
-									OgumaProjectConstants.MESSAGE_SPRINGSECURITY_REQUIRED_AUTH);
-							OgumaProjectUtils.renderString(response, responseResult);
-							log.error(responseResult.getMessage());
-						}))
-				.formLogin(formLogin -> {
-					formLogin.loginPage(OgumaProjectURLConstants.URL_EMPLOYEE_TO_LOGIN.getPattern())
-							.loginProcessingUrl(OgumaProjectURLConstants.URL_EMPLOYEE_DO_LOGIN.getPattern())
-							.defaultSuccessUrl(OgumaProjectURLConstants.URL_CATEGORY_TO_MAINMENU.getPattern())
-							.permitAll().usernameParameter("loginAcct").passwordParameter("userPswd");
-					try {
-						formLogin.and()
-								.logout(logout -> logout
-										.logoutUrl(OgumaProjectURLConstants.URL_EMPLOYEE_LOG_OUT.getPattern())
-										.logoutSuccessUrl(OgumaProjectURLConstants.URL_INDEX.getPattern()));
-					} catch (final Exception e) {
-						throw new OgumaProjectException(OgumaProjectConstants.MESSAGE_STRING_FATAL_ERROR);
-					}
-				}).rememberMe(remember -> remember.key(UUID.randomUUID().toString())
+				.exceptionHandling(handling -> {
+					handling.authenticationEntryPoint((request, response, authenticationException) -> {
+						final ResponseLoginDto responseResult = new ResponseLoginDto(HttpStatus.UNAUTHORIZED.value(),
+								authenticationException.getMessage());
+						OgumaProjectUtils.renderString(response, responseResult);
+						log.warn(responseResult.getMessage());
+					});
+					handling.accessDeniedHandler((request, response, accessDeniedException) -> {
+						final ResponseLoginDto responseResult = new ResponseLoginDto(HttpStatus.FORBIDDEN.value(),
+								OgumaProjectConstants.MESSAGE_SPRINGSECURITY_REQUIRED_AUTH);
+						OgumaProjectUtils.renderString(response, responseResult);
+						log.warn(responseResult.getMessage());
+					});
+				})
+				.formLogin(formLogin -> formLogin.loginPage(OgumaProjectURLConstants.URL_TO_LOGIN)
+						.loginProcessingUrl(OgumaProjectURLConstants.URL_DO_LOGIN)
+						.defaultSuccessUrl(OgumaProjectURLConstants.URL_TO_MAINMENU).permitAll()
+						.usernameParameter("loginAcct").passwordParameter("userPswd"))
+				.logout(logout -> logout.logoutUrl(OgumaProjectURLConstants.URL_LOG_OUT)
+						.logoutSuccessUrl(OgumaProjectURLConstants.URL_INDEX))
+				.rememberMe(remember -> remember.key(UUID.randomUUID().toString())
 						.tokenValiditySeconds(OgumaProjectConstants.DEFAULT_TOKEN_EXPIRED));
 		log.info(OgumaProjectConstants.MESSAGE_SPRING_SECURITY);
-		return http.build();
+		return httpSecurity.build();
 	}
 }
