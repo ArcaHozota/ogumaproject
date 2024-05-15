@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import jp.co.ogumaproject.ppok.dto.DistrictDto;
 import jp.co.ogumaproject.ppok.entity.District;
 
 /**
@@ -32,7 +33,7 @@ public interface DistrictMapper {
 	 * @param pageSize ページサイズ
 	 * @return List<Role>
 	 */
-	List<District> paginationByKeyword(@Param("keyword") String keyword, @Param("offset") Integer offset,
+	List<DistrictDto> paginationByKeyword(@Param("keyword") String keyword, @Param("offset") Integer offset,
 			@Param("pageSize") Integer pageSize);
 
 	/**

@@ -31,11 +31,6 @@ public final class District implements Serializable {
 	private Long shutoId;
 
 	/**
-	 * 州都名称
-	 */
-	private String shutoName;
-
-	/**
 	 * 地方
 	 */
 	private String chiho;

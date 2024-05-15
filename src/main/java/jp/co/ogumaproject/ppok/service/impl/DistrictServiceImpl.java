@@ -73,14 +73,7 @@ public class DistrictServiceImpl implements IDistrictService {
 		final Integer offset = (pageNum - 1) * pageSize;
 		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
 		final Long records = this.districtMapper.countByKeyword(searchStr);
-		final List<DistrictDto> pages = this.districtMapper.paginationByKeyword(searchStr, offset, pageSize).stream()
-				.map(item -> {
-					final DistrictDto districtDto = new DistrictDto();
-					final Long population = this.cityMapper.countPopulationById(item.getId());
-					SecondBeanUtils.copyNullableProperties(item, districtDto);
-					districtDto.setPopulation(population);
-					return districtDto;
-				}).collect(Collectors.toList());
+		final List<DistrictDto> pages = this.districtMapper.paginationByKeyword(searchStr, offset, pageSize);
 		return Pagination.of(pages, records, pageNum, pageSize);
 	}
 

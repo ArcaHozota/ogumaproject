@@ -2,8 +2,6 @@ package jp.co.ogumaproject.ppok.config;
 
 import java.util.UUID;
 
-import javax.annotation.Resource;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -15,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import jakarta.annotation.Resource;
 import jp.co.ogumaproject.ppok.commons.OgumaProjectConstants;
 import jp.co.ogumaproject.ppok.commons.OgumaProjectURLConstants;
 import jp.co.ogumaproject.ppok.exception.OgumaProjectException;

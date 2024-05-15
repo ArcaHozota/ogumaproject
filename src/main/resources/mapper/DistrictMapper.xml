@@ -5,6 +5,10 @@
 		type="jp.co.ogumaproject.ppok.entity.District" autoMapping="true">
 		<id property="id" jdbcType="NUMERIC" column="ID" />
 	</resultMap>
+	<resultMap id="AdvancedResultMap"
+		type="jp.co.ogumaproject.ppok.dto.DistrictDto" autoMapping="true">
+		<id property="id" jdbcType="NUMERIC" column="ID" />
+	</resultMap>
 	<update id="updateById"
 		parameterType="jp.co.ogumaproject.ppok.entity.District">
 		UPDATE PPOG_DISTRICTS PD 
@@ -37,14 +41,25 @@
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV
 	</select>
-	<select id="paginationByKeyword" resultMap="BasicResultMap">
+	<select id="paginationByKeyword" resultMap="AdvancedResultMap">
 		SELECT
 		    PDV.*
-		    , PCV.NAME AS SHUTO_NAME 
+		    , PCV.NAME AS SHUTO_NAME
+		    , SUBQUERY.POPULATION 
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
-		    LEFT JOIN PPOG_CITIES_VIEW PCV 
+		    INNER JOIN PPOG_CITIES_VIEW PCV 
 		        ON PCV.ID = PDV.SHUTO_ID 
+		    INNER JOIN ( 
+		        SELECT
+		            PCV.DISTRICT_ID
+		            , SUM(PCV.POPULATION) AS POPULATION
+		        FROM
+		            PPOG_CITIES_VIEW PCV 
+		        GROUP BY
+		            PCV.DISTRICT_ID
+		    ) SUBQUERY 
+		        ON SUBQUERY.DISTRICT_ID = PDV.ID 
 		WHERE
 		    PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
@@ -56,7 +71,7 @@
 		    COUNT(1) 
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
-		    LEFT JOIN PPOG_CITIES_VIEW PCV 
+		    INNER JOIN PPOG_CITIES_VIEW PCV 
 		        ON PCV.ID = PDV.SHUTO_ID 
 		WHERE
 		    PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
