@@ -14,7 +14,7 @@ import jp.co.ogumaproject.ppok.entity.RoleAuth;
  * @since 6.73
  */
 @Mapper
-public interface RoleAuthMapper {
+public interface RoleAuthMapper extends CommonMapper<RoleAuth> {
 
 	/**
 	 * 役割IDによってバッチ削除を行う
