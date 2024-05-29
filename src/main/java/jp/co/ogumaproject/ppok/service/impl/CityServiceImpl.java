@@ -2,7 +2,6 @@ package jp.co.ogumaproject.ppok.service.impl;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +33,8 @@ import oracle.jdbc.driver.OracleSQLException;
 @Transactional(rollbackFor = OracleSQLException.class)
 public class CityServiceImpl implements ICityService {
 
+	private static final Integer PAGE_SIZE = OgumaProjectConstants.DEFAULT_PAGE_SIZE;
+
 	/**
 	 * 都市マッパー
 	 */
@@ -56,34 +57,14 @@ public class CityServiceImpl implements ICityService {
 
 	@Override
 	public Pagination<CityDto> getCitiesByKeyword(final Integer pageNum, final String keyword) {
-		final Integer pageSize = OgumaProjectConstants.DEFAULT_PAGE_SIZE;
-		final Integer offset = (pageNum - 1) * pageSize;
-		String searchStr;
-		if (OgumaProjectUtils.isDigital(keyword)) {
-			searchStr = "%".concat(keyword).concat("%");
-		} else {
-			searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
-		}
+		final Integer offset = (pageNum - 1) * PAGE_SIZE;
+		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
 		final Long records = this.cityMapper.countByKeyword(searchStr);
-		final Integer pageMax = (int) ((records / pageSize) + ((records % pageSize) != 0 ? 1 : 0));
-		if (pageNum > pageMax) {
-			final List<CityDto> pages = this.cityMapper
-					.paginationByKeyword(searchStr, (pageMax - 1) * pageSize, pageSize).stream().map(item -> {
-						final CityDto cityDto = new CityDto();
-						SecondBeanUtils.copyNullableProperties(item, cityDto);
-						cityDto.setDistrictName(item.getDistrict().getName());
-						return cityDto;
-					}).collect(Collectors.toList());
-			return Pagination.of(pages, records, pageMax, pageSize);
-		}
-		final List<CityDto> pages = this.cityMapper.paginationByKeyword(searchStr, offset, pageSize).stream()
-				.map(item -> {
-					final CityDto cityDto = new CityDto();
-					SecondBeanUtils.copyNullableProperties(item, cityDto);
-					cityDto.setDistrictName(item.getDistrict().getName());
-					return cityDto;
-				}).collect(Collectors.toList());
-		return Pagination.of(pages, records, pageNum, pageSize);
+		final List<CityDto> pages = this.cityMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE).stream()
+				.map(item -> new CityDto(item.getId(), item.getName(), item.getDistrictId(), item.getPronunciation(),
+						item.getDistrictName(), item.getPopulation(), item.getCityFlag()))
+				.toList();
+		return Pagination.of(pages, records, pageNum, PAGE_SIZE);
 	}
 
 	@Override
@@ -109,12 +90,11 @@ public class CityServiceImpl implements ICityService {
 
 	@Override
 	public ResultDto<String> update(final CityDto cityDto) {
-		final City entity = new City();
-		entity.setId(cityDto.getId());
-		final City city = this.cityMapper.selectById(entity);
-		SecondBeanUtils.copyNullableProperties(city, entity);
+		final City originalEntity = new City();
+		final City city = this.cityMapper.selectById(cityDto.id());
+		SecondBeanUtils.copyNullableProperties(city, originalEntity);
 		SecondBeanUtils.copyNullableProperties(cityDto, city);
-		if (city.equals(entity)) {
+		if (OgumaProjectUtils.isEqual(originalEntity, city)) {
 			return ResultDto.failed(OgumaProjectConstants.MESSAGE_STRING_NOCHANGE);
 		}
 		this.cityMapper.updateById(city);

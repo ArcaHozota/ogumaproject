@@ -4,6 +4,10 @@
 	<resultMap id="BasicResultMap"
 		type="jp.co.ogumaproject.ppok.entity.District" autoMapping="true">
 		<id property="id" jdbcType="NUMERIC" column="ID" />
+		<collection property="cities" resultMap="cityMap" />
+	</resultMap>
+	<resultMap id="cityMap" type="jp.co.ogumaproject.ppok.entity.City">
+		<id property="id" jdbcType="NUMERIC" column="ID" />
 	</resultMap>
 	<update id="updateById"
 		parameterType="jp.co.ogumaproject.ppok.entity.District">
@@ -42,23 +46,15 @@
 		    PDV.*
 		    , PCHV.NAME AS CHIHO_NAME
 		    , PCV.NAME AS SHUTO_NAME
-		    , SUBQUERY.POPULATION 
+		    , PCV2.* 
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
 		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
 		        ON PCHV.ID = PDV.CHIHO_ID 
 		    INNER JOIN PPOG_CITIES_VIEW PCV 
 		        ON PCV.ID = PDV.SHUTO_ID 
-		    INNER JOIN ( 
-		        SELECT
-		            PCV.DISTRICT_ID
-		            , SUM(PCV.POPULATION) AS POPULATION
-		        FROM
-		            PPOG_CITIES_VIEW PCV 
-		        GROUP BY
-		            PCV.DISTRICT_ID
-		    ) SUBQUERY 
-		        ON SUBQUERY.DISTRICT_ID = PDV.ID 
+		    INNER JOIN PPOG_CITIES_VIEW PCV2 
+		        ON PCV2.DISTRICT_ID = PDV.ID 
 		WHERE
 		    PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 

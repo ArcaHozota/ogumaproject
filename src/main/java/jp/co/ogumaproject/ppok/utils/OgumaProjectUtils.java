@@ -1,22 +1,27 @@
 package jp.co.ogumaproject.ppok.utils;
 
+import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.alibaba.fastjson2.JSON;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jp.co.ogumaproject.ppok.config.ResponseLoginDto;
 import lombok.AccessLevel;
@@ -236,13 +241,30 @@ public final class OgumaProjectUtils {
 	}
 
 	/**
+	 * 現在のリクエストがAJAXリクエストであるかどうかを判断する
+	 *
+	 * @param request リクエスト
+	 * @return true: ajax-request, false: no-ajax
+	 */
+	public static boolean discernRequestType(final HttpServletRequest request) {
+		// リクエストヘッダー情報の取得する
+		final String acceptInformation = request.getHeader("Accept");
+		final String xRequestInformation = request.getHeader("X-Requested-With");
+		// 判断して返却する
+		return ((acceptInformation != null) && (acceptInformation.length() > 0)
+				&& acceptInformation.contains("application/json"))
+				|| ((xRequestInformation != null) && (xRequestInformation.length() > 0)
+						&& "XMLHttpRequest".equals(xRequestInformation));
+	}
+
+	/**
 	 * 共通権限管理ストリーム
 	 *
 	 * @param stream 権限ストリーム
 	 * @return List<String>
 	 */
-	public static final List<String> getAuthNames(final Stream<SimpleGrantedAuthority> stream) {
-		return stream.map(SimpleGrantedAuthority::getAuthority).collect(Collectors.toList());
+	public static List<String> getAuthNames(final Stream<SimpleGrantedAuthority> stream) {
+		return stream.map(SimpleGrantedAuthority::getAuthority).toList();
 	}
 
 	/**
@@ -259,6 +281,26 @@ public final class OgumaProjectUtils {
 			builder.append(charAt).append("%");
 		}
 		return builder.toString();
+	}
+
+	/**
+	 * エンティティのパラメータマップを取得する
+	 *
+	 * @param city 都市エンティティ
+	 * @return Map<String, Object>
+	 */
+	public static Map<String, Object> getParamMap(final Object obj) {
+		final Map<String, Object> paramMap = new HashMap<>();
+		final BeanWrapper beanWrapper = new BeanWrapperImpl(obj);
+		final PropertyDescriptor[] propertyDescriptors = beanWrapper.getPropertyDescriptors();
+		for (final PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+			final String propertyName = propertyDescriptor.getName();
+			if (OgumaProjectUtils.isEqual("class", propertyName)) {
+				continue;
+			}
+			paramMap.put(propertyName, beanWrapper.getPropertyValue(propertyName));
+		}
+		return paramMap;
 	}
 
 	/**
@@ -317,6 +359,34 @@ public final class OgumaProjectUtils {
 	}
 
 	/**
+	 * 二つのロング数はイコールすることを判断する
+	 *
+	 * @param long1 ロング1
+	 * @param long2 ロング2
+	 * @return true: イコール, false: イコールしない
+	 */
+	public static boolean isEqual(@Nullable final Long long1, @Nullable final Long long2) {
+		if (((long1 == null) && (long2 == null)) || (long1.longValue() == long2.longValue())) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 二つのオブジェクトはイコールすることを判断する
+	 *
+	 * @param obj1 オブジェクト1
+	 * @param obj2 オブジェクト2
+	 * @return true: イコール, false: イコールしない
+	 */
+	public static boolean isEqual(@Nullable final Object obj1, @Nullable final Object obj2) {
+		if (((obj1 == null) && (obj2 == null)) || ((obj1 != null) && obj1.equals(obj2))) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * 二つのストリングはイコールすることを判断する
 	 *
 	 * @param str1 ストリング1
@@ -344,6 +414,28 @@ public final class OgumaProjectUtils {
 	}
 
 	/**
+	 * 二つのロング数はイコールしないことを判断する
+	 *
+	 * @param long1 ロング1
+	 * @param long2 ロング2
+	 * @return true: イコールしない, false: イコール
+	 */
+	public static boolean isNotEqual(@Nullable final Long long1, @Nullable final Long long2) {
+		return !OgumaProjectUtils.isEqual(long1, long2);
+	}
+
+	/**
+	 * 二つのオブジェクトはイコールしないことを判断する
+	 *
+	 * @param obj1 オブジェクト1
+	 * @param obj2 オブジェクト2
+	 * @return true: イコールしない, false: イコール
+	 */
+	public static boolean isNotEqual(@Nullable final Object obj1, @Nullable final Object obj2) {
+		return !OgumaProjectUtils.isEqual(obj1, obj2);
+	}
+
+	/**
 	 * 二つのストリングはイコールしないことを判断する
 	 *
 	 * @param str1 ストリング1
@@ -364,8 +456,9 @@ public final class OgumaProjectUtils {
 	public static void renderString(final HttpServletResponse response, final ResponseLoginDto aResult) {
 		try {
 			response.setStatus(aResult.getCode());
-			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+			response.setContentType(MediaType.APPLICATION_JSON_UTF8.toString());
 			response.getWriter().print(JSON.toJSONString(aResult));
+			response.getWriter().close();
 		} catch (final IOException e) {
 			// do nothing
 		}

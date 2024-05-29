@@ -1,15 +1,17 @@
 package jp.co.ogumaproject.ppok.service.impl;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.ogumaproject.ppok.commons.OgumaProjectConstants;
+import jp.co.ogumaproject.ppok.dto.CityDto;
 import jp.co.ogumaproject.ppok.dto.DistrictDto;
+import jp.co.ogumaproject.ppok.entity.Chiho;
+import jp.co.ogumaproject.ppok.entity.City;
 import jp.co.ogumaproject.ppok.entity.District;
 import jp.co.ogumaproject.ppok.mapper.CityMapper;
 import jp.co.ogumaproject.ppok.mapper.DistrictMapper;
@@ -44,27 +46,28 @@ public class DistrictServiceImpl implements IDistrictService {
 	private final DistrictMapper districtMapper;
 
 	@Override
+	public List<Chiho> getChihos(final String chihoName) {
+		final List<Chiho> chihos = new ArrayList<>();
+		final List<Chiho> list = this.chihoRepository.getList();
+		chihos.addAll(list.stream().filter(a -> OgumaProjectUtils.isEqual(a.getName(), chihoName)).toList());
+		chihos.addAll(list);
+		return chihos.stream().distinct().toList();
+	}
+
+	@Override
 	public List<DistrictDto> getDistrictsByCityId(final String cityId) {
-		final List<DistrictDto> list = new ArrayList<>();
-		final List<DistrictDto> districtDtos = this.districtMapper.selectAll().stream().map(item -> {
-			final DistrictDto districtDto = new DistrictDto();
-			SecondBeanUtils.copyNullableProperties(item, districtDto);
-			return districtDto;
-		}).collect(Collectors.toList());
+		final List<District> districts = this.districtMapper.selectAll();
 		if (!OgumaProjectUtils.isDigital(cityId)) {
-			final DistrictDto districtDto = new DistrictDto();
-			districtDto.setId(0L);
-			districtDto.setName(OgumaProjectConstants.DEFAULT_ROLE_NAME);
-			list.add(districtDto);
-			list.addAll(districtDtos);
-			return list;
+			return districts.stream().map(item -> new DistrictDto(item.getId(), item.getName(), null, null, null,
+					item.getChihoName(), null, null)).toList();
 		}
-		final Long districtId = this.cityMapper.selectById(Long.parseLong(cityId)).getDistrictId();
-		final List<DistrictDto> collect = districtDtos.stream().filter(a -> Objects.equals(districtId, a.getId()))
-				.collect(Collectors.toList());
-		list.addAll(collect);
-		list.addAll(districtDtos);
-		return list.stream().distinct().collect(Collectors.toList());
+		final List<District> aDistricts = new ArrayList<>();
+		final City city = this.cityMapper.selectById(Long.parseLong(cityId));
+		aDistricts.add(districts.stream().filter(a -> OgumaProjectUtils.isEqual(a.getId(), city.getDistrictId()))
+				.toList().get(0));
+		aDistricts.addAll(districts);
+		return aDistricts.stream().distinct().map(item -> new DistrictDto(item.getId(), item.getName(), null, null,
+				null, item.getChihoName(), null, null)).toList();
 	}
 
 	@Override
@@ -75,6 +78,17 @@ public class DistrictServiceImpl implements IDistrictService {
 		final Long records = this.districtMapper.countByKeyword(searchStr);
 		final List<DistrictDto> pages = this.districtMapper.paginationByKeyword(searchStr, offset, pageSize);
 		return Pagination.of(pages, records, pageNum, pageSize);
+	}
+
+	@Override
+	public List<CityDto> getShutos(final DistrictDto districtDto) {
+		final List<CityDto> cityDtos = new ArrayList<>();
+		final List<City> cities = this.cityRepository.getListByForeignKey(districtDto.id());
+		cityDtos.addAll(cities.stream().filter(a -> OgumaProjectUtils.isEqual(a.getName(), districtDto.shutoName()))
+				.map(item -> new CityDto(item.getId(), item.getName(), null, null, null, null, null)).toList());
+		cityDtos.addAll(cities.stream().sorted(Comparator.comparingLong(City::getId))
+				.map(item -> new CityDto(item.getId(), item.getName(), null, null, null, null, null)).toList());
+		return cityDtos.stream().distinct().toList();
 	}
 
 	@Override

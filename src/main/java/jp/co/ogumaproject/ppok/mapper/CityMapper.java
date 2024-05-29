@@ -8,7 +8,7 @@ import jp.co.ogumaproject.ppok.entity.City;
  * 都市マッパー
  *
  * @author ArkamaHozota
- * @since 2.40
+ * @since 1.16
  */
 @Mapper
 public interface CityMapper extends CommonMapper<City> {
