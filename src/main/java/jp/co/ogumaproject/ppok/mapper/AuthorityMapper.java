@@ -14,14 +14,7 @@ import jp.co.ogumaproject.ppok.entity.Authority;
  * @since 1.00
  */
 @Mapper
-public interface AuthorityMapper {
-
-	/**
-	 * 全件検索を行う
-	 *
-	 * @return List<Authority>
-	 */
-	List<Authority> selectAll();
+public interface AuthorityMapper extends CommonMapper<Authority> {
 
 	/**
 	 * IDリストによって検索を行う
