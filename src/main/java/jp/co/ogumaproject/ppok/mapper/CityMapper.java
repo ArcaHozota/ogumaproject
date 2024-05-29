@@ -33,14 +33,6 @@ public interface CityMapper {
 	Long countByKeyword(@Param("keyword") String keyword);
 
 	/**
-	 * IDによって県域の人口数量を取得する
-	 *
-	 * @param districtId 地域ID
-	 * @return Long
-	 */
-	Long countPopulationById(@Param("districtId") Long districtId);
-
-	/**
 	 * IDによって情報を挿入する
 	 *
 	 * @param city 都市エンティティ

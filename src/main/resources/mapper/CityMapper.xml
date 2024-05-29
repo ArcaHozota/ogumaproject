@@ -4,10 +4,6 @@
 	<resultMap id="BasicResultMap"
 		type="jp.co.ogumaproject.ppok.entity.City" autoMapping="true">
 		<id property="id" jdbcType="NUMERIC" column="ID" />
-		<association property="district" javaType="jp.co.ogumaproject.ppok.entity.District">
-			<id property="id" jdbcType="NUMERIC" column="ID" />
-			<result property="name" jdbcType="NVARCHAR" column="DISTRICT_NAME" />
-		</association>
 	</resultMap>
 	<insert id="insertById"
 		parameterType="jp.co.ogumaproject.ppok.entity.City">
@@ -96,14 +92,6 @@
 		    PCV.PRONUNCIATION LIKE #{keyword,jdbcType=NUMERIC} 
 		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
-	</select>
-	<select id="countPopulationById" resultType="java.lang.Long">
-		SELECT
-		    SUM(PCV.POPULATION) 
-		FROM
-		    PPOG_CITIES_VIEW PCV 
-		WHERE
-		    PCV.DISTRICT_ID = #{districtId,jdbcType=NUMERIC}
 	</select>
 	<select id="checkDuplicated"
 		parameterType="jp.co.ogumaproject.ppok.entity.City" resultType="java.lang.Integer">

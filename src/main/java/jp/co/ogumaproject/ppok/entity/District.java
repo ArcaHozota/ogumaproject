@@ -1,5 +1,7 @@
 package jp.co.ogumaproject.ppok.entity;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -44,4 +46,9 @@ public final class District extends CommonEntity {
 	 * 都道府県旗
 	 */
 	private String districtFlag;
+
+	/**
+	 * 地域都市関連リスト
+	 */
+	private List<City> cities;
 }

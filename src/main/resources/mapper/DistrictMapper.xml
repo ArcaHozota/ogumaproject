@@ -5,10 +5,6 @@
 		type="jp.co.ogumaproject.ppok.entity.District" autoMapping="true">
 		<id property="id" jdbcType="NUMERIC" column="ID" />
 	</resultMap>
-	<resultMap id="AdvancedResultMap"
-		type="jp.co.ogumaproject.ppok.dto.DistrictDto" autoMapping="true">
-		<id property="id" jdbcType="NUMERIC" column="ID" />
-	</resultMap>
 	<update id="updateById"
 		parameterType="jp.co.ogumaproject.ppok.entity.District">
 		UPDATE PPOG_DISTRICTS PD 
@@ -41,13 +37,16 @@
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV
 	</select>
-	<select id="paginationByKeyword" resultMap="AdvancedResultMap">
+	<select id="paginationByKeyword" resultMap="BasicResultMap">
 		SELECT
 		    PDV.*
+		    , PCHV.NAME AS CHIHO_NAME
 		    , PCV.NAME AS SHUTO_NAME
 		    , SUBQUERY.POPULATION 
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
+		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
+		        ON PCHV.ID = PDV.CHIHO_ID 
 		    INNER JOIN PPOG_CITIES_VIEW PCV 
 		        ON PCV.ID = PDV.SHUTO_ID 
 		    INNER JOIN ( 
@@ -63,7 +62,7 @@
 		WHERE
 		    PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PDV.CHIHO LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OR PCHV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OFFSET #{offset,jdbcType=INTEGER} ROWS FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
 	</select>
 	<select id="countByKeyword" resultType="java.lang.Long">
@@ -71,11 +70,13 @@
 		    COUNT(1) 
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
+		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
+		        ON PCHV.ID = PDV.CHIHO_ID 
 		    INNER JOIN PPOG_CITIES_VIEW PCV 
 		        ON PCV.ID = PDV.SHUTO_ID 
 		WHERE
 		    PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PDV.CHIHO LIKE #{keyword,jdbcType=NVARCHAR}
+		    OR PCHV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
 	</select>
 </mapper>
