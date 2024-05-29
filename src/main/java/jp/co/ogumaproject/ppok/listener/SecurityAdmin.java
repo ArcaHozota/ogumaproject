@@ -31,7 +31,7 @@ public final class SecurityAdmin extends User {
 	 * @param authorities 権限リスト
 	 */
 	SecurityAdmin(final EmployeeDto admin, final Collection<SimpleGrantedAuthority> authorities) {
-		super(admin.getLoginAccount(), admin.getPassword(), true, true, true, true, authorities);
+		super(admin.loginAccount(), admin.password(), true, true, true, true, authorities);
 		this.originalAdmin = admin;
 	}
 

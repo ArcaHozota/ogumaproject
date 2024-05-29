@@ -111,10 +111,7 @@ public final class EmployeeController {
 	@PostMapping(OgumaProjectURLConstants.URL_DO_SIGN_UP)
 	public ModelAndView register(@RequestParam("email") final String email,
 			@RequestParam("password") final String password, @RequestParam("dateOfBirth") final String dateOfBirth) {
-		final EmployeeDto employeeDto = new EmployeeDto();
-		employeeDto.setEmail(email);
-		employeeDto.setPassword(password);
-		employeeDto.setDateOfBirth(dateOfBirth);
+		final EmployeeDto employeeDto = new EmployeeDto(null, null, null, password, email, dateOfBirth, null);
 		final Boolean toroku = this.iEmployeeService.register(employeeDto);
 		final ModelAndView mAndView = new ModelAndView("admin-login");
 		if (Boolean.FALSE.equals(toroku)) {
@@ -137,10 +134,7 @@ public final class EmployeeController {
 	@PostMapping(OgumaProjectURLConstants.URL_RESET_PASSWORD)
 	public ModelAndView resetPassword(@RequestParam("account") final String account,
 			@RequestParam("email") final String email, @RequestParam("dateOfBirth") final String dateOfBirth) {
-		final EmployeeDto employeeDto = new EmployeeDto();
-		employeeDto.setEmail(email);
-		employeeDto.setDateOfBirth(dateOfBirth);
-		employeeDto.setLoginAccount(account);
+		final EmployeeDto employeeDto = new EmployeeDto(null, account, null, null, email, dateOfBirth, null);
 		final Boolean resetPassword = this.iEmployeeService.resetPassword(employeeDto);
 		if (Boolean.FALSE.equals(resetPassword)) {
 			final ModelAndView modelAndView = new ModelAndView("admin-forgot");
@@ -193,7 +187,7 @@ public final class EmployeeController {
 		final EmployeeDto employee = this.iEmployeeService.getEmployeeById(id);
 		if (Boolean.FALSE.equals(Boolean.valueOf(authChkFlag))) {
 			final ModelAndView modelAndView = new ModelAndView("admin-editinfo2");
-			final RoleDto roleDto = this.iRoleService.getRoleById(employee.getRoleId());
+			final RoleDto roleDto = this.iRoleService.getRoleById(employee.roleId());
 			modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EDITED_INFO, employee);
 			modelAndView.addObject(OgumaProjectConstants.ATTRNAME_EMPLOYEEROLES, roleDto);
 			modelAndView.addObject(OgumaProjectConstants.ATTRNAME_PAGE_NUMBER, pageNum);
