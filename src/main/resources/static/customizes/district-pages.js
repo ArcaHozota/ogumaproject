@@ -34,7 +34,7 @@ function buildTableBody(result) {
 		let idTd = $("<th scope='row' class='text-center table-light' style='width:150px;vertical-align:middle;'></th>").append(item.id);
 		let nameTd = $("<td scope='row' class='text-center table-light' style='width:70px;vertical-align:middle;'></td>").append(item.name);
 		let shutoTd = $("<td scope='row' class='text-center table-light' style='width:70px;vertical-align:middle;'></td>").append(item.shutoName);
-		let chihoTd = $("<td scope='row' class='text-center table-light' style='width:70px;vertical-align:middle;'></td>").append(item.chiho);
+		let chihoTd = $("<td scope='row' class='text-center table-light' style='width:70px;vertical-align:middle;'></td>").append(item.chihoName);
 		let populationTd = $("<td scope='row' class='text-center table-light' style='width:50px;vertical-align:middle;'></td>").append(patternedPop);
 		let flagImg = $("<img>").attr('src', '/static/image/flags/prefectures/' + item.districtFlag + '.svg').attr('alt', '').height(27).width(40);
 		let flagTd = $("<td scope='row' class='text-center table-light district-flg-td' role='button' style='width:50px;vertical-align:middle;'></td>").append(flagImg);
@@ -63,8 +63,8 @@ $("#tableBody").on('click', '.edit-btn', function() {
 	let chihoVal = $(this).parent().parent().find("td:eq(2)").text();
 	let populationVal = $(this).parent().parent().find("td:eq(3)").text();
 	$("#nameEdit").val(nameVal);
-	$("#chihoEdit").val(chihoVal);
-	$("#shutoEdit").text(shutoVal);
+	getChihos("#chihoEdit", chihoVal);
+	getShutos("#shutoEdit", editId, shutoVal);
 	$("#populationEdit").text(populationVal);
 	let addModal = new bootstrap.Modal($("#districtEditModal"), {
 		backdrop: 'static'
@@ -82,7 +82,8 @@ $("#districtInfoChangeBtn").on('click', function() {
 		let putData = JSON.stringify({
 			'id': this.value,
 			'name': $("#nameEdit").val().trim(),
-			'chiho': $("#chihoEdit").val().trim()
+			'chihoId': $("#chihoEdit").val(),
+			'shutoId': $("#shutoEdit").val()
 		});
 		ogumaAjaxModify('/oguma/district/infoUpdate', 'PUT', putData, putSuccessFunction);
 	}
@@ -91,6 +92,44 @@ $("#tableBody").on('click', '.district-flg-td', function() {
 	let nameVal = $(this).parent().find("td:eq(0)").text();
 	window.open('https://ja.wikipedia.org/wiki/' + nameVal);
 });
+function getChihos(element, chihoVal) {
+	$(element).empty();
+	$.ajax({
+		url: '/oguma/district/getChihos',
+		data: 'chihoName=' + chihoVal,
+		type: 'GET',
+		success: function(result) {
+			$.each(result.data, (index, item) => {
+				let optionElement = $("<option></option>").attr('value', item.id).text(item.name);
+				optionElement.appendTo(element);
+			});
+		}
+	});
+}
+function getShutos(element, editId, shutoVal) {
+	let header = $('meta[name=_csrf_header]').attr('content');
+	let token = $('meta[name=_csrf_token]').attr('content');
+	$(element).empty();
+	$.ajax({
+		url: '/oguma/district/getShutos',
+		type: 'POST',
+		headers: {
+			[header]: token
+		},
+		data: JSON.stringify({
+			'id': editId,
+			'shutoName': shutoVal
+		}),
+		dataType: 'json',
+		contentType: 'application/json;charset=UTF-8',
+		success: function(result) {
+			$.each(result.data, (index, item) => {
+				let optionElement = $("<option></option>").attr('value', item.id).text(item.name);
+				optionElement.appendTo(element);
+			});
+		}
+	});
+}
 function putSuccessFunction(result) {
 	if (result.status === 'SUCCESS') {
 		$("#districtEditModal").modal('hide');
