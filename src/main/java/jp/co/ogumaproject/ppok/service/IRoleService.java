@@ -3,8 +3,8 @@ package jp.co.ogumaproject.ppok.service;
 import java.util.List;
 import java.util.Map;
 
+import jp.co.ogumaproject.ppok.dto.AuthorityDto;
 import jp.co.ogumaproject.ppok.dto.RoleDto;
-import jp.co.ogumaproject.ppok.entity.Authority;
 import jp.co.ogumaproject.ppok.utils.Pagination;
 import jp.co.ogumaproject.ppok.utils.ResultDto;
 
@@ -43,9 +43,9 @@ public interface IRoleService {
 	/**
 	 * 権限リストを取得する
 	 *
-	 * @return List<PgAuth>
+	 * @return List<AuthorityDto>
 	 */
-	List<Authority> getAuthList();
+	List<AuthorityDto> getAuthList();
 
 	/**
 	 * IDによって情報を取得する
