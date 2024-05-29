@@ -8,9 +8,7 @@
 			<id property="id" jdbcType="NUMERIC" column="CHIHO_ID" />
 			<id property="name" jdbcType="NVARCHAR" column="CHIHO_NAME" />
 		</association>
-		<collection property="cities" ofType="jp.co.ogumaproject.ppok.entity.City" select="subQuery">
-			<id property="id" jdbcType="NUMERIC" column="ID" />
-		</collection>
+		<collection property="cities" ofType="jp.co.ogumaproject.ppok.entity.City" select="subQuery" column="ID" />
 	</resultMap>
 	<update id="updateById"
 		parameterType="jp.co.ogumaproject.ppok.entity.District">
@@ -96,5 +94,7 @@
 		    PPOG_DISTRICTS_VIEW PDV 
 		    INNER JOIN PPOG_CITIES_VIEW PCV 
 		        ON PCV.DISTRICT_ID = PDV.ID 
+		WHERE
+			PCV.DISTRICT_ID = #{id}
 	</select>
 </mapper>

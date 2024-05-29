@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public final class District extends CommonEntity {
+public class District extends CommonEntity {
 
 	private static final long serialVersionUID = -4147005411969906444L;
 
