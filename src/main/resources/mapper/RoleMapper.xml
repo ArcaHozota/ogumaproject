@@ -60,8 +60,7 @@
 		FROM
 		    PPOG_ROLES_VIEW PRV 
 		WHERE
-		    PRV.ID LIKE #{keyword,jdbcType=NUMERIC} 
-		    OR PRV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		    PRV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OFFSET #{offset,jdbcType=INTEGER} ROWS FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
 	</select>
 	<select id="countByKeyword" resultType="java.lang.Long">
@@ -70,8 +69,7 @@
 		FROM
 		    PPOG_ROLES_VIEW PRV 
 		WHERE
-		    PRV.ID LIKE #{keyword,jdbcType=NUMERIC} 
-		    OR PRV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
+		    PRV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
 	</select>
 	<select id="checkDuplicated"
 		parameterType="java.lang.String" resultType="java.lang.Integer">

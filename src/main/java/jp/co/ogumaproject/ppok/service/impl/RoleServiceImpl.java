@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,7 +95,7 @@ public class RoleServiceImpl implements IRoleService {
 	@Override
 	public List<Long> getAuthIdsById(final Long id) {
 		final Role role = this.roleMapper.selectByIdWithAuth(id);
-		return role.getRoleAuths().stream().map(RoleAuth::getAuthId).collect(Collectors.toList());
+		return role.getRoleAuths().stream().map(RoleAuth::getAuthId).toList();
 	}
 
 	@Override
@@ -124,13 +123,11 @@ public class RoleServiceImpl implements IRoleService {
 		} else {
 			final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employeeId);
 			final List<Role> selectedRole = roles.stream()
-					.filter(a -> OgumaProjectUtils.isEqual(a.getId(), employeeRole.getRoleId()))
-					.collect(Collectors.toList());
+					.filter(a -> OgumaProjectUtils.isEqual(a.getId(), employeeRole.getRoleId())).toList();
 			roleDtos.addAll(selectedRole);
 		}
 		roleDtos.addAll(roles);
-		return roleDtos.stream().distinct().map(item -> new RoleDto(item.getId(), item.getName()))
-				.collect(Collectors.toList());
+		return roleDtos.stream().distinct().map(item -> new RoleDto(item.getId(), item.getName())).toList();
 	}
 
 	@Override
@@ -139,7 +136,7 @@ public class RoleServiceImpl implements IRoleService {
 		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
 		final Long records = this.roleMapper.countByKeyword(searchStr);
 		final List<RoleDto> roleDtos = this.roleMapper.paginationByKeyword(keyword, offset, PAGE_SIZE).stream()
-				.map(item -> new RoleDto(item.getId(), item.getName())).collect(Collectors.toList());
+				.map(item -> new RoleDto(item.getId(), item.getName())).toList();
 		return Pagination.of(roleDtos, records, pageNum, PAGE_SIZE);
 	}
 
