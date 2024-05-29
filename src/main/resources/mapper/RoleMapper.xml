@@ -46,10 +46,11 @@
 	<select id="selectByIdWithAuth" resultMap="BasicResultMap">
 		SELECT
 		    PRV.*
-		    , PRAV.* 
+		    , PRAV.ROLE_ID 
+		    , PRAV.AUTH_ID 
 		FROM
 		    PPOG_ROLES_VIEW PRV 
-		    LEFT JOIN PPOG_ROLE_AUTH_VIEW PRAV 
+		    INNER JOIN PPOG_ROLE_AUTH_VIEW PRAV 
 		        ON PRAV.ROLE_ID = PRV.ID 
 		WHERE
 		    PRV.ID = #{id,jdbcType=NUMERIC}
