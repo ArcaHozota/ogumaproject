@@ -5,7 +5,8 @@
 		type="jp.co.ogumaproject.ppok.entity.District" autoMapping="true">
 		<id property="id" jdbcType="NUMERIC" column="ID" />
 		<association property="chiho" javaType="jp.co.ogumaproject.ppok.entity.Chiho">
-			<id property="id" jdbcType="NUMERIC" column="ID" />
+			<id property="id" jdbcType="NUMERIC" column="CHIHO_ID" />
+			<id property="name" jdbcType="NVARCHAR" column="CHIHO_NAME" />
 		</association>
 		<collection property="cities" resultMap="cityMap" />
 	</resultMap>
@@ -33,7 +34,8 @@
 	<select id="selectById" resultMap="BasicResultMap">
 		SELECT
 		    PDV.*
-		    , PCHV.*
+		    , PCHV.ID AS CHIHO_ID
+		    , PCHV.NAME AS CHIHO_NAME
 		    , PCV.* 
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
@@ -47,7 +49,8 @@
 	<select id="selectAll" resultMap="BasicResultMap">
 		SELECT
 		    PDV.*
-		    , PCHV.*
+		    , PCHV.ID AS CHIHO_ID
+		    , PCHV.NAME AS CHIHO_NAME
 		    , PCV.* 
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
@@ -59,7 +62,8 @@
 	<select id="paginationByKeyword" resultMap="BasicResultMap">
 		SELECT
 		    PDV.*
-		    , PCHV.*
+		    , PCHV.ID AS CHIHO_ID
+		    , PCHV.NAME AS CHIHO_NAME
 		    , PCV.* 
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
