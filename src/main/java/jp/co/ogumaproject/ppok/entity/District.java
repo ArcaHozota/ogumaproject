@@ -28,6 +28,11 @@ public final class District extends CommonEntity {
 	private Long shutoId;
 
 	/**
+	 * 州都名称
+	 */
+	private Long shutoName;
+
+	/**
 	 * 地方ID
 	 */
 	private Long chihoId;
