@@ -1,8 +1,7 @@
 package jp.co.ogumaproject.ppok.entity;
 
-import java.io.Serializable;
-
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 権限エンティティ
@@ -11,27 +10,23 @@ import lombok.Data;
  * @since 1.00beta
  */
 @Data
-public final class Authority implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public final class Authority extends CommonEntity {
 
 	private static final long serialVersionUID = -1152271767975364197L;
 
 	/**
-	 * ID
-	 */
-	private Long id;
-
-	/**
-	 * 名称
+	 * 権限名称
 	 */
 	private String name;
 
 	/**
-	 * タイトル
+	 * 権限論理名称
 	 */
 	private String title;
 
 	/**
-	 * 親ディレクトリID
+	 * 権限親ID
 	 */
 	private Long categoryId;
 }

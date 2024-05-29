@@ -1,24 +1,19 @@
 package jp.co.ogumaproject.ppok.entity;
 
-import java.io.Serializable;
-
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 地域エンティティ
  *
  * @author ArkamaHozota
- * @since 2.28
+ * @since 1.00beta
  */
 @Data
-public final class District implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public final class District extends CommonEntity {
 
-	private static final long serialVersionUID = -7201275886879390519L;
-
-	/**
-	 * ID
-	 */
-	private Long id;
+	private static final long serialVersionUID = -4147005411969906444L;
 
 	/**
 	 * 名称
@@ -31,17 +26,22 @@ public final class District implements Serializable {
 	private Long shutoId;
 
 	/**
-	 * 地方
+	 * 地方ID
 	 */
-	private String chiho;
+	private Long chihoId;
+
+	/**
+	 * 州都名称
+	 */
+	private String shutoName;
+
+	/**
+	 * 地方名称
+	 */
+	private String chihoName;
 
 	/**
 	 * 都道府県旗
 	 */
 	private String districtFlag;
-
-	/**
-	 * 論理削除フラグ
-	 */
-	private String delFlg;
 }

@@ -1,19 +1,19 @@
 package jp.co.ogumaproject.ppok.entity;
 
-import java.io.Serializable;
-
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * 社員役割連携エンティティ
+ * 社員役割エンティティ
  *
  * @author ArkamaHozota
  * @since 1.00beta
  */
 @Data
-public final class EmployeeRole implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public final class EmployeeRole extends CommonEntity {
 
-	private static final long serialVersionUID = 8049959021603519067L;
+	private static final long serialVersionUID = -4412331507806836307L;
 
 	/**
 	 * 社員ID
