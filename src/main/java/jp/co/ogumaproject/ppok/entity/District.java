@@ -33,19 +33,14 @@ public final class District extends CommonEntity {
 	private Long chihoId;
 
 	/**
-	 * 州都名称
-	 */
-	private String shutoName;
-
-	/**
-	 * 地方名称
-	 */
-	private String chihoName;
-
-	/**
 	 * 都道府県旗
 	 */
 	private String districtFlag;
+
+	/**
+	 * 地域地方関連
+	 */
+	private Chiho chiho;
 
 	/**
 	 * 地域都市関連リスト
