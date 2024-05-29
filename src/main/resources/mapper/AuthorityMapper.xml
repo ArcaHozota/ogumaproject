@@ -10,7 +10,7 @@
 		SELECT
 		    PAV.* 
 		FROM
-		    PPOG_AUTHORITY_VIEW PAV 
+		    PPOG_AUTHORITIES_VIEW PAV 
 		WHERE
 			PAV.ID IN
 			<foreach collection="ids" item="id" index="index"
@@ -22,6 +22,6 @@
 		SELECT
 		    PAV.* 
 		FROM
-		    PPOG_AUTHORITY_VIEW PAV
+		    PPOG_AUTHORITIES_VIEW PAV
 	</select>
 </mapper>

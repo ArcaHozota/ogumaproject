@@ -8,7 +8,7 @@
 	<insert id="insertById"
 		parameterType="jp.co.ogumaproject.ppok.entity.Employee">
 		INSERT 
-		INTO PPOG_EMPLOYEE PE( 
+		INTO PPOG_EMPLOYEES PE( 
 		    PE.ID
 		    , PE.LOGIN_ACCOUNT
 		    , PE.PASSWORD
@@ -31,7 +31,7 @@
 	</insert>
 	<update id="removeById" 
 		parameterType="jp.co.ogumaproject.ppok.entity.Employee">
-		UPDATE PPOG_EMPLOYEE PE 
+		UPDATE PPOG_EMPLOYEES PE 
 		SET
 		    PE.DEL_FLG = #{delFlg,jdbcType=NVARCHAR}
 		WHERE
@@ -39,7 +39,7 @@
 	</update>
 	<update id="updateById"
 		parameterType="jp.co.ogumaproject.ppok.entity.Employee">
-		UPDATE PPOG_EMPLOYEE PE 
+		UPDATE PPOG_EMPLOYEES PE 
 		<set>
 			<if test="loginAccount != null">
 				PE.LOGIN_ACCOUNT = #{loginAccount,jdbcType=NVARCHAR},
@@ -65,7 +65,7 @@
 		SELECT
 		    PEV.* 
 		FROM
-		    PPOG_EMPLOYEE_VIEW PEV 
+		    PPOG_EMPLOYEES_VIEW PEV 
 		WHERE
 		    PEV.ID = #{id,jdbcType=NUMERIC}
 	</select>
@@ -73,7 +73,7 @@
 		SELECT
 		    PEV.* 
 		FROM
-		    PPOG_EMPLOYEE_VIEW PEV 
+		    PPOG_EMPLOYEES_VIEW PEV 
 		WHERE
 		    PEV.LOGIN_ACCOUNT = #{loginAccout,jdbcType=NVARCHAR}
 		    OR PEV.EMAIL = #{loginAccout,jdbcType=NVARCHAR}
@@ -82,7 +82,7 @@
 		SELECT
 		    PEV.* 
 		FROM
-		    PPOG_EMPLOYEE_VIEW PEV 
+		    PPOG_EMPLOYEES_VIEW PEV 
 		WHERE
 		    PEV.USERNAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PEV.LOGIN_ACCOUNT LIKE #{keyword,jdbcType=NVARCHAR} 
@@ -93,7 +93,7 @@
 		SELECT
 		    PEV.* 
 		FROM
-		    PPOG_EMPLOYEE_VIEW PEV 
+		    PPOG_EMPLOYEES_VIEW PEV 
 		WHERE
 		    PEV.LOGIN_ACCOUNT = #{loginAccount,jdbcType=NVARCHAR} 
 		    AND PEV.EMAIL = #{email,jdbcType=NVARCHAR} 
@@ -103,7 +103,7 @@
 		SELECT
 		    COUNT(1) 
 		FROM
-		    PPOG_EMPLOYEE_VIEW PEV 
+		    PPOG_EMPLOYEES_VIEW PEV 
 		WHERE
 		    PEV.USERNAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PEV.LOGIN_ACCOUNT LIKE #{keyword,jdbcType=NVARCHAR} 
@@ -114,7 +114,7 @@
 		SELECT
 		    COUNT(1) 
 		FROM
-		    PPOG_EMPLOYEE_VIEW PEV 
+		    PPOG_EMPLOYEES_VIEW PEV 
 		WHERE
 		    PEV.LOGIN_ACCOUNT = #{loginAccount,jdbcType=NVARCHAR}
 	</select>
