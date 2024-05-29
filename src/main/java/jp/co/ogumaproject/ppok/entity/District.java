@@ -30,7 +30,7 @@ public final class District extends CommonEntity {
 	/**
 	 * 州都名称
 	 */
-	private Long shutoName;
+	private String shutoName;
 
 	/**
 	 * 地方ID

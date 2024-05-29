@@ -88,12 +88,9 @@ public class DistrictServiceImpl implements IDistrictService {
 		final Long records = this.districtMapper.countByKeyword(searchStr);
 		final List<DistrictDto> districtDtos = this.districtMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE)
 				.stream().map(item -> {
-					final String shutoName = item.getCities().stream()
-							.filter(a -> OgumaProjectUtils.isEqual(a.getId(), item.getShutoId())).toList().get(0)
-							.getName();
 					final Long population = item.getCities().stream().map(City::getPopulation).reduce((a, v) -> (a + v))
 							.get();
-					return new DistrictDto(item.getId(), item.getName(), item.getShutoId(), shutoName,
+					return new DistrictDto(item.getId(), item.getName(), item.getShutoId(), item.getShutoName(),
 							item.getChihoId(), item.getChiho().getName(), population, item.getDistrictFlag());
 				}).toList();
 		return Pagination.of(districtDtos, records, pageNum, PAGE_SIZE);

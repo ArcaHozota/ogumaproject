@@ -11,7 +11,9 @@
 		<collection property="cities" resultMap="cityMap" />
 	</resultMap>
 	<resultMap id="cityMap" type="jp.co.ogumaproject.ppok.entity.City">
-		<id property="id" jdbcType="NUMERIC" column="ID" />
+		<id property="id" jdbcType="NUMERIC" column="CITY_ID" />
+		<result property="name" jdbcType="NVARCHAR" column="CITY_NAME" />
+		<result property="population" jdbcType="NUMERIC" column="POPULATION" />
 	</resultMap>
 	<update id="updateById"
 		parameterType="jp.co.ogumaproject.ppok.entity.District">
@@ -65,7 +67,9 @@
 		    , PCHV.ID AS CHIHO_ID
 		    , PCHV.NAME AS CHIHO_NAME
 		    , PCV.NAME AS SHUTO_NAME 
-		    , PCV2.*
+		    , PCV2.ID AS CITY_ID
+		    , PCV2.NAME AS CITY_NAME 
+		    , PCV2.POPULATION AS POPULATION
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
 		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
