@@ -124,8 +124,8 @@ public final class RoleController {
 	public ResultDto<Pagination<RoleDto>> pagination(
 			@RequestParam(name = "pageNum", defaultValue = "1") final Integer pageNum,
 			@RequestParam(name = "keyword", defaultValue = OgumaProjectUtils.EMPTY_STRING) final String keyword) {
-		final Pagination<RoleDto> roles = this.iRoleService.getRolesByKeyword(pageNum, keyword);
-		return ResultDto.successWithData(roles);
+		final Pagination<RoleDto> roleDtos = this.iRoleService.getRolesByKeyword(pageNum, keyword);
+		return ResultDto.successWithData(roleDtos);
 	}
 
 	/**

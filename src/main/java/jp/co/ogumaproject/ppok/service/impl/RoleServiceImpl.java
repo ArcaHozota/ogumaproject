@@ -135,7 +135,7 @@ public class RoleServiceImpl implements IRoleService {
 		final Integer offset = (pageNum - 1) * PAGE_SIZE;
 		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
 		final Long records = this.roleMapper.countByKeyword(searchStr);
-		final List<RoleDto> roleDtos = this.roleMapper.paginationByKeyword(keyword, offset, PAGE_SIZE).stream()
+		final List<RoleDto> roleDtos = this.roleMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE).stream()
 				.map(item -> new RoleDto(item.getId(), item.getName())).toList();
 		return Pagination.of(roleDtos, records, pageNum, PAGE_SIZE);
 	}
