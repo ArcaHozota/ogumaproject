@@ -1,5 +1,6 @@
 package jp.co.ogumaproject.ppok.listener;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,6 @@ import jp.co.ogumaproject.ppok.mapper.AuthorityMapper;
 import jp.co.ogumaproject.ppok.mapper.EmployeeMapper;
 import jp.co.ogumaproject.ppok.mapper.EmployeeRoleMapper;
 import jp.co.ogumaproject.ppok.mapper.RoleMapper;
-import jp.co.ogumaproject.ppok.utils.SecondBeanUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import oracle.jdbc.driver.OracleSQLException;
@@ -65,8 +65,6 @@ public class OgumaProjectUserDetailsService implements UserDetailsService {
 		if (employee == null) {
 			throw new DisabledException(OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR1);
 		}
-		final EmployeeDto employeeDto = new EmployeeDto();
-		SecondBeanUtils.copyNullableProperties(employee, employeeDto);
 		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employee.getId());
 		if (employeeRole == null) {
 			throw new InsufficientAuthenticationException(OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR2);
@@ -77,6 +75,9 @@ public class OgumaProjectUserDetailsService implements UserDetailsService {
 					OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR3);
 		}
 		final List<Long> authIds = role.getRoleAuths().stream().map(RoleAuth::getAuthId).collect(Collectors.toList());
+		final EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getLoginAccount(),
+				employee.getUsername(), employee.getPassword(), employee.getEmail(),
+				DateTimeFormatter.ofPattern("yyyy-MM-dd").format(employee.getDateOfBirth()), employeeRole.getRoleId());
 		final List<SimpleGrantedAuthority> authorities = this.authorityMapper.selectByIds(authIds).stream()
 				.map(item -> new SimpleGrantedAuthority(item.getName())).collect(Collectors.toList());
 		return new SecurityAdmin(employeeDto, authorities);

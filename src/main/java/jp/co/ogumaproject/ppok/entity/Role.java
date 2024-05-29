@@ -1,5 +1,7 @@
 package jp.co.ogumaproject.ppok.entity;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,4 +21,9 @@ public final class Role extends CommonEntity {
 	 * 名称
 	 */
 	private String name;
+
+	/**
+	 * 役割権限関連リスト
+	 */
+	private List<RoleAuth> roleAuths;
 }
