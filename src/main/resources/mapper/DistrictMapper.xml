@@ -29,17 +29,35 @@
 	</update>
 	<select id="selectById" resultMap="BasicResultMap">
 		SELECT
-		    PDV.* 
+		    PDV.*
+		    , PCHV.NAME AS CHIHO_NAME
+		    , PCV.NAME AS SHUTO_NAME
+		    , PCV2.* 
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
+		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
+		        ON PCHV.ID = PDV.CHIHO_ID 
+		    INNER JOIN PPOG_CITIES_VIEW PCV 
+		        ON PCV.ID = PDV.SHUTO_ID 
+		    INNER JOIN PPOG_CITIES_VIEW PCV2 
+		        ON PCV2.DISTRICT_ID = PDV.ID 
 		WHERE
 		    PDV.ID = #{id,jdbcType=NUMERIC}
 	</select>
 	<select id="selectAll" resultMap="BasicResultMap">
 		SELECT
-		    PDV.* 
+		    PDV.*
+		    , PCHV.NAME AS CHIHO_NAME
+		    , PCV.NAME AS SHUTO_NAME
+		    , PCV2.* 
 		FROM
-		    PPOG_DISTRICTS_VIEW PDV
+		    PPOG_DISTRICTS_VIEW PDV 
+		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
+		        ON PCHV.ID = PDV.CHIHO_ID 
+		    INNER JOIN PPOG_CITIES_VIEW PCV 
+		        ON PCV.ID = PDV.SHUTO_ID 
+		    INNER JOIN PPOG_CITIES_VIEW PCV2 
+		        ON PCV2.DISTRICT_ID = PDV.ID
 	</select>
 	<select id="paginationByKeyword" resultMap="BasicResultMap">
 		SELECT

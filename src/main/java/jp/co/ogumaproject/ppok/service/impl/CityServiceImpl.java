@@ -33,6 +33,9 @@ import oracle.jdbc.driver.OracleSQLException;
 @Transactional(rollbackFor = OracleSQLException.class)
 public class CityServiceImpl implements ICityService {
 
+	/**
+	 * ページサイズ
+	 */
 	private static final Integer PAGE_SIZE = OgumaProjectConstants.DEFAULT_PAGE_SIZE;
 
 	/**
@@ -60,11 +63,11 @@ public class CityServiceImpl implements ICityService {
 		final Integer offset = (pageNum - 1) * PAGE_SIZE;
 		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
 		final Long records = this.cityMapper.countByKeyword(searchStr);
-		final List<CityDto> pages = this.cityMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE).stream()
+		final List<CityDto> cityDtos = this.cityMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE).stream()
 				.map(item -> new CityDto(item.getId(), item.getName(), item.getDistrictId(), item.getPronunciation(),
 						item.getDistrictName(), item.getPopulation(), item.getCityFlag()))
 				.toList();
-		return Pagination.of(pages, records, pageNum, PAGE_SIZE);
+		return Pagination.of(cityDtos, records, pageNum, PAGE_SIZE);
 	}
 
 	@Override

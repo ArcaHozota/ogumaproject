@@ -13,6 +13,7 @@ import jp.co.ogumaproject.ppok.dto.DistrictDto;
 import jp.co.ogumaproject.ppok.entity.Chiho;
 import jp.co.ogumaproject.ppok.entity.City;
 import jp.co.ogumaproject.ppok.entity.District;
+import jp.co.ogumaproject.ppok.mapper.ChihoMapper;
 import jp.co.ogumaproject.ppok.mapper.CityMapper;
 import jp.co.ogumaproject.ppok.mapper.DistrictMapper;
 import jp.co.ogumaproject.ppok.service.IDistrictService;
@@ -36,9 +37,19 @@ import oracle.jdbc.driver.OracleSQLException;
 public class DistrictServiceImpl implements IDistrictService {
 
 	/**
+	 * ページサイズ
+	 */
+	private static final Integer PAGE_SIZE = OgumaProjectConstants.DEFAULT_PAGE_SIZE;
+
+	/**
 	 * 都市マッパー
 	 */
 	private final CityMapper cityMapper;
+
+	/**
+	 * 都市マッパー
+	 */
+	private final ChihoMapper chihoMapper;
 
 	/**
 	 * 地域マッパー
@@ -48,7 +59,7 @@ public class DistrictServiceImpl implements IDistrictService {
 	@Override
 	public List<Chiho> getChihos(final String chihoName) {
 		final List<Chiho> chihos = new ArrayList<>();
-		final List<Chiho> list = this.chihoRepository.getList();
+		final List<Chiho> list = this.chihoMapper.selectAll();
 		chihos.addAll(list.stream().filter(a -> OgumaProjectUtils.isEqual(a.getName(), chihoName)).toList());
 		chihos.addAll(list);
 		return chihos.stream().distinct().toList();
@@ -72,18 +83,23 @@ public class DistrictServiceImpl implements IDistrictService {
 
 	@Override
 	public Pagination<DistrictDto> getDistrictsByKeyword(final Integer pageNum, final String keyword) {
-		final Integer pageSize = OgumaProjectConstants.DEFAULT_PAGE_SIZE;
-		final Integer offset = (pageNum - 1) * pageSize;
+		final Integer offset = (pageNum - 1) * PAGE_SIZE;
 		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
 		final Long records = this.districtMapper.countByKeyword(searchStr);
-		final List<DistrictDto> pages = this.districtMapper.paginationByKeyword(searchStr, offset, pageSize);
-		return Pagination.of(pages, records, pageNum, pageSize);
+		final List<DistrictDto> districtDtos = this.districtMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE)
+				.stream().map(item -> {
+					final Long population = item.getCities().stream().map(City::getPopulation).reduce((a, v) -> (a + v))
+							.get();
+					return new DistrictDto(item.getId(), item.getName(), item.getShutoId(), item.getShutoName(),
+							item.getChihoId(), item.getChihoName(), population, item.getDistrictFlag());
+				}).toList();
+		return Pagination.of(districtDtos, records, pageNum, PAGE_SIZE);
 	}
 
 	@Override
 	public List<CityDto> getShutos(final DistrictDto districtDto) {
 		final List<CityDto> cityDtos = new ArrayList<>();
-		final List<City> cities = this.cityRepository.getListByForeignKey(districtDto.id());
+		final List<City> cities = this.districtMapper.selectById(districtDto.id()).getCities();
 		cityDtos.addAll(cities.stream().filter(a -> OgumaProjectUtils.isEqual(a.getName(), districtDto.shutoName()))
 				.map(item -> new CityDto(item.getId(), item.getName(), null, null, null, null, null)).toList());
 		cityDtos.addAll(cities.stream().sorted(Comparator.comparingLong(City::getId))
@@ -93,12 +109,11 @@ public class DistrictServiceImpl implements IDistrictService {
 
 	@Override
 	public ResultDto<String> update(final DistrictDto districtDto) {
-		final District entity = new District();
-		entity.setId(districtDto.getId());
-		final District district = this.districtMapper.selectById(entity);
-		SecondBeanUtils.copyNullableProperties(district, entity);
+		final District originalEntity = new District();
+		final District district = this.districtMapper.selectById(districtDto.id());
+		SecondBeanUtils.copyNullableProperties(district, originalEntity);
 		SecondBeanUtils.copyNullableProperties(districtDto, district);
-		if (district.equals(entity)) {
+		if (OgumaProjectUtils.isEqual(originalEntity, district)) {
 			return ResultDto.failed(OgumaProjectConstants.MESSAGE_STRING_NOCHANGE);
 		}
 		this.districtMapper.updateById(district);
