@@ -4,16 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.ogumaproject.ppok.commons.OgumaProjectConstants;
+import jp.co.ogumaproject.ppok.dto.AuthorityDto;
 import jp.co.ogumaproject.ppok.dto.RoleDto;
-import jp.co.ogumaproject.ppok.entity.Authority;
 import jp.co.ogumaproject.ppok.entity.EmployeeRole;
 import jp.co.ogumaproject.ppok.entity.Role;
 import jp.co.ogumaproject.ppok.entity.RoleAuth;
@@ -41,6 +39,11 @@ import oracle.jdbc.driver.OracleSQLException;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Transactional(rollbackFor = OracleSQLException.class)
 public class RoleServiceImpl implements IRoleService {
+
+	/**
+	 * ページサイズ
+	 */
+	private static final Integer PAGE_SIZE = OgumaProjectConstants.DEFAULT_PAGE_SIZE;
 
 	/**
 	 * 役割マッパー
@@ -71,27 +74,22 @@ public class RoleServiceImpl implements IRoleService {
 
 	@Override
 	public ResultDto<String> doAssignment(final Map<String, List<Long>> paramMap) {
-		final Long[] idArray = { 1L, 5L, 9L, 12L };
-		final Long roleId = paramMap.get("roleId").get(0);
-		final List<RoleAuth> list1 = this.roleAuthMapper.selectByRoleId(roleId);
-		final List<Long> list2 = list1.stream().map(RoleAuth::getAuthId).sorted().collect(Collectors.toList());
-		final List<Long> authIds = paramMap.get("authIdArray").stream().filter(a -> !Arrays.asList(idArray).contains(a))
-				.sorted().collect(Collectors.toList());
-		if (list2.equals(authIds)) {
+		final Long roleId = paramMap.get("roleIds").get(0);
+		final Long[] authIdArray = { 1L, 5L, 9L, 12L };
+		final List<Long> authIds = paramMap.get("authIds").stream().filter(a -> !Arrays.asList(authIdArray).contains(a))
+				.toList();
+		final List<Long> list = this.roleAuthMapper.selectByRoleId(roleId).stream().map(RoleAuth::getAuthId).toList();
+		if (OgumaProjectUtils.isEqual(list, authIds)) {
 			return ResultDto.failed(OgumaProjectConstants.MESSAGE_STRING_NOCHANGE);
 		}
 		this.roleAuthMapper.batchDeleteByRoleId(roleId);
-		final List<RoleAuth> list = authIds.stream().map(item -> {
+		final List<RoleAuth> roleAuths = authIds.stream().map(item -> {
 			final RoleAuth roleAuth = new RoleAuth();
-			roleAuth.setAuthId(item);
 			roleAuth.setRoleId(roleId);
+			roleAuth.setAuthId(item);
 			return roleAuth;
-		}).collect(Collectors.toList());
-		try {
-			this.roleAuthMapper.batchInsertByIds(list);
-		} catch (final Exception e) {
-			return ResultDto.failed(OgumaProjectConstants.MESSAGE_STRING_FORBIDDEN2);
-		}
+		}).toList();
+		this.roleAuthMapper.batchInsertByIds(roleAuths);
 		return ResultDto.successWithoutData();
 	}
 
@@ -102,75 +100,47 @@ public class RoleServiceImpl implements IRoleService {
 	}
 
 	@Override
-	public List<Authority> getAuthList() {
-		return this.authorityMapper.selectAll();
+	public List<AuthorityDto> getAuthList() {
+		return this.authorityMapper.selectAll().stream()
+				.map(item -> new AuthorityDto(item.getId(), item.getName(), item.getTitle(), item.getCategoryId()))
+				.toList();
 	}
 
 	@Override
 	public RoleDto getRoleById(final Long id) {
-		final Role role = this.roleMapper.selectByIdWithAuth(id);
-		final RoleDto roleDto = new RoleDto();
-		SecondBeanUtils.copyNullableProperties(role, roleDto);
-		return roleDto;
+		final Role role = this.roleMapper.selectById(id);
+		return new RoleDto(role.getId(), role.getName());
 	}
 
 	@Override
 	public List<RoleDto> getRolesByEmployeeId(final Long employeeId) {
-		final List<RoleDto> secondRoles = new ArrayList<>();
-		final RoleDto secondRole = new RoleDto();
-		secondRole.setId(0L);
-		secondRole.setName(OgumaProjectConstants.DEFAULT_ROLE_NAME);
-		final List<RoleDto> roleDtos = this.roleMapper.selectAll().stream().map(item -> {
-			final RoleDto roleDto = new RoleDto();
-			SecondBeanUtils.copyNullableProperties(item, roleDto);
-			return roleDto;
-		}).collect(Collectors.toList());
-		secondRoles.add(secondRole);
-		secondRoles.addAll(roleDtos);
+		final List<Role> roleDtos = new ArrayList<>();
+		final List<Role> roles = this.roleMapper.selectAll();
 		if (employeeId == null) {
-			return secondRoles;
+			final Role role = new Role();
+			role.setId(0L);
+			role.setName(OgumaProjectConstants.DEFAULT_ROLE_NAME);
+			roleDtos.add(role);
+		} else {
+			final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employeeId);
+			final List<Role> selectedRole = roles.stream()
+					.filter(a -> OgumaProjectUtils.isEqual(a.getId(), employeeRole.getRoleId()))
+					.collect(Collectors.toList());
+			roleDtos.addAll(selectedRole);
 		}
-		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employeeId);
-		if (employeeRole == null) {
-			return secondRoles;
-		}
-		secondRoles.clear();
-		final Long roleId = employeeRole.getRoleId();
-		final List<RoleDto> selectedRole = roleDtos.stream().filter(a -> Objects.equals(a.getId(), roleId))
+		roleDtos.addAll(roles);
+		return roleDtos.stream().distinct().map(item -> new RoleDto(item.getId(), item.getName()))
 				.collect(Collectors.toList());
-		secondRoles.addAll(selectedRole);
-		secondRoles.addAll(roleDtos);
-		return secondRoles.stream().distinct().collect(Collectors.toList());
 	}
 
 	@Override
 	public Pagination<RoleDto> getRolesByKeyword(final Integer pageNum, final String keyword) {
-		final Integer pageSize = OgumaProjectConstants.DEFAULT_PAGE_SIZE;
-		final Integer offset = (pageNum - 1) * pageSize;
-		String searchStr;
-		if (OgumaProjectUtils.isDigital(keyword)) {
-			searchStr = "%".concat(keyword).concat("%");
-		} else {
-			searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
-		}
+		final Integer offset = (pageNum - 1) * PAGE_SIZE;
+		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
 		final Long records = this.roleMapper.countByKeyword(searchStr);
-		final Integer pageMax = (int) ((records / pageSize) + ((records % pageSize) != 0 ? 1 : 0));
-		if (pageNum > pageMax) {
-			final List<RoleDto> pages = this.roleMapper
-					.paginationByKeyword(searchStr, (pageMax - 1) * pageSize, pageSize).stream().map(item -> {
-						final RoleDto roleDto = new RoleDto();
-						SecondBeanUtils.copyNullableProperties(item, roleDto);
-						return roleDto;
-					}).collect(Collectors.toList());
-			return Pagination.of(pages, records, pageMax, pageSize);
-		}
-		final List<RoleDto> pages = this.roleMapper.paginationByKeyword(searchStr, offset, pageSize).stream()
-				.map(item -> {
-					final RoleDto roleDto = new RoleDto();
-					SecondBeanUtils.copyNullableProperties(item, roleDto);
-					return roleDto;
-				}).collect(Collectors.toList());
-		return Pagination.of(pages, records, pageNum, pageSize);
+		final List<RoleDto> roleDtos = this.roleMapper.paginationByKeyword(keyword, offset, PAGE_SIZE).stream()
+				.map(item -> new RoleDto(item.getId(), item.getName())).collect(Collectors.toList());
+		return Pagination.of(roleDtos, records, pageNum, PAGE_SIZE);
 	}
 
 	@Override
@@ -197,19 +167,14 @@ public class RoleServiceImpl implements IRoleService {
 
 	@Override
 	public ResultDto<String> update(final RoleDto roleDto) {
-		final Role entity = new Role();
-		entity.setId(roleDto.getId());
-		final Role role = this.roleMapper.selectByIdWithAuth(entity);
-		SecondBeanUtils.copyNullableProperties(role, entity);
+		final Role originalEntity = new Role();
+		final Role role = this.roleMapper.selectById(roleDto.id());
+		SecondBeanUtils.copyNullableProperties(role, originalEntity);
 		SecondBeanUtils.copyNullableProperties(roleDto, role);
-		if (role.equals(entity)) {
+		if (OgumaProjectUtils.isEqual(originalEntity, role)) {
 			return ResultDto.failed(OgumaProjectConstants.MESSAGE_STRING_NOCHANGE);
 		}
-		try {
-			this.roleMapper.updateById(role);
-		} catch (final DataIntegrityViolationException e) {
-			return ResultDto.failed(OgumaProjectConstants.MESSAGE_ROLE_NAME_DUPLICATED);
-		}
+		this.roleMapper.updateById(role);
 		return ResultDto.successWithoutData();
 	}
 }

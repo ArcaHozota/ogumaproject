@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +40,19 @@ import oracle.jdbc.driver.OracleSQLException;
 public class EmployeeServiceImpl implements IEmployeeService {
 
 	/**
+	 * ページサイズ
+	 */
+	private static final Integer PAGE_SIZE = OgumaProjectConstants.DEFAULT_PAGE_SIZE;
+
+	/**
 	 * 日時フォマーター
 	 */
-	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+	/**
+	 * パスワードエンコーダ
+	 */
+	private static final OgumaPasswordEncoder ENCODER = new OgumaPasswordEncoder();
 
 	/**
 	 * Randomナンバー
@@ -60,11 +69,6 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	 */
 	private final EmployeeRoleMapper employeeRoleMapper;
 
-	/**
-	 * パスワードエンコーダ
-	 */
-	private final OgumaPasswordEncoder passwordEncoder = new OgumaPasswordEncoder();
-
 	@Override
 	public ResultDto<String> checkDuplicated(final String loginAccount) {
 		return this.employeeMapper.checkDuplicated(loginAccount) > 0
@@ -74,40 +78,33 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	public EmployeeDto getEmployeeById(final Long id) {
-		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(id);
 		final Employee employee = this.employeeMapper.selectById(id);
-		final EmployeeDto employeeDto = new EmployeeDto();
-		SecondBeanUtils.copyNullableProperties(employee, employeeDto);
-		employeeDto.setPassword(OgumaProjectConstants.DEFAULT_ROLE_NAME);
-		employeeDto.setDateOfBirth(employee.getDateOfBirth().format(DATE_TIME_FORMATTER));
-		employeeDto.setRoleId(employeeRole.getRoleId());
-		return employeeDto;
+		this.employeeRoleMapper.selectById(id);
+		return new EmployeeDto(employee.getId(), employee.getLoginAccount(), employee.getUsername(),
+				OgumaProjectConstants.DEFAULT_ROLE_NAME, employee.getEmail(),
+				FORMATTER.format(employee.getDateOfBirth()), null);
 	}
 
 	@Override
 	public Pagination<EmployeeDto> getEmployeesByKeyword(final Integer pageNum, final String keyword, final Long userId,
 			final String authChkFlag) {
-		final Integer pageSize = OgumaProjectConstants.DEFAULT_PAGE_SIZE;
+		final Integer offset = (pageNum - 1) * PAGE_SIZE;
 		if (Boolean.FALSE.equals(Boolean.valueOf(authChkFlag))) {
 			final Employee employee = this.employeeMapper.selectById(userId);
-			final EmployeeDto employeeDto = new EmployeeDto();
-			SecondBeanUtils.copyNullableProperties(employee, employeeDto);
-			employeeDto.setDateOfBirth(employee.getDateOfBirth().format(DATE_TIME_FORMATTER));
-			final List<EmployeeDto> dtoList = new ArrayList<>();
-			dtoList.add(employeeDto);
-			return Pagination.of(dtoList, dtoList.size(), pageNum, pageSize);
+			final EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getLoginAccount(),
+					employee.getUsername(), employee.getPassword(), employee.getEmail(),
+					FORMATTER.format(employee.getDateOfBirth()), null);
+			final List<EmployeeDto> employeeDtos = new ArrayList<>();
+			employeeDtos.add(employeeDto);
+			return Pagination.of(employeeDtos, employeeDtos.size(), pageNum, PAGE_SIZE);
 		}
-		final Integer offset = (pageNum - 1) * pageSize;
 		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
 		final Long records = this.employeeMapper.countByKeyword(searchStr);
-		final List<EmployeeDto> pages = this.employeeMapper.paginationByKeyword(searchStr, offset, pageSize).stream()
-				.map(item -> {
-					final EmployeeDto employeeDto = new EmployeeDto();
-					SecondBeanUtils.copyNullableProperties(item, employeeDto);
-					employeeDto.setDateOfBirth(item.getDateOfBirth().format(DATE_TIME_FORMATTER));
-					return employeeDto;
-				}).collect(Collectors.toList());
-		return Pagination.of(pages, records, pageNum, pageSize);
+		final List<EmployeeDto> pages = this.employeeMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE).stream()
+				.map(item -> new EmployeeDto(item.getId(), item.getLoginAccount(), item.getUsername(),
+						item.getPassword(), item.getEmail(), FORMATTER.format(item.getDateOfBirth()), null))
+				.toList();
+		return Pagination.of(pages, records, pageNum, PAGE_SIZE);
 	}
 
 	/**
@@ -129,11 +126,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	public Boolean register(final EmployeeDto employeeDto) {
-		final Employee selectByLoginAcct = this.employeeMapper.selectByLoginAcct(employeeDto.getEmail());
+		final Employee selectByLoginAcct = this.employeeMapper.selectByLoginAcct(employeeDto.email());
 		if (selectByLoginAcct != null) {
 			return Boolean.FALSE;
 		}
-		final String password = this.passwordEncoder.encode(employeeDto.getPassword());
+		final String password = ENCODER.encode(employeeDto.password());
 		final Employee employee = new Employee();
 		SecondBeanUtils.copyNullableProperties(employeeDto, employee);
 		employee.setId(SnowflakeUtils.snowflakeId());
@@ -141,7 +138,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		employee.setPassword(password);
 		employee.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
 		employee.setCreatedTime(LocalDateTime.now());
-		employee.setDateOfBirth(LocalDate.parse(employeeDto.getDateOfBirth(), EmployeeServiceImpl.DATE_TIME_FORMATTER));
+		employee.setDateOfBirth(LocalDate.parse(employeeDto.dateOfBirth(), EmployeeServiceImpl.FORMATTER));
 		this.employeeMapper.insertById(employee);
 		return Boolean.TRUE;
 	}
@@ -163,7 +160,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		if (selectByAccountAndEmail == null) {
 			return Boolean.FALSE;
 		}
-		selectByAccountAndEmail.setPassword(this.passwordEncoder.encode(OgumaProjectConstants.DEFAULT_PASSWORD));
+		selectByAccountAndEmail.setPassword(ENCODER.encode(OgumaProjectConstants.DEFAULT_PASSWORD));
 		this.employeeMapper.insertById(selectByAccountAndEmail);
 		return Boolean.TRUE;
 	}
@@ -171,38 +168,47 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	@Override
 	public void save(final EmployeeDto employeeDto) {
 		final Employee employee = new Employee();
-		final String password = this.passwordEncoder.encode(employeeDto.getPassword());
+		final String password = ENCODER.encode(employeeDto.password());
 		SecondBeanUtils.copyNullableProperties(employeeDto, employee);
 		employee.setId(SnowflakeUtils.snowflakeId());
 		employee.setPassword(password);
-		employee.setDateOfBirth(LocalDate.parse(employeeDto.getDateOfBirth(), EmployeeServiceImpl.DATE_TIME_FORMATTER));
+		employee.setDateOfBirth(LocalDate.parse(employeeDto.dateOfBirth(), EmployeeServiceImpl.FORMATTER));
 		employee.setCreatedTime(LocalDateTime.now());
 		employee.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
 		this.employeeMapper.insertById(employee);
-		if ((employeeDto.getRoleId() != null) && !Objects.equals(Long.valueOf(0L), employeeDto.getRoleId())) {
-			final EmployeeRole employeeEx = new EmployeeRole();
-			employeeEx.setEmployeeId(employee.getId());
-			employeeEx.setRoleId(employeeDto.getRoleId());
-			this.employeeRoleMapper.insertById(employeeEx);
+		if ((employeeDto.roleId() != null) && !Objects.equals(Long.valueOf(0L), employeeDto.roleId())) {
+			final EmployeeRole employeeRole = new EmployeeRole();
+			employeeRole.setEmployeeId(employee.getId());
+			employeeRole.setRoleId(employeeDto.roleId());
+			this.employeeRoleMapper.insertById(employeeRole);
 		}
 	}
 
 	@Override
 	public ResultDto<String> update(final EmployeeDto employeeDto) {
-		final Employee originalEntity = new Employee();
-		final Employee employee = this.employeeMapper.selectById(employeeDto.getId());
-		SecondBeanUtils.copyNullableProperties(employee, originalEntity);
-		SecondBeanUtils.copyNullableProperties(employeeDto, employee);
-		employee.setDateOfBirth(LocalDate.parse(employeeDto.getDateOfBirth(), EmployeeServiceImpl.DATE_TIME_FORMATTER));
-		if (OgumaProjectUtils.isNotEmpty(employeeDto.getPassword())) {
-			final String encoded = this.passwordEncoder.encode(employeeDto.getPassword());
-			employee.setPassword(encoded);
+		final String password = employeeDto.password();
+		final Employee employee = this.employeeMapper.selectById(employeeDto.id());
+		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employee.getId());
+		final EmployeeDto aEmployeeDto = new EmployeeDto(employee.getId(), employee.getLoginAccount(),
+				employee.getUsername(), password, employee.getEmail(), FORMATTER.format(employee.getDateOfBirth()),
+				employeeRole.getRoleId());
+		boolean passwordMatch = false;
+		if (OgumaProjectUtils.isNotEmpty(password)) {
+			passwordMatch = ENCODER.matches(password, employee.getPassword());
+		} else {
+			passwordMatch = true;
 		}
-		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employeeDto.getId());
-		if (originalEntity.equals(employee) && Objects.equals(employeeDto.getRoleId(), employeeRole.getRoleId())) {
+		if (OgumaProjectUtils.isEqual(aEmployeeDto, employeeDto) && passwordMatch) {
 			return ResultDto.failed(OgumaProjectConstants.MESSAGE_STRING_NOCHANGE);
 		}
-		employeeRole.setRoleId(employeeDto.getRoleId());
+		employee.setLoginAccount(employeeDto.loginAccount());
+		employee.setUsername(employeeDto.username());
+		if (!passwordMatch) {
+			employee.setPassword(ENCODER.encode(password));
+		}
+		employee.setEmail(employeeDto.email());
+		employee.setDateOfBirth(LocalDate.parse(employeeDto.dateOfBirth(), FORMATTER));
+		employeeRole.setRoleId(employeeDto.roleId());
 		this.employeeRoleMapper.updateById(employeeRole);
 		this.employeeMapper.updateById(employee);
 		return ResultDto.successWithoutData();

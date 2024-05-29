@@ -70,7 +70,7 @@ public class DistrictServiceImpl implements IDistrictService {
 		final List<District> districts = this.districtMapper.selectAll();
 		if (!OgumaProjectUtils.isDigital(cityId)) {
 			return districts.stream().map(item -> new DistrictDto(item.getId(), item.getName(), null, null, null,
-					item.getChihoName(), null, null)).toList();
+					item.getChiho().getName(), null, null)).toList();
 		}
 		final List<District> aDistricts = new ArrayList<>();
 		final City city = this.cityMapper.selectById(Long.parseLong(cityId));
@@ -78,7 +78,7 @@ public class DistrictServiceImpl implements IDistrictService {
 				.toList().get(0));
 		aDistricts.addAll(districts);
 		return aDistricts.stream().distinct().map(item -> new DistrictDto(item.getId(), item.getName(), null, null,
-				null, item.getChihoName(), null, null)).toList();
+				null, item.getChiho().getName(), null, null)).toList();
 	}
 
 	@Override
@@ -88,10 +88,13 @@ public class DistrictServiceImpl implements IDistrictService {
 		final Long records = this.districtMapper.countByKeyword(searchStr);
 		final List<DistrictDto> districtDtos = this.districtMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE)
 				.stream().map(item -> {
+					final String shutoName = item.getCities().stream()
+							.filter(a -> OgumaProjectUtils.isEqual(a.getId(), item.getShutoId())).toList().get(0)
+							.getName();
 					final Long population = item.getCities().stream().map(City::getPopulation).reduce((a, v) -> (a + v))
 							.get();
-					return new DistrictDto(item.getId(), item.getName(), item.getShutoId(), item.getShutoName(),
-							item.getChihoId(), item.getChihoName(), population, item.getDistrictFlag());
+					return new DistrictDto(item.getId(), item.getName(), item.getShutoId(), shutoName,
+							item.getChihoId(), item.getChiho().getName(), population, item.getDistrictFlag());
 				}).toList();
 		return Pagination.of(districtDtos, records, pageNum, PAGE_SIZE);
 	}
