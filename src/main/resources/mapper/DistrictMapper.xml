@@ -8,12 +8,11 @@
 			<id property="id" jdbcType="NUMERIC" column="CHIHO_ID" />
 			<id property="name" jdbcType="NVARCHAR" column="CHIHO_NAME" />
 		</association>
-		<collection property="cities" resultMap="cityMap" />
-	</resultMap>
-	<resultMap id="cityMap" type="jp.co.ogumaproject.ppok.entity.City">
-		<id property="id" jdbcType="NUMERIC" column="CITY_ID" />
-		<result property="name" jdbcType="NVARCHAR" column="CITY_NAME" />
-		<result property="population" jdbcType="NUMERIC" column="POPULATION" />
+		<collection property="cities" ofType="jp.co.ogumaproject.ppok.entity.City">
+			<id property="id" jdbcType="NUMERIC" column="CITY_ID" />
+			<result property="name" jdbcType="NVARCHAR" column="CITY_NAME" />
+			<result property="population" jdbcType="NUMERIC" column="POPULATION" />
+		</collection>
 	</resultMap>
 	<update id="updateById"
 		parameterType="jp.co.ogumaproject.ppok.entity.District">
@@ -64,7 +63,6 @@
 	<select id="paginationByKeyword" resultMap="BasicResultMap">
 		SELECT
 		    PDV.*
-		    , PCHV.ID AS CHIHO_ID
 		    , PCHV.NAME AS CHIHO_NAME
 		    , PCV.NAME AS SHUTO_NAME 
 		    , PCV2.ID AS CITY_ID
@@ -93,8 +91,6 @@
 		        ON PCHV.ID = PDV.CHIHO_ID 
 		    INNER JOIN PPOG_CITIES_VIEW PCV 
 		        ON PCV.ID = PDV.SHUTO_ID 
-		    LEFT JOIN PPOG_CITIES_VIEW PCV2 
-		        ON PCV2.DISTRICT_ID = PDV.ID 
 		WHERE
 		    PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
