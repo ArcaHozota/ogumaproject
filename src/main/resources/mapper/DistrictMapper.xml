@@ -64,24 +64,19 @@
 		    PDV.*
 		    , PCHV.ID AS CHIHO_ID
 		    , PCHV.NAME AS CHIHO_NAME
-		    , PCV.* 
+		    , PCV.NAME AS SHUTO_NAME 
+		    , PCV2.*
 		FROM
 		    PPOG_DISTRICTS_VIEW PDV 
 		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
 		        ON PCHV.ID = PDV.CHIHO_ID 
-		    LEFT JOIN PPOG_CITIES_VIEW PCV 
-		        ON PCV.DISTRICT_ID = PDV.ID 
+		    INNER JOIN PPOG_CITIES_VIEW PCV 
+		        ON PCV.ID = PDV.SHUTO_ID 
+		    LEFT JOIN PPOG_CITIES_VIEW PCV2 
+		        ON PCV2.DISTRICT_ID = PDV.ID 
 		WHERE
-		    EXISTS ( 
-		        SELECT
-		            1 
-		        FROM
-		            PPOG_CITIES_VIEW PCV2 
-		        WHERE
-		            PCV2.ID = PDV.SHUTO_ID 
-		            AND PCV2.NAME LIKE #{keyword,jdbcType=NVARCHAR}
-		    ) 
-		    OR PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		    PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PCHV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OFFSET #{offset,jdbcType=INTEGER} ROWS FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
 	</select>
@@ -92,19 +87,13 @@
 		    PPOG_DISTRICTS_VIEW PDV 
 		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
 		        ON PCHV.ID = PDV.CHIHO_ID 
-		    LEFT JOIN PPOG_CITIES_VIEW PCV 
-		        ON PCV.DISTRICT_ID = PDV.ID 
+		    INNER JOIN PPOG_CITIES_VIEW PCV 
+		        ON PCV.ID = PDV.SHUTO_ID 
+		    LEFT JOIN PPOG_CITIES_VIEW PCV2 
+		        ON PCV2.DISTRICT_ID = PDV.ID 
 		WHERE
-		    EXISTS ( 
-		        SELECT
-		            1 
-		        FROM
-		            PPOG_CITIES_VIEW PCV2 
-		        WHERE
-		            PCV2.ID = PDV.SHUTO_ID 
-		            AND PCV2.NAME LIKE #{keyword,jdbcType=NVARCHAR}
-		    ) 
-		    OR PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		    PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OR PCHV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
 	</select>
 </mapper>
