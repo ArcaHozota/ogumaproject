@@ -1,27 +1,20 @@
 package jp.co.ogumaproject.ppok.dto;
 
-import java.io.Serializable;
-
-import lombok.Data;
-
 /**
  * 役割情報転送クラス
  *
  * @author ArkamaHozota
- * @since 1.00beta
+ * @since 1.16
  */
-@Data
-public final class RoleDto implements Serializable {
+public record RoleDto(
 
-	private static final long serialVersionUID = 9004635352261624444L;
+		/**
+		 * ID
+		 */
+		Long id,
 
-	/**
-	 * ID
-	 */
-	private Long id;
-
-	/**
-	 * 名称
-	 */
-	private String name;
+		/**
+		 * 名称
+		 */
+		String name) {
 }

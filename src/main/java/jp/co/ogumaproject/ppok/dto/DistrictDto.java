@@ -1,52 +1,50 @@
 package jp.co.ogumaproject.ppok.dto;
 
-import java.io.Serializable;
-
-import lombok.Data;
-
 /**
  * 地域情報転送クラス
  *
  * @author ArkamaHozota
- * @since 2.26
+ * @since 1.16
  */
-@Data
-public final class DistrictDto implements Serializable {
+public record DistrictDto(
 
-	private static final long serialVersionUID = -3273942722972094600L;
+		/**
+		 * ID
+		 */
+		Long id,
 
-	/**
-	 * ID
-	 */
-	private Long id;
+		/**
+		 * 名称
+		 */
+		String name,
 
-	/**
-	 * 名称
-	 */
-	private String name;
+		/**
+		 * 州都ID
+		 */
+		Long shutoId,
 
-	/**
-	 * 州都ID
-	 */
-	private Long shutoId;
+		/**
+		 * 州都名称
+		 */
+		String shutoName,
 
-	/**
-	 * 州都名称
-	 */
-	private String shutoName;
+		/**
+		 * 地方ID
+		 */
+		Long chihoId,
 
-	/**
-	 * 地方
-	 */
-	private String chiho;
+		/**
+		 * 地方名称
+		 */
+		String chihoName,
 
-	/**
-	 * 人口数量
-	 */
-	private Long population;
+		/**
+		 * 人口数量
+		 */
+		Long population,
 
-	/**
-	 * 都道府県旗
-	 */
-	private String districtFlag;
+		/**
+		 * 都道府県旗
+		 */
+		String districtFlag) {
 }

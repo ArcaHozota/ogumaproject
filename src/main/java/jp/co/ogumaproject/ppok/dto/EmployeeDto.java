@@ -1,57 +1,45 @@
 package jp.co.ogumaproject.ppok.dto;
 
-import java.io.Serializable;
-
-import lombok.Data;
-
 /**
  * 社員情報転送クラス
  *
  * @author ArkamaHozota
- * @since 1.00beta
+ * @since 1.16
  */
-@Data
-public final class EmployeeDto implements Serializable {
+public record EmployeeDto(
 
-	private static final long serialVersionUID = 8722148001008609493L;
+		/**
+		 * ID
+		 */
+		Long id,
 
-	/**
-	 * ID
-	 */
-	private Long id;
+		/**
+		 * アカウント
+		 */
+		String loginAccount,
 
-	/**
-	 * アカウント
-	 */
-	private String loginAccount;
+		/**
+		 * ユーザ名称
+		 */
+		String username,
 
-	/**
-	 * ユーザ名称
-	 */
-	private String username;
+		/**
+		 * パスワード
+		 */
+		String password,
 
-	/**
-	 * パスワード
-	 */
-	private String password;
+		/**
+		 * メール
+		 */
+		String email,
 
-	/**
-	 * メール
-	 */
-	private String email;
+		/**
+		 * 生年月日
+		 */
+		String dateOfBirth,
 
-	/**
-	 * 生年月日
-	 */
-	private String dateOfBirth;
-
-	/**
-	 * 役割ID
-	 */
-	private Long roleId;
-
-	/**
-	 * 権限フラグ
-	 */
-	private Boolean checkFlg;
+		/**
+		 * 役割ID
+		 */
+		Long roleId) {
 }
