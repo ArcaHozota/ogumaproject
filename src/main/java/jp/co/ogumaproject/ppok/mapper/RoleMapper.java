@@ -21,12 +21,4 @@ public interface RoleMapper extends CommonMapper<Role> {
 	 * @return Integer
 	 */
 	Integer checkDuplicated(@Param("name") String name);
-
-	/**
-	 * IDによって情報を検索する(権限情報含め)
-	 *
-	 * @param id 役割ID
-	 * @return Role
-	 */
-	Role selectByIdWithAuth(@Param("id") Long id);
 }

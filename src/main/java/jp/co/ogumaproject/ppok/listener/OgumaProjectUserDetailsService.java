@@ -2,7 +2,6 @@ package jp.co.ogumaproject.ppok.listener;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.DisabledException;
@@ -69,17 +68,17 @@ public class OgumaProjectUserDetailsService implements UserDetailsService {
 		if (employeeRole == null) {
 			throw new InsufficientAuthenticationException(OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR2);
 		}
-		final Role role = this.roleMapper.selectByIdWithAuth(employeeRole.getRoleId());
+		final Role role = this.roleMapper.selectById(employeeRole.getRoleId());
 		if (role.getRoleAuths().isEmpty()) {
 			throw new AuthenticationCredentialsNotFoundException(
 					OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR3);
 		}
-		final List<Long> authIds = role.getRoleAuths().stream().map(RoleAuth::getAuthId).collect(Collectors.toList());
+		final List<Long> authIds = role.getRoleAuths().stream().map(RoleAuth::getAuthId).toList();
 		final EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getLoginAccount(),
 				employee.getUsername(), employee.getPassword(), employee.getEmail(),
 				DateTimeFormatter.ofPattern("yyyy-MM-dd").format(employee.getDateOfBirth()), employeeRole.getRoleId());
 		final List<SimpleGrantedAuthority> authorities = this.authorityMapper.selectByIds(authIds).stream()
-				.map(item -> new SimpleGrantedAuthority(item.getName())).collect(Collectors.toList());
+				.map(item -> new SimpleGrantedAuthority(item.getName())).toList();
 		return new SecurityAdmin(employeeDto, authorities);
 	}
 

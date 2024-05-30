@@ -39,11 +39,15 @@
 	</update>
 	<select id="selectAll" resultMap="BasicResultMap">
 		SELECT
-		    PRV.* 
+		    PRV.*
+		    , PRAV.ROLE_ID 
+		    , PRAV.AUTH_ID 
 		FROM
-		    PPOG_ROLES_VIEW PRV
+		    PPOG_ROLES_VIEW PRV 
+		    INNER JOIN PPOG_ROLE_AUTH_VIEW PRAV 
+		        ON PRAV.ROLE_ID = PRV.ID
 	</select>
-	<select id="selectByIdWithAuth" resultMap="BasicResultMap">
+	<select id="selectById" resultMap="BasicResultMap">
 		SELECT
 		    PRV.*
 		    , PRAV.ROLE_ID 
