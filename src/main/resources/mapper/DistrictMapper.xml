@@ -91,9 +91,7 @@
 		SELECT
 		    PCV.*
 		FROM
-		    PPOG_DISTRICTS_VIEW PDV 
-		    INNER JOIN PPOG_CITIES_VIEW PCV 
-		        ON PCV.DISTRICT_ID = PDV.ID 
+		    PPOG_CITIES_VIEW PCV 
 		WHERE
 			PCV.DISTRICT_ID = #{id,jdbcType=NUMERIC}
 	</select>
