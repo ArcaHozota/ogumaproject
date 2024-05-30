@@ -52,7 +52,9 @@
 		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
 		        ON PCHV.ID = PDV.CHIHO_ID 
 		    INNER JOIN PPOG_CITIES_VIEW PCV 
-		        ON PCV.ID = PDV.SHUTO_ID
+		        ON PCV.ID = PDV.SHUTO_ID 
+		ORDER BY
+		    PDV.ID ASC
 	</select>
 	<select id="paginationByKeyword" resultMap="BasicResultMap">
 		SELECT
@@ -93,6 +95,6 @@
 		    INNER JOIN PPOG_CITIES_VIEW PCV 
 		        ON PCV.DISTRICT_ID = PDV.ID 
 		WHERE
-			PCV.DISTRICT_ID = #{id}
+			PCV.DISTRICT_ID = #{id,jdbcType=NUMERIC}
 	</select>
 </mapper>

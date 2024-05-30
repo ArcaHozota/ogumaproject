@@ -61,9 +61,12 @@
 	</update>
 	<select id="selectById" resultMap="BasicResultMap">
 		SELECT
-		    PCV.* 
+		    PCV.*
+		    , PDV.NAME AS DISTRICT_NAME 
 		FROM
 		    PPOG_CITIES_VIEW PCV 
+		    INNER JOIN PPOG_DISTRICTS_VIEW PDV 
+		        ON PDV.ID = PCV.DISTRICT_ID 
 		WHERE
 		    PCV.ID LIKE #{id,jdbcType=NUMERIC}
 	</select>

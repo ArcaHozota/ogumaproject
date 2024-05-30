@@ -22,6 +22,8 @@
 		SELECT
 		    PAV.* 
 		FROM
-		    PPOG_AUTHORITIES_VIEW PAV
+		    PPOG_AUTHORITIES_VIEW PAV 
+		ORDER BY
+		    PAV.ID ASC
 	</select>
 </mapper>

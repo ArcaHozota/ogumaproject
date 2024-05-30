@@ -40,12 +40,14 @@
 	<select id="selectAll" resultMap="BasicResultMap">
 		SELECT
 		    PRV.*
-		    , PRAV.ROLE_ID 
+		    , PRAV.ROLE_ID
 		    , PRAV.AUTH_ID 
 		FROM
 		    PPOG_ROLES_VIEW PRV 
 		    INNER JOIN PPOG_ROLE_AUTH_VIEW PRAV 
-		        ON PRAV.ROLE_ID = PRV.ID
+		        ON PRAV.ROLE_ID = PRV.ID 
+		ORDER BY
+		    PRV.ID ASC
 	</select>
 	<select id="selectById" resultMap="BasicResultMap">
 		SELECT
