@@ -28,11 +28,6 @@ public class District extends CommonEntity {
 	private Long shutoId;
 
 	/**
-	 * 州都名称
-	 */
-	private String shutoName;
-
-	/**
 	 * 地方ID
 	 */
 	private Long chihoId;
