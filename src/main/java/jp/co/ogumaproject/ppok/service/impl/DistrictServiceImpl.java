@@ -60,7 +60,7 @@ public class DistrictServiceImpl implements IDistrictService {
 	public List<Chiho> getChihos(final String chihoName) {
 		final List<Chiho> chihos = new ArrayList<>();
 		final List<Chiho> list = this.chihoMapper.selectAll();
-		chihos.addAll(list.stream().filter(a -> OgumaProjectUtils.isEqual(a.getName(), chihoName)).toList());
+		chihos.add(list.stream().filter(a -> OgumaProjectUtils.isEqual(a.getName(), chihoName)).findFirst().get());
 		chihos.addAll(list);
 		return chihos.stream().distinct().toList();
 	}
@@ -75,7 +75,7 @@ public class DistrictServiceImpl implements IDistrictService {
 		final List<District> aDistricts = new ArrayList<>();
 		final City city = this.cityMapper.selectById(Long.parseLong(cityId));
 		aDistricts.add(districts.stream().filter(a -> OgumaProjectUtils.isEqual(a.getId(), city.getDistrictId()))
-				.toList().get(0));
+				.findFirst().get());
 		aDistricts.addAll(districts);
 		return aDistricts.stream().distinct().map(item -> new DistrictDto(item.getId(), item.getName(), null, null,
 				null, item.getChiho().getName(), null, null)).toList();
@@ -89,7 +89,7 @@ public class DistrictServiceImpl implements IDistrictService {
 		final List<DistrictDto> districtDtos = this.districtMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE)
 				.stream().map(item -> {
 					final City shuto = item.getCities().stream()
-							.filter(a -> OgumaProjectUtils.isEqual(a.getId(), item.getShutoId())).toList().get(0);
+							.filter(a -> OgumaProjectUtils.isEqual(a.getId(), item.getShutoId())).findFirst().get();
 					final Long population = item.getCities().stream().map(City::getPopulation).reduce((a, v) -> (a + v))
 							.get();
 					return new DistrictDto(item.getId(), item.getName(), item.getShutoId(), shuto.getName(),
