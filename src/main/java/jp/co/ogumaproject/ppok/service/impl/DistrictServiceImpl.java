@@ -69,16 +69,16 @@ public class DistrictServiceImpl implements IDistrictService {
 	public List<DistrictDto> getDistrictsByCityId(final String cityId) {
 		final List<District> districts = this.districtMapper.selectAll();
 		if (!OgumaProjectUtils.isDigital(cityId)) {
-			return districts.stream().map(item -> new DistrictDto(item.getId(), item.getName(), null, null, null,
-					item.getChiho().getName(), null, null)).toList();
+			return districts.parallelStream().map(item -> new DistrictDto(item.getId(), item.getName(), null, null,
+					null, item.getChiho().getName(), null, null)).toList();
 		}
 		final List<District> aDistricts = new ArrayList<>();
 		final City city = this.cityMapper.selectById(Long.parseLong(cityId));
-		aDistricts.add(districts.stream().filter(a -> OgumaProjectUtils.isEqual(a.getId(), city.getDistrictId()))
-				.findFirst().get());
+		aDistricts.add(districts.parallelStream()
+				.filter(a -> OgumaProjectUtils.isEqual(a.getId(), city.getDistrictId())).findFirst().get());
 		aDistricts.addAll(districts);
-		return aDistricts.stream().distinct().map(item -> new DistrictDto(item.getId(), item.getName(), null, null,
-				null, item.getChiho().getName(), null, null)).toList();
+		return aDistricts.parallelStream().distinct().map(item -> new DistrictDto(item.getId(), item.getName(), null,
+				null, null, item.getChiho().getName(), null, null)).toList();
 	}
 
 	@Override
@@ -102,11 +102,13 @@ public class DistrictServiceImpl implements IDistrictService {
 	public List<CityDto> getShutos(final DistrictDto districtDto) {
 		final List<CityDto> cityDtos = new ArrayList<>();
 		final List<City> cities = this.districtMapper.selectById(districtDto.id()).getCities();
-		cityDtos.addAll(cities.stream().filter(a -> OgumaProjectUtils.isEqual(a.getName(), districtDto.shutoName()))
-				.map(item -> new CityDto(item.getId(), item.getName(), null, null, null, null, null)).toList());
+		cityDtos.add(
+				cities.parallelStream().filter(a -> OgumaProjectUtils.isEqual(a.getName(), districtDto.shutoName()))
+						.map(item -> new CityDto(item.getId(), item.getName(), null, null, null, null, null))
+						.findFirst().get());
 		cityDtos.addAll(cities.stream().sorted(Comparator.comparingLong(City::getId))
 				.map(item -> new CityDto(item.getId(), item.getName(), null, null, null, null, null)).toList());
-		return cityDtos.stream().distinct().toList();
+		return cityDtos.parallelStream().distinct().toList();
 	}
 
 	@Override
