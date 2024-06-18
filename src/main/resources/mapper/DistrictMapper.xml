@@ -20,8 +20,8 @@
 			<if test="shutoId != null">
 				PD.SHUTO_ID = #{shutoId,jdbcType=NUMERIC},
 			</if>
-			<if test="chiho != null">
-				PD.CHIHO = #{chiho,jdbcType=NUMERIC},
+			<if test="chihoId != null">
+				PD.CHIHO_ID = #{chihoId,jdbcType=NUMERIC},
 			</if>
 		</set>
 		WHERE
