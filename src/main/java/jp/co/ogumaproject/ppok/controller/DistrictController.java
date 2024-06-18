@@ -1,13 +1,18 @@
 package jp.co.ogumaproject.ppok.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jp.co.ogumaproject.ppok.commons.OgumaProjectURLConstants;
+import jp.co.ogumaproject.ppok.dto.CityDto;
 import jp.co.ogumaproject.ppok.dto.DistrictDto;
+import jp.co.ogumaproject.ppok.entity.Chiho;
 import jp.co.ogumaproject.ppok.service.IDistrictService;
 import jp.co.ogumaproject.ppok.utils.OgumaProjectUtils;
 import jp.co.ogumaproject.ppok.utils.Pagination;
@@ -38,6 +43,30 @@ public final class DistrictController {
 	@GetMapping(OgumaProjectURLConstants.URL_DISTRICT_CHECK_EDITION)
 	public ResultDto<String> checkEdition() {
 		return ResultDto.successWithoutData();
+	}
+
+	/**
+	 * 地方リストを取得する
+	 *
+	 * @param chihoName 地方名称
+	 * @return ResultDto<List<Chiho>>
+	 */
+	@GetMapping(OgumaProjectURLConstants.URL_DISTRICT_CHIHOS)
+	public ResultDto<List<Chiho>> getChihos(@RequestParam("chihoName") final String chihoName) {
+		final List<Chiho> chihos = this.iDistrictService.getChihos(chihoName);
+		return ResultDto.successWithData(chihos);
+	}
+
+	/**
+	 * 州都リストを取得する
+	 *
+	 * @param districtDto 地域情報転送クラス
+	 * @return ResultDto<List<CityDto>>
+	 */
+	@PostMapping(OgumaProjectURLConstants.URL_DISTRICT_SHUTOS)
+	public ResultDto<List<CityDto>> getShutos(@RequestBody final DistrictDto districtDto) {
+		final List<CityDto> cityDtos = this.iDistrictService.getShutos(districtDto);
+		return ResultDto.successWithData(cityDtos);
 	}
 
 	/**
