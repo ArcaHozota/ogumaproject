@@ -70,7 +70,7 @@ public class DistrictServiceImpl implements IDistrictService {
 		final List<District> districts = this.districtMapper.selectAll();
 		if (!OgumaProjectUtils.isDigital(cityId)) {
 			return districts.stream().map(item -> new DistrictDto(item.getId(), item.getName(), null, null, null,
-					item.getChiho().getName(), null, null)).toList();
+					item.getChiho().getName(), null, item.getDistrictFlag())).toList();
 		}
 		final List<District> aDistricts = new ArrayList<>();
 		final City city = this.cityMapper.selectById(Long.parseLong(cityId));
@@ -78,7 +78,7 @@ public class DistrictServiceImpl implements IDistrictService {
 				.findFirst().get());
 		aDistricts.addAll(districts);
 		return aDistricts.stream().distinct().map(item -> new DistrictDto(item.getId(), item.getName(), null, null,
-				null, item.getChiho().getName(), null, null)).toList();
+				null, item.getChiho().getName(), null, item.getDistrictFlag())).toList();
 	}
 
 	@Override
