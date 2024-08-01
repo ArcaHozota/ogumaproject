@@ -6,8 +6,7 @@
 		<id property="authId" jdbcType="NUMERIC" column="AUTH_ID" />
 		<id property="roleId" jdbcType="NUMERIC" column="ROLE_ID" />
 	</resultMap>
-	<insert id="batchInsertByIds"
-		parameterType="java.util.List">
+	<insert id="batchInsertByIds" parameterType="java.util.List">
 		INSERT 
 		INTO PPOG_ROLE_AUTH PPRA(PPRA.AUTH_ID, PPRA.ROLE_ID) 
 		VALUES 

@@ -56,7 +56,7 @@
 		    , PRAV.AUTH_ID 
 		FROM
 		    PPOG_ROLES_VIEW PRV 
-		    INNER JOIN PPOG_ROLE_AUTH_VIEW PRAV 
+		    LEFT JOIN PPOG_ROLE_AUTH_VIEW PRAV 
 		        ON PRAV.ROLE_ID = PRV.ID 
 		WHERE
 		    PRV.ID = #{id,jdbcType=NUMERIC}
@@ -66,6 +66,8 @@
 		    PRV.* 
 		FROM
 		    PPOG_ROLES_VIEW PRV 
+		    LEFT JOIN PPOG_ROLE_AUTH_VIEW PRAV 
+		        ON PRAV.ROLE_ID = PRV.ID 
 		WHERE
 		    PRV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		    OFFSET #{offset,jdbcType=INTEGER} ROWS FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
@@ -75,6 +77,8 @@
 		    COUNT(1) 
 		FROM
 		    PPOG_ROLES_VIEW PRV 
+		    LEFT JOIN PPOG_ROLE_AUTH_VIEW PRAV 
+		        ON PRAV.ROLE_ID = PRV.ID 
 		WHERE
 		    PRV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
 	</select>
