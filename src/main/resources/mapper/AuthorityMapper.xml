@@ -5,14 +5,14 @@
 		type="jp.co.ogumaproject.ppok.entity.Authority" autoMapping="true">
 		<id property="id" jdbcType="NUMERIC" column="ID" />
 	</resultMap>
-	<select id="selectByIds" parameterType="java.util.List"
-		resultMap="BasicResultMap">
+	<select id="selectByIds" resultMap="BasicResultMap">
 		SELECT
-		    PAV.* 
+		    PA.* 
 		FROM
-		    PPOG_AUTHORITIES_VIEW PAV 
+		    PPOG_AUTHORITIES PA 
 		WHERE
-			PAV.ID IN
+			PA.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+			AND PA.ID IN
 			<foreach collection="ids" item="id" index="index"
 				open="(" close=")" separator=",">
 				#{id,jdbcType=NUMERIC}
@@ -20,10 +20,12 @@
 	</select>
 	<select id="selectAll" resultMap="BasicResultMap">
 		SELECT
-		    PAV.* 
+		    PA.* 
 		FROM
-		    PPOG_AUTHORITIES_VIEW PAV 
+		    PPOG_AUTHORITIES PA 
+		WHERE
+			PA.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
 		ORDER BY
-		    PAV.ID ASC
+		    PA.ID ASC
 	</select>
 </mapper>
