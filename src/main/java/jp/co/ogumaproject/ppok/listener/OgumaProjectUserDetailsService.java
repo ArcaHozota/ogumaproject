@@ -77,8 +77,7 @@ public class OgumaProjectUserDetailsService implements UserDetailsService {
 		final EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getLoginAccount(),
 				employee.getUsername(), employee.getPassword(), employee.getEmail(),
 				DateTimeFormatter.ofPattern("yyyy-MM-dd").format(employee.getDateOfBirth()), employeeRole.getRoleId());
-		final List<SimpleGrantedAuthority> authorities = this.authorityMapper
-				.selectByIds(authIds, OgumaProjectConstants.LOGIC_DELETE_INITIAL).stream()
+		final List<SimpleGrantedAuthority> authorities = this.authorityMapper.selectByIds(authIds).stream()
 				.map(item -> new SimpleGrantedAuthority(item.getName())).toList();
 		return new SecurityAdmin(employeeDto, authorities);
 	}

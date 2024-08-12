@@ -7,12 +7,14 @@
 	</resultMap>
 	<select id="selectByIds" resultMap="BasicResultMap">
 		SELECT
-		    PA.* 
+		    PA.ID
+		    , PA.NAME
+		    , PA.TITLE
+		    , PA.CATEGORY_ID 
 		FROM
 		    PPOG_AUTHORITIES PA 
 		WHERE
-			PA.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
-			AND PA.ID IN
+		    PA.ID IN
 			<foreach collection="ids" item="id" index="index"
 				open="(" close=")" separator=",">
 				#{id,jdbcType=NUMERIC}
@@ -20,11 +22,12 @@
 	</select>
 	<select id="selectAll" resultMap="BasicResultMap">
 		SELECT
-		    PA.* 
+		    PA.ID
+		    , PA.NAME
+		    , PA.TITLE
+		    , PA.CATEGORY_ID 
 		FROM
 		    PPOG_AUTHORITIES PA 
-		WHERE
-			PA.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
 		ORDER BY
 		    PA.ID ASC
 	</select>

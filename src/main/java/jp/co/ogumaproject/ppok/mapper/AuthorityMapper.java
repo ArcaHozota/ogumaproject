@@ -22,5 +22,5 @@ public interface AuthorityMapper extends CommonMapper<Authority> {
 	 * @param authIds 権限ID集合
 	 * @return List<Authority>
 	 */
-	List<Authority> selectByIds(@Param("ids") List<Long> authIds, @Param("delFlg") String delFlg);
+	List<Authority> selectByIds(@Param("ids") List<Long> authIds);
 }
