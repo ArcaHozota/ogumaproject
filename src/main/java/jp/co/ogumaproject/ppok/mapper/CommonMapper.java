@@ -50,7 +50,7 @@ public interface CommonMapper<T> {
 	 *
 	 * @return List<T>
 	 */
-	List<T> selectAll();
+	List<T> selectAll(@Param("delFlg") String delFlg);
 
 	/**
 	 * IDによって情報を検索する
