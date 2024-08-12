@@ -5,12 +5,13 @@
 		type="jp.co.ogumaproject.ppok.entity.Chiho" autoMapping="true">
 		<id property="id" jdbcType="NUMERIC" column="ID" />
 	</resultMap>
-	<select id="selectAll">
+	<select id="selectAll" resultMap="BasicResultMap">
 		SELECT
-		    PCHV.* 
+		    PCH.ID
+		    , PCH.NAME 
 		FROM
-		    PPOG_CHIHOS_VIEW PCHV 
+		    PPOG_CHIHOS PCH 
 		ORDER BY
-		    PCHV.ID ASC
+		    PCH.ID ASC
 	</select>
 </mapper>

@@ -61,49 +61,69 @@
 	</update>
 	<select id="selectById" resultMap="BasicResultMap">
 		SELECT
-		    PCV.*
-		    , PDV.NAME AS DISTRICT_NAME 
+		    PC.ID
+		    , PC.NAME
+		    , PC.PRONUNCIATION
+		    , PC.DISTRICT_ID
+		    , PC.POPULATION
+		    , PC.CITY_FLAG
+		    , PC.DEL_FLG
+		    , PD.NAME AS DISTRICT_NAME 
 		FROM
-		    PPOG_CITIES_VIEW PCV 
-		    INNER JOIN PPOG_DISTRICTS_VIEW PDV 
-		        ON PDV.ID = PCV.DISTRICT_ID 
+		    PPOG_CITIES_VIEW PC 
+		    INNER JOIN PPOG_DISTRICTS_VIEW PD 
+		        ON PD.ID = PC.DISTRICT_ID 
 		WHERE
-		    PCV.ID LIKE #{id,jdbcType=NUMERIC}
+		    PC.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND PC.ID = #{id,jdbcType=NUMERIC}
 	</select>
 	<select id="paginationByKeyword" resultMap="BasicResultMap">
 		SELECT
-		    PCV.*
-		    , PDV.NAME AS DISTRICT_NAME 
+		    PC.ID
+		    , PC.NAME
+		    , PC.PRONUNCIATION
+		    , PC.DISTRICT_ID
+		    , PC.POPULATION
+		    , PC.CITY_FLAG
+		    , PC.DEL_FLG
+		    , PD.NAME AS DISTRICT_NAME 
 		FROM
-		    PPOG_CITIES_VIEW PCV 
-		    INNER JOIN PPOG_DISTRICTS_VIEW PDV 
-		        ON PDV.ID = PCV.DISTRICT_ID 
+		    PPOG_CITIES_VIEW PC 
+		    INNER JOIN PPOG_DISTRICTS_VIEW PD 
+		        ON PD.ID = PC.DISTRICT_ID 
 		WHERE
-		    PCV.PRONUNCIATION LIKE #{keyword,jdbcType=NUMERIC} 
-		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OFFSET #{offset,jdbcType=INTEGER} ROWS FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
+		    PC.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND ( 
+		        PC.PRONUNCIATION LIKE #{keyword,jdbcType=NUMERIC} 
+		        OR PC.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		        OR PD.NAME LIKE #{keyword,jdbcType=NVARCHAR}
+		    ) 
+		OFFSET #{offset,jdbcType=INTEGER} ROWS 
+		FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
 	</select>
 	<select id="countByKeyword" resultType="java.lang.Long">
 		SELECT
-		    COUNT(1) 
+		    COUNT(1)
 		FROM
-		    PPOG_CITIES_VIEW PCV 
-		    INNER JOIN PPOG_DISTRICTS_VIEW PDV 
-		        ON PDV.ID = PCV.DISTRICT_ID 
+		    PPOG_CITIES_VIEW PC 
+		    INNER JOIN PPOG_DISTRICTS_VIEW PD 
+		        ON PD.ID = PC.DISTRICT_ID 
 		WHERE
-		    PCV.PRONUNCIATION LIKE #{keyword,jdbcType=NUMERIC} 
-		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
+		    PC.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND ( 
+		        PC.PRONUNCIATION LIKE #{keyword,jdbcType=NUMERIC} 
+		        OR PC.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		        OR PD.NAME LIKE #{keyword,jdbcType=NVARCHAR}
+		    )
 	</select>
-	<select id="checkDuplicated"
-		parameterType="jp.co.ogumaproject.ppok.entity.City" resultType="java.lang.Integer">
+	<select id="checkDuplicated" resultType="java.lang.Integer">
 		SELECT
 		    COUNT(1) 
 		FROM
-		    PPOG_CITIES_VIEW PCV 
+		    PPOG_CITIES PC 
 		WHERE
-		    PCV.NAME = #{name,jdbcType=NVARCHAR} 
-		    AND PCV.DISTRICT_ID = #{districtId,jdbcType=NUMERIC}
+		    PC.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND PC.NAME = #{name,jdbcType=NVARCHAR} 
+		    AND PC.DISTRICT_ID = #{districtId,jdbcType=NUMERIC}
 	</select>
 </mapper>

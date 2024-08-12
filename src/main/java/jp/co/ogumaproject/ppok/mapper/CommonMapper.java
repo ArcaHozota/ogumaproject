@@ -18,7 +18,7 @@ public interface CommonMapper<T> {
 	 * @param keyword 検索キーワード
 	 * @return Integer
 	 */
-	Long countByKeyword(@Param("keyword") String keyword);
+	Long countByKeyword(@Param("keyword") String keyword, @Param("delFlg") String delFlg);
 
 	/**
 	 * IDによって情報を挿入する
@@ -36,7 +36,7 @@ public interface CommonMapper<T> {
 	 * @return List<T>
 	 */
 	List<T> paginationByKeyword(@Param("keyword") String keyword, @Param("offset") Integer offset,
-			@Param("pageSize") Integer pageSize);
+			@Param("pageSize") Integer pageSize, @Param("delFlg") String delFlg);
 
 	/**
 	 * IDによって論理削除を行う
@@ -59,6 +59,14 @@ public interface CommonMapper<T> {
 	 * @return T
 	 */
 	T selectById(@Param("id") Long id);
+
+	/**
+	 * IDによって情報を検索する
+	 *
+	 * @param T エンティティ
+	 * @return T
+	 */
+	T selectById(T aEntity);
 
 	/**
 	 * IDによって情報を更新する

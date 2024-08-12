@@ -68,7 +68,10 @@ public class OgumaProjectUserDetailsService implements UserDetailsService {
 		if (employeeRole == null) {
 			throw new InsufficientAuthenticationException(OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR2);
 		}
-		final Role role = this.roleMapper.selectById(employeeRole.getRoleId());
+		final Role aRoleEntity = new Role();
+		aRoleEntity.setId(employeeRole.getRoleId());
+		aRoleEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		final Role role = this.roleMapper.selectById(aRoleEntity);
 		if (role.getRoleAuths().isEmpty()) {
 			throw new AuthenticationCredentialsNotFoundException(
 					OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR3);
