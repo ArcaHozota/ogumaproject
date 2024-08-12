@@ -8,7 +8,7 @@
 	</resultMap>
 	<insert id="batchInsertByIds" parameterType="java.util.List">
 		INSERT 
-		INTO PPOG_ROLE_AUTH PPRA(PPRA.AUTH_ID, PPRA.ROLE_ID) 
+		INTO PPOG_ROLE_AUTH PRA(PRA.AUTH_ID, PRA.ROLE_ID) 
 		VALUES 
 		<foreach collection="roleAuths" item="roleAuth" index="index" separator=",">
 			( 
@@ -21,16 +21,17 @@
 		parameterType="java.lang.Long">
 		DELETE 
 		FROM
-		    PPOG_ROLE_AUTH PPRA 
+		    PPOG_ROLE_AUTH PRA 
 		WHERE
-		    PPRA.ROLE_ID = #{roleId,jdbcType=NUMERIC}
+		    PRA.ROLE_ID = #{roleId,jdbcType=NUMERIC}
 	</delete>
 	<select id="selectByRoleId" resultMap="BasicResultMap">
 		SELECT
-		    PRAV.* 
+		    PRA.ROLE_ID
+		    , PRA.AUTH_ID 
 		FROM
-		    PPOG_ROLE_AUTH_VIEW PRAV 
+		    PPOG_ROLE_AUTH PRA 
 		WHERE
-		    PRAV.ROLE_ID = #{roleId,jdbcType=NUMERIC}
+		    PRA.ROLE_ID = #{roleId,jdbcType=NUMERIC}
 	</select>
 </mapper>

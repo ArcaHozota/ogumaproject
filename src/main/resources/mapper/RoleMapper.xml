@@ -39,56 +39,70 @@
 	</update>
 	<select id="selectAll" resultMap="BasicResultMap">
 		SELECT
-		    PRV.*
-		    , PRAV.ROLE_ID
-		    , PRAV.AUTH_ID 
+		    PR.ID
+		    , PR.NAME
+		    , PR.DEL_FLG
+		    , PRA.ROLE_ID
+		    , PRA.AUTH_ID 
 		FROM
-		    PPOG_ROLES_VIEW PRV 
-		    LEFT JOIN PPOG_ROLE_AUTH_VIEW PRAV 
-		        ON PRAV.ROLE_ID = PRV.ID 
+		    PPOG_ROLES PR 
+		    LEFT JOIN PPOG_ROLE_AUTH PRA 
+		        ON PRA.ROLE_ID = PR.ID 
+		WHERE
+		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
 		ORDER BY
-		    PRV.ID ASC
+		    PR.ID ASC
 	</select>
 	<select id="selectById" resultMap="BasicResultMap">
 		SELECT
-		    PRV.*
-		    , PRAV.ROLE_ID 
-		    , PRAV.AUTH_ID 
+		    PR.ID
+		    , PR.NAME
+		    , PR.DEL_FLG
+		    , PRA.ROLE_ID
+		    , PRA.AUTH_ID 
 		FROM
-		    PPOG_ROLES_VIEW PRV 
-		    LEFT JOIN PPOG_ROLE_AUTH_VIEW PRAV 
-		        ON PRAV.ROLE_ID = PRV.ID 
+		    PPOG_ROLES PR 
+		    LEFT JOIN PPOG_ROLE_AUTH PRA 
+		        ON PRA.ROLE_ID = PR.ID 
 		WHERE
-		    PRV.ID = #{id,jdbcType=NUMERIC}
+		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND PR.ID = #{id,jdbcType=NUMERIC}
 	</select>
 	<select id="paginationByKeyword" resultMap="BasicResultMap">
 		SELECT
-		    PRV.* 
+		    PR.ID
+		    , PR.NAME
+		    , PR.DEL_FLG
+		    , PRA.ROLE_ID
+		    , PRA.AUTH_ID 
 		FROM
-		    PPOG_ROLES_VIEW PRV 
-		    LEFT JOIN PPOG_ROLE_AUTH_VIEW PRAV 
-		        ON PRAV.ROLE_ID = PRV.ID 
+		    PPOG_ROLES PR 
+		    LEFT JOIN PPOG_ROLE_AUTH PRA 
+		        ON PRA.ROLE_ID = PR.ID 
 		WHERE
-		    PRV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OFFSET #{offset,jdbcType=INTEGER} ROWS FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
+		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND PR.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		OFFSET #{offset,jdbcType=INTEGER} ROWS 
+		FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
 	</select>
 	<select id="countByKeyword" resultType="java.lang.Long">
 		SELECT
 		    COUNT(1) 
 		FROM
-		    PPOG_ROLES_VIEW PRV 
-		    LEFT JOIN PPOG_ROLE_AUTH_VIEW PRAV 
-		        ON PRAV.ROLE_ID = PRV.ID 
+		    PPOG_ROLES PR 
+		    LEFT JOIN PPOG_ROLE_AUTH PRA 
+		        ON PRA.ROLE_ID = PR.ID 
 		WHERE
-		    PRV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
+		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND PR.NAME LIKE #{keyword,jdbcType=NVARCHAR}
 	</select>
-	<select id="checkDuplicated"
-		parameterType="java.lang.String" resultType="java.lang.Integer">
+	<select id="checkDuplicated" resultType="java.lang.Integer">
 		SELECT
 		    COUNT(1) 
 		FROM
-		    PPOG_ROLES_VIEW PRV 
+		    PPOG_ROLES PR 
 		WHERE
-		    PRV.NAME = #{name,jdbcType=NVARCHAR}
+		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND PR.NAME LIKE #{name,jdbcType=NVARCHAR}
 	</select>
 </mapper>

@@ -94,7 +94,10 @@ public class RoleServiceImpl implements IRoleService {
 
 	@Override
 	public List<Long> getAuthIdsById(final Long id) {
-		final Role role = this.roleMapper.selectById(id);
+		final Role aRoleEntity = new Role();
+		aRoleEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		aRoleEntity.setId(id);
+		final Role role = this.roleMapper.selectById(aRoleEntity);
 		return role.getRoleAuths().stream().map(RoleAuth::getAuthId).toList();
 	}
 
@@ -107,14 +110,17 @@ public class RoleServiceImpl implements IRoleService {
 
 	@Override
 	public RoleDto getRoleById(final Long id) {
-		final Role role = this.roleMapper.selectById(id);
+		final Role aRoleEntity = new Role();
+		aRoleEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		aRoleEntity.setId(id);
+		final Role role = this.roleMapper.selectById(aRoleEntity);
 		return new RoleDto(role.getId(), role.getName());
 	}
 
 	@Override
 	public List<RoleDto> getRolesByEmployeeId(final Long employeeId) {
 		final List<Role> roleDtos = new ArrayList<>();
-		final List<Role> roles = this.roleMapper.selectAll();
+		final List<Role> roles = this.roleMapper.selectAll(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
 		if (employeeId == null) {
 			final Role role = new Role();
 			role.setId(0L);
@@ -134,8 +140,9 @@ public class RoleServiceImpl implements IRoleService {
 	public Pagination<RoleDto> getRolesByKeyword(final Integer pageNum, final String keyword) {
 		final Integer offset = (pageNum - 1) * PAGE_SIZE;
 		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
-		final Long records = this.roleMapper.countByKeyword(searchStr);
-		final List<RoleDto> roleDtos = this.roleMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE).stream()
+		final Long records = this.roleMapper.countByKeyword(searchStr, OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		final List<RoleDto> roleDtos = this.roleMapper
+				.paginationByKeyword(searchStr, offset, PAGE_SIZE, OgumaProjectConstants.LOGIC_DELETE_INITIAL).stream()
 				.map(item -> new RoleDto(item.getId(), item.getName())).toList();
 		return Pagination.of(roleDtos, records, pageNum, PAGE_SIZE);
 	}
@@ -165,7 +172,9 @@ public class RoleServiceImpl implements IRoleService {
 	@Override
 	public ResultDto<String> update(final RoleDto roleDto) {
 		final Role originalEntity = new Role();
-		final Role role = this.roleMapper.selectById(roleDto.id());
+		originalEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		originalEntity.setId(roleDto.id());
+		final Role role = this.roleMapper.selectById(originalEntity);
 		SecondBeanUtils.copyNullableProperties(role, originalEntity);
 		SecondBeanUtils.copyNullableProperties(roleDto, role);
 		if (OgumaProjectUtils.isEqual(originalEntity, role)) {

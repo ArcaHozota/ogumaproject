@@ -63,59 +63,101 @@
 	</update>
 	<select id="selectById" resultMap="BasicResultMap">
 		SELECT
-		    PEV.* 
+		    PE.ID
+		    , PE.LOGIN_ACCOUNT
+		    , PE.PASSWORD
+		    , PE.USERNAME
+		    , PE.EMAIL
+		    , PE.CREATED_TIME
+		    , PE.DATE_OF_BIRTH
+		    , PE.DEL_FLG
 		FROM
-		    PPOG_EMPLOYEES_VIEW PEV 
+		    PPOG_EMPLOYEES PE 
 		WHERE
-		    PEV.ID = #{id,jdbcType=NUMERIC}
+		    PE.DEL_FLG = #{delFlg,jdbcType=NVARCHAR}
+		    AND PE.ID = #{id,jdbcType=NUMERIC}
 	</select>
 	<select id="selectByLoginAcct" resultMap="BasicResultMap">
 		SELECT
-		    PEV.* 
+		    PE.ID
+		    , PE.LOGIN_ACCOUNT
+		    , PE.PASSWORD
+		    , PE.USERNAME
+		    , PE.EMAIL
+		    , PE.CREATED_TIME
+		    , PE.DATE_OF_BIRTH
+		    , PE.DEL_FLG 
 		FROM
-		    PPOG_EMPLOYEES_VIEW PEV 
+		    PPOG_EMPLOYEES PE 
 		WHERE
-		    PEV.LOGIN_ACCOUNT = #{loginAccout,jdbcType=NVARCHAR}
-		    OR PEV.EMAIL = #{loginAccout,jdbcType=NVARCHAR}
+		    PE.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND ( 
+		        PE.LOGIN_ACCOUNT = #{loginAccout,jdbcType=NVARCHAR} 
+		        OR PE.EMAIL = #{loginAccout,jdbcType=NVARCHAR}
+		    )
 	</select>
 	<select id="paginationByKeyword" resultMap="BasicResultMap">
-		SELECT
-		    PEV.* 
+		SELECT 
+		    PE.ID
+		    , PE.LOGIN_ACCOUNT
+		    , PE.PASSWORD
+		    , PE.USERNAME
+		    , PE.EMAIL
+		    , PE.CREATED_TIME
+		    , PE.DATE_OF_BIRTH
+		    , PE.DEL_FLG 
 		FROM
-		    PPOG_EMPLOYEES_VIEW PEV 
+		    PPOG_EMPLOYEES PE 
 		WHERE
-		    PEV.USERNAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PEV.LOGIN_ACCOUNT LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PEV.EMAIL LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OFFSET #{offset,jdbcType=INTEGER} ROWS FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
+		    PE.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND ( 
+		        PE.USERNAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		        OR PE.LOGIN_ACCOUNT LIKE #{keyword,jdbcType=NVARCHAR} 
+		        OR PE.EMAIL LIKE #{keyword,jdbcType=NVARCHAR}
+		    ) 
+		OFFSET #{offset,jdbcType=INTEGER} ROWS 
+		FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
 	</select>
-	<select id="selectByAccountAndEmail" resultMap="BasicResultMap">
-		SELECT
-		    PEV.* 
-		FROM
-		    PPOG_EMPLOYEES_VIEW PEV 
-		WHERE
-		    PEV.LOGIN_ACCOUNT = #{loginAccount,jdbcType=NVARCHAR} 
-		    AND PEV.EMAIL = #{email,jdbcType=NVARCHAR} 
-		    AND PEV.DATE_OF_BIRTH = #{dateOfBirth,jdbcType=TIMESTAMP}
+	<select id="selectByLoginAcctAndEmail" resultMap="BasicResultMap">
+		SELECT 
+		    PE.ID
+		    , PE.LOGIN_ACCOUNT
+		    , PE.PASSWORD
+		    , PE.USERNAME
+		    , PE.EMAIL
+		    , PE.CREATED_TIME
+		    , PE.DATE_OF_BIRTH
+		    , PE.DEL_FLG 
+		FROM 
+		    PPOG_EMPLOYEES PE 
+		WHERE 
+		    PE.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND ( 
+		        PE.LOGIN_ACCOUNT = #{loginAccount,jdbcType=NVARCHAR} 
+		        AND PE.EMAIL = #{email,jdbcType=NVARCHAR} 
+		        AND PE.DATE_OF_BIRTH = #{dateOfBirth,jdbcType=TIMESTAMP}
+		    )
 	</select>
 	<select id="countByKeyword" resultType="java.lang.Long">
-		SELECT
+		SELECT 
 		    COUNT(1) 
-		FROM
-		    PPOG_EMPLOYEES_VIEW PEV 
-		WHERE
-		    PEV.USERNAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PEV.LOGIN_ACCOUNT LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PEV.EMAIL LIKE #{keyword,jdbcType=NVARCHAR}
+		FROM 
+		    PPOG_EMPLOYEES PE 
+		WHERE 
+		    PE.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND ( 
+		        PE.USERNAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		        OR PE.LOGIN_ACCOUNT LIKE #{keyword,jdbcType=NVARCHAR} 
+		        OR PE.EMAIL LIKE #{keyword,jdbcType=NVARCHAR}
+		    )
 	</select>
-	<select id="checkDuplicated"
-		parameterType="java.lang.String" resultType="java.lang.Integer">
+	<select id="checkDuplicated" resultType="java.lang.Integer">
 		SELECT
 		    COUNT(1) 
 		FROM
-		    PPOG_EMPLOYEES_VIEW PEV 
+		    PPOG_EMPLOYEES PE 
 		WHERE
-		    PEV.LOGIN_ACCOUNT = #{loginAccount,jdbcType=NVARCHAR}
+		    PE.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND PE.LOGIN_ACCOUNT = #{loginAccount,jdbcType=NVARCHAR}
 	</select>
 </mapper>

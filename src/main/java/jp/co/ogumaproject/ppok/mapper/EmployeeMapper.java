@@ -19,7 +19,16 @@ public interface EmployeeMapper extends CommonMapper<Employee> {
 	 *
 	 * @param loginAccount ログインアカウント
 	 */
-	Integer checkDuplicated(@Param("loginAccount") String loginAccount);
+	Integer checkDuplicated(@Param("loginAccount") String loginAccount, @Param("delFlg") String delFlg);
+
+	/**
+	 * アカウントによって社員情報を検索する
+	 *
+	 * @param loginAccout アカウント
+	 * @param delFlg      論理削除フラグ
+	 * @return Employee
+	 */
+	Employee selectByLoginAcct(@Param("loginAccout") String loginAccout, @Param("delFlg") String delFlg);
 
 	/**
 	 * アカウント、メールと生年月日によって社員情報を取得する
@@ -27,13 +36,5 @@ public interface EmployeeMapper extends CommonMapper<Employee> {
 	 * @param employee 社員エンティティ
 	 * @return Employee
 	 */
-	Employee selectByAccountAndEmail(Employee employee);
-
-	/**
-	 * アカウントによって社員情報を検索する
-	 *
-	 * @param loginAccout アカウント
-	 * @return Employee
-	 */
-	Employee selectByLoginAcct(@Param("loginAccout") String loginAccout);
+	Employee selectByLoginAcctAndEmail(Employee employee);
 }

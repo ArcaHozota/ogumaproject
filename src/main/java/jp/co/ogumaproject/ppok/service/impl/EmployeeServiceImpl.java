@@ -71,7 +71,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	public ResultDto<String> checkDuplicated(final String loginAccount) {
-		return this.employeeMapper.checkDuplicated(loginAccount) > 0
+		return this.employeeMapper.checkDuplicated(loginAccount, OgumaProjectConstants.LOGIC_DELETE_INITIAL) > 0
 				? ResultDto.failed(OgumaProjectConstants.MESSAGE_STRING_DUPLICATED)
 				: ResultDto.successWithoutData();
 	}
@@ -99,8 +99,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
 			return Pagination.of(employeeDtos, employeeDtos.size(), pageNum, PAGE_SIZE);
 		}
 		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
-		final Long records = this.employeeMapper.countByKeyword(searchStr);
-		final List<EmployeeDto> pages = this.employeeMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE).stream()
+		final Long records = this.employeeMapper.countByKeyword(searchStr, OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		final List<EmployeeDto> pages = this.employeeMapper
+				.paginationByKeyword(searchStr, offset, PAGE_SIZE, OgumaProjectConstants.LOGIC_DELETE_INITIAL).stream()
 				.map(item -> new EmployeeDto(item.getId(), item.getLoginAccount(), item.getUsername(),
 						item.getPassword(), item.getEmail(), FORMATTER.format(item.getDateOfBirth()), null))
 				.toList();
@@ -126,7 +127,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	public Boolean register(final EmployeeDto employeeDto) {
-		final Employee selectByLoginAcct = this.employeeMapper.selectByLoginAcct(employeeDto.email());
+		final Employee selectByLoginAcct = this.employeeMapper.selectByLoginAcct(employeeDto.email(),
+				OgumaProjectConstants.LOGIC_DELETE_INITIAL);
 		if (selectByLoginAcct != null) {
 			return Boolean.FALSE;
 		}
@@ -156,7 +158,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	public Boolean resetPassword(final EmployeeDto employeeDto) {
 		final Employee employee = new Employee();
 		SecondBeanUtils.copyNullableProperties(employeeDto, employee);
-		final Employee selectByAccountAndEmail = this.employeeMapper.selectByAccountAndEmail(employee);
+		final Employee selectByAccountAndEmail = this.employeeMapper.selectByLoginAcctAndEmail(employee);
 		if (selectByAccountAndEmail == null) {
 			return Boolean.FALSE;
 		}

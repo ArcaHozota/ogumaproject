@@ -29,19 +29,21 @@
 	</delete>
 	<select id="selectById" resultMap="BasicResultMap">
 		SELECT
-		    PERV.* 
+		    PER.EMPLOYEE_ID
+		    , PER.ROLE_ID 
 		FROM
-		    PPOG_EMPLOYEE_ROLE_VIEW PERV 
+		    PPOG_EMPLOYEE_ROLE PER 
 		WHERE
-		    PERV.EMPLOYEE_ID = #{id,jdbcType=NUMERIC}
+		    PER.EMPLOYEE_ID = #{id,jdbcType=NUMERIC}
 	</select>
 	<select id="selectByRoleId" parameterType="java.lang.Long"
 		resultMap="BasicResultMap">
 		SELECT
-		    PERV.* 
+		    PER.EMPLOYEE_ID
+		    , PER.ROLE_ID 
 		FROM
-		    PPOG_EMPLOYEE_ROLE_VIEW PERV 
+		    PPOG_EMPLOYEE_ROLE PER 
 		WHERE
-		    PERV.ROLE_ID = #{roleId,jdbcType=NUMERIC}
+		    PER.ROLE_ID = #{roleId,jdbcType=NUMERIC}
 	</select>
 </mapper>
