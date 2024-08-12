@@ -67,7 +67,7 @@ public class DistrictServiceImpl implements IDistrictService {
 
 	@Override
 	public List<DistrictDto> getDistrictsByCityId(final String cityId) {
-		final List<District> districts = this.districtMapper.selectAll();
+		final List<District> districts = this.districtMapper.selectAll(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
 		if (!OgumaProjectUtils.isDigital(cityId)) {
 			return districts.stream().map(item -> new DistrictDto(item.getId(), item.getName(), null, null, null,
 					item.getChiho().getName(), null, item.getDistrictFlag())).toList();
@@ -85,9 +85,10 @@ public class DistrictServiceImpl implements IDistrictService {
 	public Pagination<DistrictDto> getDistrictsByKeyword(final Integer pageNum, final String keyword) {
 		final Integer offset = (pageNum - 1) * PAGE_SIZE;
 		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
-		final Long records = this.districtMapper.countByKeyword(searchStr);
-		final List<DistrictDto> districtDtos = this.districtMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE)
-				.stream().map(item -> {
+		final Long records = this.districtMapper.countByKeyword(searchStr, OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		final List<DistrictDto> districtDtos = this.districtMapper
+				.paginationByKeyword(searchStr, offset, PAGE_SIZE, OgumaProjectConstants.LOGIC_DELETE_INITIAL).stream()
+				.map(item -> {
 					final City shuto = item.getCities().stream()
 							.filter(a -> OgumaProjectUtils.isEqual(a.getId(), item.getShutoId())).findFirst().get();
 					final Long population = item.getCities().stream().map(City::getPopulation).reduce((a, v) -> (a + v))

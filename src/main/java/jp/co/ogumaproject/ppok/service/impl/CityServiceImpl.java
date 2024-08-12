@@ -51,6 +51,7 @@ public class CityServiceImpl implements ICityService {
 	@Override
 	public ResultDto<String> checkDuplicated(final String name, final Long districtId) {
 		final City city = new City();
+		city.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
 		city.setName(name);
 		city.setDistrictId(districtId);
 		return this.cityMapper.checkDuplicated(city) > 0
@@ -62,8 +63,9 @@ public class CityServiceImpl implements ICityService {
 	public Pagination<CityDto> getCitiesByKeyword(final Integer pageNum, final String keyword) {
 		final Integer offset = (pageNum - 1) * PAGE_SIZE;
 		final String searchStr = OgumaProjectUtils.getDetailKeyword(keyword);
-		final Long records = this.cityMapper.countByKeyword(searchStr);
-		final List<CityDto> cityDtos = this.cityMapper.paginationByKeyword(searchStr, offset, PAGE_SIZE).stream()
+		final Long records = this.cityMapper.countByKeyword(searchStr, OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		final List<CityDto> cityDtos = this.cityMapper
+				.paginationByKeyword(searchStr, offset, PAGE_SIZE, OgumaProjectConstants.LOGIC_DELETE_INITIAL).stream()
 				.map(item -> new CityDto(item.getId(), item.getName(), item.getDistrictId(), item.getPronunciation(),
 						item.getDistrictName(), item.getPopulation(), item.getCityFlag()))
 				.toList();
