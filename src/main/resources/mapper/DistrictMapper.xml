@@ -30,65 +30,94 @@
 	</update>
 	<select id="selectById" resultMap="BasicResultMap">
 		SELECT
-		    PDV.*
-		    , PCHV.ID AS CHIHO_ID
-		    , PCHV.NAME AS CHIHO_NAME
+		    PD.ID
+		    , PD.NAME
+		    , PD.SHUTO_ID
+		    , PD.CHIHO_ID
+		    , PD.DISTRICT_FLAG
+		    , PD.DEL_FLG
+		    , PCH.ID AS CHIHO_ID
+		    , PCH.NAME AS CHIHO_NAME 
 		FROM
-		    PPOG_DISTRICTS_VIEW PDV 
-		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
-		        ON PCHV.ID = PDV.CHIHO_ID 
+		    PPOG_DISTRICTS PD 
+		    INNER JOIN PPOG_CHIHOS PCH 
+		        ON PCH.ID = PD.CHIHO_ID 
 		WHERE
-		    PDV.ID = #{id,jdbcType=NUMERIC}
+		    PD.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND PD.ID = #{id,jdbcType=NUMERIC}
 	</select>
 	<select id="selectAll" resultMap="BasicResultMap">
 		SELECT
-		    PDV.*
-		    , PCHV.ID AS CHIHO_ID
-		    , PCHV.NAME AS CHIHO_NAME 
+		    PD.ID
+		    , PD.NAME
+		    , PD.SHUTO_ID
+		    , PD.CHIHO_ID
+		    , PD.DISTRICT_FLAG
+		    , PD.DEL_FLG
+		    , PCH.ID AS CHIHO_ID
+		    , PCH.NAME AS CHIHO_NAME 
 		FROM
-		    PPOG_DISTRICTS_VIEW PDV 
-		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
-		        ON PCHV.ID = PDV.CHIHO_ID 
+		    PPOG_DISTRICTS PD 
+		    INNER JOIN PPOG_CHIHOS PCH 
+		        ON PCH.ID = PD.CHIHO_ID 
 		ORDER BY
-		    PDV.ID ASC
+		    PD.ID ASC
 	</select>
 	<select id="paginationByKeyword" resultMap="BasicResultMap">
 		SELECT
-		    PDV.*
-		    , PCHV.ID AS CHIHO_ID 
-		    , PCHV.NAME AS CHIHO_NAME 
+		    PD.ID
+		    , PD.NAME
+		    , PD.SHUTO_ID
+		    , PD.CHIHO_ID
+		    , PD.DISTRICT_FLAG
+		    , PD.DEL_FLG
+		    , PCH.ID AS CHIHO_ID
+		    , PCH.NAME AS CHIHO_NAME 
 		FROM
-		    PPOG_DISTRICTS_VIEW PDV 
-		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
-		        ON PCHV.ID = PDV.CHIHO_ID 
-		    INNER JOIN PPOG_CITIES_VIEW PCV 
-		        ON PCV.ID = PDV.SHUTO_ID 
+		    PPOG_DISTRICTS PD 
+		    INNER JOIN PPOG_CHIHOS PCH 
+		        ON PCH.ID = PD.CHIHO_ID 
+		    INNER JOIN PPOG_CITIES PC 
+		        ON PC.ID = PD.SHUTO_ID 
 		WHERE
-		    PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PCHV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OFFSET #{offset,jdbcType=INTEGER} ROWS FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
+		    PD.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND ( 
+		        PD.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		        OR PC.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		        OR PCH.NAME LIKE #{keyword,jdbcType=NVARCHAR}
+		    ) 
+		OFFSET #{offset,jdbcType=INTEGER} ROWS 
+		FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
 	</select>
 	<select id="countByKeyword" resultType="java.lang.Long">
 		SELECT
 		    COUNT(1) 
 		FROM
-		    PPOG_DISTRICTS_VIEW PDV 
-		    INNER JOIN PPOG_CHIHOS_VIEW PCHV 
-		        ON PCHV.ID = PDV.CHIHO_ID 
-		    INNER JOIN PPOG_CITIES_VIEW PCV 
-		        ON PCV.ID = PDV.SHUTO_ID 
+		    PPOG_DISTRICTS PD 
+		    INNER JOIN PPOG_CHIHOS PCH 
+		        ON PCH.ID = PD.CHIHO_ID 
+		    INNER JOIN PPOG_CITIES PC 
+		        ON PC.ID = PD.SHUTO_ID 
 		WHERE
-		    PDV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PCV.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
-		    OR PCHV.NAME LIKE #{keyword,jdbcType=NVARCHAR}
+		    PD.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    AND ( 
+		        PD.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		        OR PC.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		        OR PCH.NAME LIKE #{keyword,jdbcType=NVARCHAR}
+		    )
 	</select>
 	<select id="subQuery" resultType="jp.co.ogumaproject.ppok.entity.City">
 		SELECT
-		    PCV.*
+		    PC.ID
+		    , PC.NAME
+		    , PC.PRONUNCIATION
+		    , PC.DISTRICT_ID
+		    , PC.POPULATION
+		    , PC.CITY_FLAG
+		    , PC.DEL_FLG 
 		FROM
-		    PPOG_CITIES_VIEW PCV 
+		    PPOG_CITIES PC 
 		WHERE
-			PCV.DISTRICT_ID = #{id,jdbcType=NUMERIC}
+			PC.DISTRICT_ID = #{id,jdbcType=NUMERIC}
 	</select>
 </mapper>

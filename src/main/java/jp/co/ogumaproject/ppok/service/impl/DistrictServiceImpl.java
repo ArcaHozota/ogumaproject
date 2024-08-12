@@ -102,7 +102,10 @@ public class DistrictServiceImpl implements IDistrictService {
 	@Override
 	public List<CityDto> getShutos(final DistrictDto districtDto) {
 		final List<CityDto> cityDtos = new ArrayList<>();
-		final List<City> cities = this.districtMapper.selectById(districtDto.id()).getCities();
+		final District aDistrictEntity = new District();
+		aDistrictEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		aDistrictEntity.setId(districtDto.id());
+		final List<City> cities = this.districtMapper.selectById(aDistrictEntity).getCities();
 		cityDtos.add(cities.stream().filter(a -> OgumaProjectUtils.isEqual(a.getName(), districtDto.shutoName()))
 				.map(item -> new CityDto(item.getId(), item.getName(), null, null, null, null, null)).findFirst()
 				.get());
@@ -115,7 +118,9 @@ public class DistrictServiceImpl implements IDistrictService {
 	@Override
 	public ResultDto<String> update(final DistrictDto districtDto) {
 		final District originalEntity = new District();
-		final District district = this.districtMapper.selectById(districtDto.id());
+		originalEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		originalEntity.setId(districtDto.id());
+		final District district = this.districtMapper.selectById(originalEntity);
 		SecondBeanUtils.copyNullableProperties(district, originalEntity);
 		SecondBeanUtils.copyNullableProperties(districtDto, district);
 		if (OgumaProjectUtils.isEqual(originalEntity, district)) {
