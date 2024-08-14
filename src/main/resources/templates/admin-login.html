@@ -27,13 +27,9 @@
 			display: none;
 		}
 
-		.inputBox #eyeIcons {
-			position: absolute;
+		form .inputBox ion-icon#eyeIcons {
 			cursor: pointer;
-			right: 30px;
-			color: #fff;
-			font-size: 1.2em;
-			top: 20px;
+			left: 220px;
 		}
 	</style>
 	<div class="container">
@@ -61,11 +57,11 @@
 				<a href="#" id="signup">登録</a>
 			</div>
 			<div class="inputBox">
-				<input type="submit" value="ログイン">
+				<input type="submit" value="ログイン" id="loginBtn">
 			</div>
 		</form>
-		<form id="signupForm">
-			<h2>Registration</h2>
+		<form th:action="@{/oguma/employee/toroku}" th:method="post" id="signupForm">
+			<h2>登録</h2>
 			<div class="inputBox">
 				<input type="text" placeholder="Username">
 			</div>
@@ -79,10 +75,10 @@
 				<input type="password" placeholder="Confirm Password">
 			</div>
 			<div class="inputBox">
-				<input type="submit" value="Sign Up">
+				<input type="submit" value="登録" id="torokuBtn">
 			</div>
 			<div class="inputBox group">
-				<a href="#">Already Have an Account? <b id="login">Login</b></a>
+				<a href="#">すでにアカウント持ち? <b id="login">ログイン</b></a>
 			</div>
 		</form>
 		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

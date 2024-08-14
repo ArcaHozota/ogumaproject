@@ -37,7 +37,8 @@ $(document).ready(function() {
 		layer.msg(message3);
 	}
 });
-$("#loginBtn").on('click', function() {
+$("#loginBtn").on('click', function(e) {
+	e.preventDefault();
 	let account = $("#accountIpt").val().trim();
 	let password = $("#passwordIpt").val().trim();
 	if (account === "" && password === "") {
@@ -50,7 +51,8 @@ $("#loginBtn").on('click', function() {
 		$("#loginForm").submit();
 	}
 });
-$("#torokuBtn").on('click', function() {
+$("#torokuBtn").on('click', function(e) {
+	e.preventDefault();
 	let inputArrays = ["#emailIpt", "#passwordIpt1", "#passwordIpt2", "#dateOfBirthIpt"];
 	for (const element of inputArrays) {
 		if ($(element).val().trim() === "") {
