@@ -1,175 +1,208 @@
-/* Google Font */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
 
-/* General CSS */
 * {
-	margin: 0;
-	padding: 0;
-	font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-	background: url(../image/background.jpg);
-	background-size: cover;
-	height: 100vh;
-	width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-	background: rgba(255, 255, 255, 0.4);
-	backdrop-filter: blur(10px);
+body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url(bg1.jpg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
 }
 
-.logo {
-	cursor: pointer;
-	color: #fff;
+body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url(bg2.jpg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: 500ms;
 }
 
-.nav a {
-	color: #fff;
-	text-decoration: none;
-	font-weight: 600;
-	font-size: 18px;
-	padding: 8px;
-	transition: 300ms;
-	border-radius: 99px;
+body.signupFeature::after {
+    opacity: 1;
 }
 
-.nav a:hover {
-	background: rgba(0, 0, 0, 0.2);
+.container {
+    position: relative;
+    width: 350px;
+    height: 340px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: 500ms;
+    overflow: hidden;
 }
 
-.user-form-group a {
-	color: #fff;
-	text-decoration: none;
-	font-weight: 600;
-	font-size: 18px;
+body.signupFeature .container {
+    height: 440px;
 }
 
-.login {
-	border: rgba(255, 255, 255, 0.5) 2px solid;
-	padding: 8px 16px;
-	margin-left: 16px;
-	border-radius: 99px;
-	transition: 300ms;
+.container::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-conic-gradient(from var(--a), #7f0020 0%, #7f0020 10%, transparent 10%, transparent 80%, #7f0020 100%);
+    border-radius: 20px;
+    animation: animate 3000ms linear infinite;
 }
 
-.login:hover {
-	background: #fff;
-	color: #000;
+body.signupFeature .container::before {
+    filter: hue-rotate(140deg);
 }
 
-.nav .logo {
-	display: none;
+@property --a {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
 }
 
-#checkids {
-	display: none;
+@keyframes animate {
+    from {
+        --a: 0deg;
+    }
+
+    to {
+        --a: 360deg;
+    }
 }
 
-.user-form-group label {
-	display: none;
+.container span {
+    position: absolute;
+    inset: 5px;
+    overflow: hidden;
+    border-radius: 15px;
 }
 
-.subscribe {
-	color: #fff;
-	left: 50%;
-	top: 50%;
-	position: absolute;
-	transform: translate(-50%, -50%);
-	text-shadow: 2px 1px 2px rgba(255, 255, 255, 0.3);
-	font-size: 40px;
-	z-index: -1;
+.container span::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    background: url(bg1.jpg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
 }
 
-.alert-divider {
-	background: #000;
-	height: 2px;
-	width: 100%;
+.container span::after {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    background: url(bg1.jpg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px);
 }
 
-@media (max-width: 768px) {
-	.nav {
-		position: absolute;
-		left: -100%;
-		top: 0;
-		display: flex;
-		flex-direction: column;
-		background: #0f172a;
-		height: 100vh;
-		width: 30%;
-		padding: 0px 20px;
-		gap: 16px;
-		transition: 500ms;
-		box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.2);
-	}
-
-	.nav .logo {
-		margin-left: 16px;
-		margin-top: 20px;
-		display: block;
-	}
-
-	.divider {
-		background: rgba(255, 255, 255, 0.2);
-		height: 2px;
-		width: 100%;
-		margin: 10px 0px;
-	}
-
-	.user-form-group {
-		display: flex;
-		align-items: center;
-	}
-
-	.signup {
-		margin-right: 16px;
-	}
-
-	.menucon {
-		cursor: pointer;
-		color: #fff;
-		font-size: 40px;
-	}
-
-	#checkids:checked~.user-form-group .menucon {
-		display: none;
-	}
-
-	.close-menu {
-		cursor: pointer;
-		color: #fff;
-		font-size: 40px;
-	}
-
-	.user-form-group .close-menu {
-		display: none;
-	}
-
-	#checkids:checked~.user-form-group .close-menu {
-		display: block;
-	}
-
-	#checkids:checked~.nav {
-		left: 0%;
-	}
+body.signupFeature .container span::before,
+body.signupFeature .container span::after {
+    background: url(bg2.jpg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px);
 }
 
-.effect-shine:hover {
-	mask-image: linear-gradient(-75deg, rgba(0, 0, 0, 0.6) 30%, #000 50%, rgba(0, 0, 0, 0.6) 70%);
-	mask-size: 200%;
-	animation: shine 2500ms infinite;
+form {
+    position: absolute;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+    transition: 500ms;
 }
 
-@keyframes shine {
-	from {
-		mask-position: 150%;
-	}
+form#signupForm {
+    left: 100%;
+}
 
-	to {
-		mask-position: -50%;
-	}
+body.signupFeature form#loginForm {
+    left: -100%;
+}
+
+body.signupFeature form#signupForm {
+    left: 0;
+}
+
+form h2 {
+    position: relative;
+    color: #fff;
+    font-size: 1.5em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+form .inputBox {
+    position: relative;
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+}
+
+form .inputBox a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.85em;
+}
+
+form .inputBox a:nth-child(2) {
+    text-decoration: underline;
+}
+
+form .inputBox input {
+    width: 100%;
+    outline: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.15);
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    color: #fff;
+}
+
+form .inputBox input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+form .inputBox input[type='submit'] {
+    background: #7f0020;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+form#signupForm .inputBox input[type='submit'] {
+    background: #0055A4;
+}
+
+form#signupForm b {
+    font-weight: 500;
+    text-decoration: underline;
 }

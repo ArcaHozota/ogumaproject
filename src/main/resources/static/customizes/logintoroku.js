@@ -100,8 +100,19 @@ $("#warningBtn").on('click', function(e) {
 	e.preventDefault();
 	swal.fire({
 		title: '警告',
-		html: '株式会社オージーエムの内部勉強利用しているプロジェクトです。王先生のご指示通りに使ってください。',
+		html: '本社の王先生のご指示通りに使ってください。',
 		confirmButtonText: '了解しました。',
 		confirmButtonColor: '#7F0020'
 	});
 });
+let signup = document.getElementById("signup");
+let login = document.getElementById("login");
+let body = document.querySelector("body");
+login.onclick = function(e) {
+	e.preventDefault();
+	body.classList.remove('signupFeature');
+}
+signup.onclick = function(e) {
+	e.preventDefault();
+	body.classList.add('signupFeature');
+}
