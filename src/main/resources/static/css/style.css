@@ -18,7 +18,7 @@ body::before {
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: url(bg1.jpg);
+	background: url(../image/background.jpg);
 	background-attachment: fixed;
 	background-size: cover;
 	background-position: center;
@@ -28,7 +28,7 @@ body::after {
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: url(bg2.jpg);
+	background: url(../image/background.jpg);
 	background-attachment: fixed;
 	background-size: cover;
 	background-position: center;
@@ -99,7 +99,7 @@ body.signupFeature .container::before {
 	content: '';
 	position: absolute;
 	inset: 5px;
-	background: url(bg1.jpg);
+	background: url(../image/background.jpg);
 	background-attachment: fixed;
 	background-size: cover;
 	background-position: center;
@@ -110,7 +110,7 @@ body.signupFeature .container::before {
 	content: '';
 	position: absolute;
 	inset: 5px;
-	background: url(bg1.jpg);
+	background: url(../image/background.jpg);
 	background-attachment: fixed;
 	background-size: cover;
 	background-position: center;
@@ -119,7 +119,7 @@ body.signupFeature .container::before {
 
 body.signupFeature .container span::before,
 body.signupFeature .container span::after {
-	background: url(bg2.jpg);
+	background: url(../image/background.jpg);
 	background-attachment: fixed;
 	background-size: cover;
 	background-position: center;
