@@ -31,6 +31,11 @@
 			cursor: pointer;
 			left: 220px;
 		}
+
+		form .inputBox ion-icon#eyeIcons2 {
+			cursor: pointer;
+			left: 220px;
+		}
 	</style>
 	<div class="container">
 		<p th:text="${session['SPRING_SECURITY_LAST_EXCEPTION']} eq null ? '' : ${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"
@@ -53,26 +58,36 @@
 				<input type="password" name="userPswd" id="passwordIpt" placeholder="パスワード" required>
 			</div>
 			<div class="inputBox group">
-				<a th:href="@{/oguma/employee/forget/password}">パスワード忘れ？</a>
-				<a href="#" id="signup">登録</a>
+				<div class="remember-forget">
+					<label style="font-size: 0.85em;"><input type="checkbox" name="remember-me">私を記憶</label>
+					<a th:href="@{/oguma/employee/forget/password}">パスワード忘れ？</a>
+				</div>
 			</div>
 			<div class="inputBox">
 				<input type="submit" value="ログイン" id="loginBtn">
+			</div>
+			<div class="inputBox group">
+				<a href="#">アカウント無し? <b id="signup">登録</b></a>
 			</div>
 		</form>
 		<form th:action="@{/oguma/employee/toroku}" th:method="post" id="signupForm">
 			<h2>登録</h2>
 			<div class="inputBox">
-				<input type="text" placeholder="Username">
+				<ion-icon name="mail-outline"></ion-icon>
+				<input type="text" name="email" id="emailIpt" placeholder="メールアドレス" required>
 			</div>
 			<div class="inputBox">
-				<input type="email" placeholder="Email Address">
+				<ion-icon name="key-outline"></ion-icon>
+				<ion-icon name="eye-outline" id="eyeIcons2"></ion-icon>
+				<input type="password" name="password" id="passwordIpt1" placeholder="パスワード" required>
 			</div>
 			<div class="inputBox">
-				<input type="password" placeholder="Enter Password">
+				<ion-icon name="key-outline"></ion-icon>
+				<input type="password" name="password" id="passwordIpt2" placeholder="パスワード再入力" required>
 			</div>
 			<div class="inputBox">
-				<input type="password" placeholder="Confirm Password">
+				<ion-icon name="calendar-number-outline"></ion-icon>
+				<input type="date" name="dateOfBirth" id="dateOfBirthIpt" required>
 			</div>
 			<div class="inputBox">
 				<input type="submit" value="登録" id="torokuBtn">
