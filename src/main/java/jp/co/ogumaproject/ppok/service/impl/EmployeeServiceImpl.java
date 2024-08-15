@@ -82,10 +82,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		employeeEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
 		employeeEntity.setId(id);
 		final Employee employee = this.employeeMapper.selectById(employeeEntity);
-		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(id);
 		return new EmployeeDto(employee.getId(), employee.getLoginAccount(), employee.getUsername(),
 				OgumaProjectConstants.DEFAULT_ROLE_NAME, employee.getEmail(),
-				FORMATTER.format(employee.getDateOfBirth()), employeeRole.getRoleId());
+				FORMATTER.format(employee.getDateOfBirth()), null);
 	}
 
 	@Override
