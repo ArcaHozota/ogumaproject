@@ -107,14 +107,11 @@ $("#warningBtn").on('click', function(e) {
 		confirmButtonColor: '#7F0020'
 	});
 });
-let signup = document.getElementById("signup");
-let login = document.getElementById("login");
-let body = document.querySelector("body");
-login.onclick = function(e) {
+$("#login").on("click", function(e) {
 	e.preventDefault();
-	body.classList.remove('signupFeature');
-}
-signup.onclick = function(e) {
+	$("body").removeClass('signupFeature');
+});
+$("#signup").on("click", function(e) {
 	e.preventDefault();
-	body.classList.add('signupFeature');
-}
+	$("body").addClass('signupFeature');
+});
