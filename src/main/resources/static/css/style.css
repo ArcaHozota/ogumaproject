@@ -181,16 +181,22 @@ form .inputBox a {
 	font-size: 0.85em;
 }
 
-form .inputBox a:nth-child(2) {
-	text-decoration: underline;
-}
-
-form .inputBox .rememberForget {
-	margin: -15px 0 15px;
-	font-size: 15px;
+form .rememberForget {
+	position: relative;
+	width: 70%;
+	font-size: 0.85em;
 	color: #fff;
 	display: flex;
 	justify-content: space-between;
+}
+
+form .rememberForget a {
+	color: #fff;
+	text-decoration: none;
+}
+
+form .rememberForget a:nth-child(2) {
+	text-decoration: underline;
 }
 
 form .inputBox input {
@@ -218,8 +224,11 @@ form#signupForm .inputBox input[type='submit'] {
 	background: #006400;
 }
 
-form#signupForm b {
-	font-weight: 500;
-	text-decoration: underline;
+form .inputBox.group a {
+	margin: 0 auto;
+}
 
+form .inputBox b {
+	font-weight: 900;
+	text-decoration: underline;
 }

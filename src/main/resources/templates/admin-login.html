@@ -57,11 +57,9 @@
 				<ion-icon name="eye-outline" id="eyeIcons"></ion-icon>
 				<input type="password" name="userPswd" id="passwordIpt" placeholder="パスワード" required>
 			</div>
-			<div class="inputBox group">
-				<div class="remember-forget">
-					<label style="font-size: 0.85em;"><input type="checkbox" name="remember-me">私を記憶</label>
-					<a th:href="@{/oguma/employee/forget/password}">パスワード忘れ？</a>
-				</div>
+			<div class="rememberForget">
+				<a href="#"><input type="checkbox" name="remember-me">私を記憶する</a>
+				<a th:href="@{/oguma/employee/forget/password}">パスワード忘れ？</a>
 			</div>
 			<div class="inputBox">
 				<input type="submit" value="ログイン" id="loginBtn">
