@@ -193,31 +193,30 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	public ResultDto<String> update(final EmployeeDto employeeDto) {
+		final Employee originalEntity = new Employee();
+		originalEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		originalEntity.setId(employeeDto.id());
+		final Employee employee = this.employeeMapper.selectById(originalEntity);
+		SecondBeanUtils.copyNullableProperties(employee, originalEntity);
 		final String password = employeeDto.password();
-		final Employee employeeEntity = new Employee();
-		employeeEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
-		employeeEntity.setId(employeeDto.id());
-		final Employee employee = this.employeeMapper.selectById(employeeEntity);
-		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employee.getId());
-		final EmployeeDto aEmployeeDto = new EmployeeDto(employee.getId(), employee.getLoginAccount(),
-				employee.getUsername(), password, employee.getEmail(), FORMATTER.format(employee.getDateOfBirth()),
-				employeeRole.getRoleId());
 		boolean passwordMatch = false;
 		if (OgumaProjectUtils.isNotEmpty(password)) {
 			passwordMatch = ENCODER.matches(password, employee.getPassword());
 		} else {
 			passwordMatch = true;
 		}
-		if (OgumaProjectUtils.isEqual(aEmployeeDto, employeeDto) && passwordMatch) {
-			return ResultDto.failed(OgumaProjectConstants.MESSAGE_STRING_NOCHANGE);
+		SecondBeanUtils.copyNullableProperties(employeeDto, employee);
+		originalEntity.setPassword(OgumaProjectUtils.EMPTY_STRING);
+		employee.setPassword(OgumaProjectUtils.EMPTY_STRING);
+		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employee.getId());
+		if (OgumaProjectUtils.isEqual(originalEntity, employee) && passwordMatch) {
+			if ((employeeRole == null) || OgumaProjectUtils.isEqual(employeeRole.getRoleId(), employeeDto.roleId())) {
+				return ResultDto.failed(OgumaProjectConstants.MESSAGE_STRING_NOCHANGE);
+			}
 		}
-		employee.setLoginAccount(employeeDto.loginAccount());
-		employee.setUsername(employeeDto.username());
 		if (!passwordMatch) {
 			employee.setPassword(ENCODER.encode(password));
 		}
-		employee.setEmail(employeeDto.email());
-		employee.setDateOfBirth(LocalDate.parse(employeeDto.dateOfBirth(), FORMATTER));
 		employeeRole.setRoleId(employeeDto.roleId());
 		this.employeeRoleMapper.updateById(employeeRole);
 		this.employeeMapper.updateById(employee);
