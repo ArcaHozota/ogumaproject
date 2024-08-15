@@ -73,7 +73,10 @@ public class DistrictServiceImpl implements IDistrictService {
 					item.getChiho().getName(), null, item.getDistrictFlag())).toList();
 		}
 		final List<District> aDistricts = new ArrayList<>();
-		final City city = this.cityMapper.selectById(Long.parseLong(cityId));
+		final City cityEntity = new City();
+		cityEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		cityEntity.setId(Long.parseLong(cityId));
+		final City city = this.cityMapper.selectById(cityEntity);
 		aDistricts.add(districts.stream().filter(a -> OgumaProjectUtils.isEqual(a.getId(), city.getDistrictId()))
 				.findFirst().get());
 		aDistricts.addAll(districts);

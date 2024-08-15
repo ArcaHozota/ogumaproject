@@ -96,7 +96,9 @@ public class CityServiceImpl implements ICityService {
 	@Override
 	public ResultDto<String> update(final CityDto cityDto) {
 		final City originalEntity = new City();
-		final City city = this.cityMapper.selectById(cityDto.id());
+		originalEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		originalEntity.setId(cityDto.id());
+		final City city = this.cityMapper.selectById(originalEntity);
 		SecondBeanUtils.copyNullableProperties(city, originalEntity);
 		SecondBeanUtils.copyNullableProperties(cityDto, city);
 		if (OgumaProjectUtils.isEqual(originalEntity, city)) {
