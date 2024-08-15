@@ -59,7 +59,7 @@ public class DistrictServiceImpl implements IDistrictService {
 	@Override
 	public List<Chiho> getChihos(final String chihoName) {
 		final List<Chiho> chihos = new ArrayList<>();
-		final List<Chiho> list = this.chihoMapper.selectAll();
+		final List<Chiho> list = this.chihoMapper.selectAll(OgumaProjectUtils.EMPTY_STRING);
 		chihos.add(list.stream().filter(a -> OgumaProjectUtils.isEqual(a.getName(), chihoName)).findFirst().get());
 		chihos.addAll(list);
 		return chihos.stream().distinct().toList();

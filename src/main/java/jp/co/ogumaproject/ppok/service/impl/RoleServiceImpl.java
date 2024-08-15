@@ -103,7 +103,7 @@ public class RoleServiceImpl implements IRoleService {
 
 	@Override
 	public List<AuthorityDto> getAuthList() {
-		return this.authorityMapper.selectAll().stream()
+		return this.authorityMapper.selectAll(OgumaProjectUtils.EMPTY_STRING).stream()
 				.map(item -> new AuthorityDto(item.getId(), item.getName(), item.getTitle(), item.getCategoryId()))
 				.toList();
 	}

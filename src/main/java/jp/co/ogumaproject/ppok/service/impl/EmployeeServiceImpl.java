@@ -78,11 +78,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	public EmployeeDto getEmployeeById(final Long id) {
-		final Employee employee = this.employeeMapper.selectById(id);
-		this.employeeRoleMapper.selectById(id);
+		final Employee employeeEntity = new Employee();
+		employeeEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		employeeEntity.setId(id);
+		final Employee employee = this.employeeMapper.selectById(employeeEntity);
+		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(id);
 		return new EmployeeDto(employee.getId(), employee.getLoginAccount(), employee.getUsername(),
 				OgumaProjectConstants.DEFAULT_ROLE_NAME, employee.getEmail(),
-				FORMATTER.format(employee.getDateOfBirth()), null);
+				FORMATTER.format(employee.getDateOfBirth()), employeeRole.getRoleId());
 	}
 
 	@Override
@@ -90,7 +93,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
 			final String authChkFlag) {
 		final Integer offset = (pageNum - 1) * PAGE_SIZE;
 		if (Boolean.FALSE.equals(Boolean.valueOf(authChkFlag))) {
-			final Employee employee = this.employeeMapper.selectById(userId);
+			final Employee employeeEntity = new Employee();
+			employeeEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+			employeeEntity.setId(userId);
+			final Employee employee = this.employeeMapper.selectById(employeeEntity);
 			final EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getLoginAccount(),
 					employee.getUsername(), employee.getPassword(), employee.getEmail(),
 					FORMATTER.format(employee.getDateOfBirth()), null);
@@ -189,7 +195,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	@Override
 	public ResultDto<String> update(final EmployeeDto employeeDto) {
 		final String password = employeeDto.password();
-		final Employee employee = this.employeeMapper.selectById(employeeDto.id());
+		final Employee employeeEntity = new Employee();
+		employeeEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
+		employeeEntity.setId(employeeDto.id());
+		final Employee employee = this.employeeMapper.selectById(employeeEntity);
 		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employee.getId());
 		final EmployeeDto aEmployeeDto = new EmployeeDto(employee.getId(), employee.getLoginAccount(),
 				employee.getUsername(), password, employee.getEmail(), FORMATTER.format(employee.getDateOfBirth()),

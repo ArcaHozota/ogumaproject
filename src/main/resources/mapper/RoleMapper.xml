@@ -49,7 +49,7 @@
 		    LEFT JOIN PPOG_ROLE_AUTH PRA 
 		        ON PRA.ROLE_ID = PR.ID 
 		WHERE
-		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
+		    PR.DEL_FLG = 'approved' 
 		ORDER BY
 		    PR.ID ASC
 	</select>
