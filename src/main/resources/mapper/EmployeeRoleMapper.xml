@@ -36,8 +36,7 @@
 		WHERE
 		    PER.EMPLOYEE_ID = #{id,jdbcType=NUMERIC}
 	</select>
-	<select id="selectByRoleId" parameterType="java.lang.Long"
-		resultMap="BasicResultMap">
+	<select id="selectByRoleId" resultMap="BasicResultMap">
 		SELECT
 		    PER.EMPLOYEE_ID
 		    , PER.ROLE_ID 

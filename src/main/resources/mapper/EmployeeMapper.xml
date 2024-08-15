@@ -115,6 +115,8 @@
 		        OR PE.LOGIN_ACCOUNT LIKE #{keyword,jdbcType=NVARCHAR} 
 		        OR PE.EMAIL LIKE #{keyword,jdbcType=NVARCHAR}
 		    ) 
+		ORDER BY
+		    PE.ID ASC
 		OFFSET #{offset,jdbcType=INTEGER} ROWS 
 		FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
 	</select>

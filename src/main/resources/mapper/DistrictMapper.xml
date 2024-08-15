@@ -86,6 +86,8 @@
 		        OR PC.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
 		        OR PCH.NAME LIKE #{keyword,jdbcType=NVARCHAR}
 		    ) 
+		ORDER BY
+		    PD.ID ASC
 		OFFSET #{offset,jdbcType=INTEGER} ROWS 
 		FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
 	</select>

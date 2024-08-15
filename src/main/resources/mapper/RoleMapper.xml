@@ -4,11 +4,7 @@
 	<resultMap id="BasicResultMap"
 		type="jp.co.ogumaproject.ppok.entity.Role" autoMapping="true">
 		<id property="id" jdbcType="NUMERIC" column="ID" />
-		<collection property="roleAuths" resultMap="authMap"/>
-	</resultMap>
-	<resultMap id="authMap" type="jp.co.ogumaproject.ppok.entity.RoleAuth">
-		<id property="roleId" jdbcType="NUMERIC" column="ROLE_ID" />
-		<id property="authId" jdbcType="NUMERIC" column="AUTH_ID" />
+		<collection property="roleAuths" ofType="jp.co.ogumaproject.ppok.entity.RoleAuth" select="subQuery" column="ID" />
 	</resultMap>
 	<insert id="insertById"
 		parameterType="jp.co.ogumaproject.ppok.entity.Role">
@@ -42,14 +38,10 @@
 		    PR.ID
 		    , PR.NAME
 		    , PR.DEL_FLG
-		    , PRA.ROLE_ID
-		    , PRA.AUTH_ID 
 		FROM
 		    PPOG_ROLES PR 
-		    LEFT JOIN PPOG_ROLE_AUTH PRA 
-		        ON PRA.ROLE_ID = PR.ID 
 		WHERE
-		    PR.DEL_FLG = 'approved' 
+		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
 		ORDER BY
 		    PR.ID ASC
 	</select>
@@ -58,12 +50,8 @@
 		    PR.ID
 		    , PR.NAME
 		    , PR.DEL_FLG
-		    , PRA.ROLE_ID
-		    , PRA.AUTH_ID 
 		FROM
 		    PPOG_ROLES PR 
-		    LEFT JOIN PPOG_ROLE_AUTH PRA 
-		        ON PRA.ROLE_ID = PR.ID 
 		WHERE
 		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
 		    AND PR.ID = #{id,jdbcType=NUMERIC}
@@ -73,15 +61,13 @@
 		    PR.ID
 		    , PR.NAME
 		    , PR.DEL_FLG
-		    , PRA.ROLE_ID
-		    , PRA.AUTH_ID 
 		FROM
 		    PPOG_ROLES PR 
-		    LEFT JOIN PPOG_ROLE_AUTH PRA 
-		        ON PRA.ROLE_ID = PR.ID 
 		WHERE
 		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
 		    AND PR.NAME LIKE #{keyword,jdbcType=NVARCHAR} 
+		ORDER BY
+		    PR.ID ASC
 		OFFSET #{offset,jdbcType=INTEGER} ROWS 
 		FETCH NEXT #{pageSize,jdbcType=INTEGER} ROWS ONLY
 	</select>
@@ -90,8 +76,6 @@
 		    COUNT(1) 
 		FROM
 		    PPOG_ROLES PR 
-		    LEFT JOIN PPOG_ROLE_AUTH PRA 
-		        ON PRA.ROLE_ID = PR.ID 
 		WHERE
 		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
 		    AND PR.NAME LIKE #{keyword,jdbcType=NVARCHAR}
@@ -104,5 +88,14 @@
 		WHERE
 		    PR.DEL_FLG = #{delFlg,jdbcType=NVARCHAR} 
 		    AND PR.NAME LIKE #{name,jdbcType=NVARCHAR}
+	</select>
+	<select id="subQuery" resultType="jp.co.ogumaproject.ppok.entity.RoleAuth">
+		SELECT
+		    PRA.ROLE_ID
+		    , PRA.AUTH_ID 
+		FROM
+		    PPOG_ROLE_AUTH PRA 
+		WHERE
+			PRA.ROLE_ID = #{id,jdbcType=NUMERIC}
 	</select>
 </mapper>
