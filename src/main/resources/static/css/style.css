@@ -72,6 +72,10 @@ body.signupFeature .container::before {
 	filter: hue-rotate(140deg);
 }
 
+body.resetPasswordFeature .container::before {
+	filter: hue-rotate(220deg);
+}
+
 @property --a {
 	syntax: '<angle>';
 	inherits: false;
@@ -222,6 +226,10 @@ form .inputBox input[type='submit'] {
 
 form#signupForm .inputBox input[type='submit'] {
 	background: #006400;
+}
+
+form#resetForm .inputBox input[type='submit'] {
+	background: #002fa7;
 }
 
 form .inputBox.group a {

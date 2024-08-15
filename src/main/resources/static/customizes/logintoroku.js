@@ -68,7 +68,8 @@ $("#torokuBtn").on('click', function(e) {
 		$("#torokuForm").submit();
 	}
 });
-$("#resetBtn").on('click', function() {
+$("#resetBtn").on('click', function(e) {
+	e.preventDefault();
 	let inputArrays = ["#accountIpt2", "#emailIpt2", "#dateOfBirthIpt2"];
 	for (const element of inputArrays) {
 		if ($(element).val().trim() === "") {
@@ -114,4 +115,7 @@ $("#login").on("click", function(e) {
 $("#signup").on("click", function(e) {
 	e.preventDefault();
 	$("body").addClass('signupFeature');
+});
+$("#resetLogin").on("click", function(){
+	window.location.replace('/oguma/employee/login');
 });
