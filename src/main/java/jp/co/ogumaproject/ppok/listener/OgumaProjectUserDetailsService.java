@@ -3,9 +3,7 @@ package jp.co.ogumaproject.ppok.listener;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +17,7 @@ import jp.co.ogumaproject.ppok.entity.Employee;
 import jp.co.ogumaproject.ppok.entity.EmployeeRole;
 import jp.co.ogumaproject.ppok.entity.Role;
 import jp.co.ogumaproject.ppok.entity.RoleAuth;
+import jp.co.ogumaproject.ppok.exception.OgumaProjectException;
 import jp.co.ogumaproject.ppok.mapper.AuthorityMapper;
 import jp.co.ogumaproject.ppok.mapper.EmployeeMapper;
 import jp.co.ogumaproject.ppok.mapper.EmployeeRoleMapper;
@@ -67,15 +66,14 @@ public class OgumaProjectUserDetailsService implements UserDetailsService {
 		}
 		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employee.getId());
 		if (employeeRole == null) {
-			throw new InsufficientAuthenticationException(OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR2);
+			throw new OgumaProjectException(OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR2);
 		}
 		final Role aRoleEntity = new Role();
 		aRoleEntity.setId(employeeRole.getRoleId());
 		aRoleEntity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_INITIAL);
 		final Role role = this.roleMapper.selectById(aRoleEntity);
 		if (role.getRoleAuths().isEmpty()) {
-			throw new AuthenticationCredentialsNotFoundException(
-					OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR3);
+			throw new OgumaProjectException(OgumaProjectConstants.MESSAGE_SPRINGSECURITY_LOGINERROR3);
 		}
 		final List<Long> authIds = role.getRoleAuths().stream().map(RoleAuth::getAuthId).toList();
 		final EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getLoginAccount(),

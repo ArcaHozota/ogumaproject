@@ -199,26 +199,34 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		final Employee employee = this.employeeMapper.selectById(originalEntity);
 		SecondBeanUtils.copyNullableProperties(employee, originalEntity);
 		final String password = employeeDto.password();
+		final String originalPass = employee.getPassword();
 		boolean passwordMatch = false;
 		if (OgumaProjectUtils.isNotEmpty(password)) {
-			passwordMatch = ENCODER.matches(password, employee.getPassword());
+			passwordMatch = ENCODER.matches(password, originalPass);
 		} else {
 			passwordMatch = true;
 		}
 		SecondBeanUtils.copyNullableProperties(employeeDto, employee);
-		originalEntity.setPassword(OgumaProjectUtils.EMPTY_STRING);
 		employee.setPassword(OgumaProjectUtils.EMPTY_STRING);
+		originalEntity.setPassword(OgumaProjectUtils.EMPTY_STRING);
 		final EmployeeRole employeeRole = this.employeeRoleMapper.selectById(employee.getId());
 		if (OgumaProjectUtils.isEqual(originalEntity, employee) && passwordMatch) {
-			if ((employeeRole == null) || OgumaProjectUtils.isEqual(employeeRole.getRoleId(), employeeDto.roleId())) {
+			if (((employeeRole == null) && (employeeDto.roleId() == 0))
+					|| OgumaProjectUtils.isEqual(employeeDto.roleId(), employeeRole.getRoleId())) {
 				return ResultDto.failed(OgumaProjectConstants.MESSAGE_STRING_NOCHANGE);
+			} else {
+				final EmployeeRole employeeRole2 = new EmployeeRole();
+				employeeRole2.setEmployeeId(employee.getId());
+				employeeRole2.setRoleId(employeeDto.roleId());
+				this.employeeRoleMapper.updateById(employeeRole2);
 			}
 		}
 		if (!passwordMatch) {
 			employee.setPassword(ENCODER.encode(password));
+		} else {
+			employee.setPassword(originalPass);
 		}
-		employeeRole.setRoleId(employeeDto.roleId());
-		this.employeeRoleMapper.updateById(employeeRole);
+		employee.setDateOfBirth(LocalDate.parse(employeeDto.dateOfBirth(), FORMATTER));
 		this.employeeMapper.updateById(employee);
 		return ResultDto.successWithoutData();
 	}
