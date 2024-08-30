@@ -81,7 +81,7 @@ public class CityServiceImpl implements ICityService {
 		}
 		city.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_FLG);
 		this.cityMapper.removeById(city);
-		return ResultDto.successWithoutData();
+		return ResultDto.successWithoutData(OgumaProjectConstants.MESSAGE_STRING_DELETED);
 	}
 
 	@Override

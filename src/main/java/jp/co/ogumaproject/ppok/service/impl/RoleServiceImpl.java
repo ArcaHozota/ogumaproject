@@ -164,7 +164,7 @@ public class RoleServiceImpl implements IRoleService {
 		entity.setId(id);
 		entity.setDelFlg(OgumaProjectConstants.LOGIC_DELETE_FLG);
 		this.roleMapper.removeById(entity);
-		return ResultDto.successWithoutData();
+		return ResultDto.successWithoutData(OgumaProjectConstants.MESSAGE_STRING_DELETED);
 	}
 
 	@Override
